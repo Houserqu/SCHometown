@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>关注详情</title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+</head>
+<body>
+<article id="container" class="container">
+    <div class="weui_panel weui_panel_access">
+
+        <div class="weui_cells weui_cells_access">
+            <% for(var i = 0; i < follows.length; i++){ %>
+            <a class="weui_cell" href="<%= "/user/userpage/"+follows[i].openid%>">
+                <div class="weui_cell_hd"><img id="headimg"
+                                               src=<%= follows[i].headimgurl %>
+                                               alt="" style="width:40px;margin-right:5px;display:block"></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p><%= follows[i].nickname %></p>
+                </div>
+                <div class="weui_cell_ft"></div>
+            </a>
+            <% } %>
+        </div>
+    </div>
+
+
+</article>
+</body>
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/jquery-weui.min.js"></script>
+
+<script>
+
+</script>
+
+</html>

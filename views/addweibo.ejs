@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>发布动态</title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+</head>
+<body ontouchstart="">
+<article class="container">
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <textarea id="weibo_content" class="weui_textarea" placeholder="这一刻的想法..." rows="6"></textarea>
+            </div>
+        </div>
+
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <div class="weui_uploader">
+                    <div class="weui_uploader_hd weui_cell">
+                        <div class="weui_cell_bd weui_cell_primary">图片上传</div>
+                        <div class="weui_cell_ft" id="uploaded_number">0/5</div>
+                    </div>
+                    <div class="weui_uploader_bd">
+                        <ul class="weui_uploader_files" id="uploaded_imgs">
+                        </ul>
+                        <div class="weui_uploader_input_wrp">
+                            <!--<form action="/upweiboimg" enctype="multipart/form-data" method="post">-->
+                            <input id="uploadimg" class="weui_uploader_input" type="file"
+                                   accept="image/jpg,image/jpeg,image/png,image/gif" multiple="multiple">
+                            <!--</form>-->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui_media_box weui_media_text">
+            <a id="activitysubmit" class="weui_btn weui_btn_primary">发布</a>
+        </div>
+    </div>
+
+</article>
+</body>
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/jquery-weui.min.js"></script>
+<!--拓展-->
+<script src="/javascripts/swiper.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var weiboimgurls = "";
+
+        $("#activitysubmit").on("click", function () {
+            var content = $("#weibo_content").val();
+            console.log(content);
+            console.log(weiboimgurls);
+
+            $.ajax({
+                type: "post",
+                url: "/doaddweibo",
+                datatype: "json",
+                data: {content: content, imgurls:weiboimgurls},
+                success: function (redata) {
+                    if(redata.code){
+                        $.toast("发表成功",function () {
+                            window.location.href="/";
+                        });
+                    }
+                },
+                error: function () {
+                    $.toast("网络错误", "forbidden");
+                }
+            })
+        });
+
+        $("#uploadimg").on("change", function () {
+            var files = $(this)[0].files;
+            console.log(files);
+            if (files.length) {
+                var formData = new FormData();
+                var fileslength = files.length;
+                for (var i = 0; i < fileslength; i++) {
+                    formData.append("img"+i, files[i]);
+                }
+
+                $.ajax({
+                    url: '/upweiboimg',
+                    type: 'POST',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success : function (redata) {
+                        console.log(redata);
+                        if(redata.code){
+                            weiboimgurls += redata.info;
+                            var urls = redata.info.split("||");
+                            console.log(urls);
+                            var uploaded_html = "";
+                            var urlslength = urls.length-1;
+                            for(var i=0; i < urlslength; i++){
+                                uploaded_html += "<li class='weui_uploader_file' style='background-image:url(/weiboimg/"+urls[i]+")'></li>";
+                            }
+
+                            $("#uploaded_imgs").append(uploaded_html);
+                            $("#uploaded_number").text(urlslength+"/5");
+
+                        }else{
+                            $.toast(redata.info, "forbidden");
+                        }
+                    },
+                    error : function () {
+                        $.toast("网络错误", "forbidden");
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+</html>

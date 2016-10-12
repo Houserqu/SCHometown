@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>活动列表</title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+
+    <style>
+        .joinselect {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<article id="container" class="container">
+    <div class="cell">
+        <div class="hd">
+            <h1 class="page_title" data-idactivity=<%= activitydetail[0].idactivity %> id="activity-title"><%= activitydetail[0].title %></h1>
+        </div>
+        <div class="bd">
+            <div class="weui_cells weui_cells_access">
+                <a class="weui_cell" href="<%= "/user/userpage/"+activitydetail[0].openid %> ">
+                    <div class="weui_cell_hd"><img id="headimg"
+                                src=<%= activitydetail[0].headimgurl%>
+                                alt="" style="width:40px;margin-right:5px;display:block"></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p><%= activitydetail[0].nickname %></p>
+                    </div>
+                    <div class="weui_cell_ft">查看主页</div>
+                </a>
+            </div>
+
+            <div class="weui_cells_title">地点</div>
+            <div class="weui_cells weui_cells_access">
+                <a class="weui_cell" href="javascript:;">
+                    <div class="weui_cell_hd"><img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII="
+                                alt="" style="width:20px;margin-right:5px;display:block"></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p><%= activitydetail[0].address %></p>
+                    </div>
+                    <div class="weui_cell_ft">查看地图</div>
+                </a>
+
+            </div>
+            <div class="weui_cells_title">时间</div>
+            <div class="weui_cells">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII="
+                                alt="" style="width:20px;margin-right:5px;display:block"></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p><%= new Date(activitydetail[0].starttime).Format('MM-dd hh:mm') %></p>
+                    </div>
+                    <div class="weui_cell_ft">开始时间</div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII="
+                                alt="" style="width:20px;margin-right:5px;display:block"></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p><%= new Date(activitydetail[0].endtime).Format('MM-dd hh:mm') %></p>
+                    </div>
+                    <div class="weui_cell_ft">结束时间</div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII="
+                                alt="" style="width:20px;margin-right:5px;display:block"></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>2天前</p>
+                    </div>
+                    <div class="weui_cell_ft">发布时间</div>
+                </div>
+            </div>
+
+            <% if(activitydetail[0].budget){ %>
+            <div class="weui_cells_title">预算</div>
+            <div class="weui_cells">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII="
+                                alt="" style="width:20px;margin-right:5px;display:block"></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>30/人</p>
+                    </div>
+                    <div class="weui_cell_ft"></div>
+                </div>
+            </div>
+            <%}%>
+
+            <div class="weui_cells_title">参与状态</div>
+            <div class="weui_cells weui_cells_access">
+                <a class="weui_cell" href="joinerlist/<%= activitydetail[0].idactivity %>">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>当前参与人数</p>
+                    </div>
+                    <div class="weui_cell_ft"><%= joiners.length%> 人</div>
+                </a>
+            </div>
+            <div class="weui_cells weui_cells_form joinselect">
+                <div class="weui_cell weui_cell_switch">
+                    <%if(activitydetail[0].isjoin) {%>
+                        <div class="weui_cell_hd weui_cell_primary" id="join-label">参与</div>
+                        <div class="weui_cell_ft" id="join-switch">
+                            <input class="weui_switch" data-ischeck="1" checked="checked" type="checkbox">
+                        </div>
+                    <%}else{%>
+                        <div class="weui_cell_hd weui_cell_primary" id="join-label">不参与</div>
+                        <div class="weui_cell_ft" id="join-switch">
+                            <input class="weui_switch" data-ischeck="0" type="checkbox">
+                        </div>
+                    <%}%>
+                </div>
+            </div>
+
+            <div class="weui_cells_title">关注</div>
+            <div class="weui_cells weui_cells_access">
+                <a class="weui_cell" href="followlist/<%= activitydetail[0].idactivity %>">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>当前关注人数</p>
+                    </div>
+                    <div class="weui_cell_ft"><%= follows.length%> 人</div>
+                </a>
+            </div>
+            <div class="weui_cells weui_cells_form joinselect">
+                <div class="weui_cell weui_cell_switch">
+                    <%if(activitydetail[0].isfollow) {%>
+                    <div class="weui_cell_hd weui_cell_primary" id="follow-label">关注</div>
+                    <div class="weui_cell_ft" id="follow-switch" >
+                        <input class="weui_switch" data-ischeck="1" checked="checked" type="checkbox">
+                    </div>
+                    <%}else{%>
+                    <div class="weui_cell_hd weui_cell_primary" id="follow-label">不关注</div>
+                    <div class="weui_cell_ft" id="follow-switch">
+                        <input class="weui_switch" data-ischeck="0" type="checkbox">
+                    </div>
+                    <%}%>
+                </div>
+            </div>
+
+
+
+
+            <div class="weui_cells_title">活动内容</div>
+            <div class="weui_cells weui_cells_access">
+                <article class="weui_article">
+                    <section>
+                        <section>
+                            <p><%= activitydetail[0].content%></p>
+                        </section>
+
+                    </section>
+                </article>
+            </div>
+
+            <div class="weui_cells_title">发表评论</div>
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <textarea class="weui_textarea" name="data-comment" placeholder="请输入评论" rows="3"></textarea>
+                        <div class="weui_textarea_counter"><span>0</span>/200</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui_btn_area">
+                <a class="weui_btn weui_btn_primary"  id="subcomment">发表评论</a>
+                <iframe id="tmp_downloadhelper_iframe" style="display: none;"></iframe>
+            </div>
+
+            <div class="weui_cells_title">评论列表</div>
+            <div class="weui_cells weui_cells_access">
+                <div class="weui_panel weui_panel_access">
+                    <% for(var i=0; i<comments.length; i++){%>
+                    <div class="weui_panel_bd">
+                        <div class="weui_media_box weui_media_text">
+                            <!--<h4 class="weui_media_title">Houser</h4>-->
+                            <p class="weui_media_desc">
+                                <%= comments[i].content%>
+                            </p>
+                            <ul class="weui_media_info">
+                                <li class="weui_media_info_meta">Houser</li>
+                                <li class="weui_media_info_meta"><%= new Date(comments[i].time).Format('MM-dd hh:mm') %></li>
+                                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= comments[i].praise%>赞</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <%
+                        //if(i>0) break;
+                    }%>
+
+                    <!--<a class="weui_panel_ft">查看所有 <%= comments.length%> 条评论</a>-->
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+        <iframe id="tmp_downloadhelper_iframe" style="display: none;"></iframe>
+    </div>
+</article>
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>
+
+<script src="/javascripts/swiper.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        //提交评论
+        $('#subcomment').click(function () {
+            var comment = $("textarea[name = 'data-comment']").val();
+            var idactivity = $("#activity-title").attr('data-idactivity');
+            if(comment){
+                $.ajax({
+                    type:'post',
+                    url:'/addactivitycomment',
+                    data:{comment:comment, idactivity: idactivity},
+                    dataType:'json',
+                    success:function (redata) {
+                        if(redata)
+                            $.toast('评论成功');
+                        else
+                            $.toast('评论失败','forbidden');
+                    },
+                    error:function () {
+                        $.toast('评论失败','forbidden');
+                    }
+                });
+            }else{
+                $.toast('评论不能为空','forbidden');
+            }
+        });
+
+        $('#join-switch').on('change','input',function () {
+            var check = $(this).attr('data-ischeck');
+            var idactivity = $("#activity-title").attr('data-idactivity');
+            var state;
+            if(check==1){
+                $(this).attr('data-ischeck','0');
+                state = 0;//不惨与
+            }else{
+                $(this).attr('data-ischeck','1');
+                state = 1;//参与
+            }
+
+            $.ajax({
+                type:'post',
+                url:'dojoin',
+                data:{state:state, idactivity:idactivity},
+                dataType:'json',
+                success:function (redata) {
+                    if(redata.state){
+                        $('#join-label').text(redata.label);
+                        $.toast('操作成功');
+                    }
+                    else
+                        $.toast('操作失败','forbidden');
+                },
+                error:function () {
+                    $.toast('页面错误','forbidden');
+                }
+            });
+
+        });
+
+        $('#follow-switch').on('change','input',function () {
+            var check = $(this).attr('data-ischeck');
+            var idactivity = $("#activity-title").attr('data-idactivity');
+            var state;
+            if(check==1){
+                $(this).attr('data-ischeck','0');
+                state = 0;//不惨与
+            }else{
+                $(this).attr('data-ischeck','1');
+                state = 1;//参与
+            }
+
+            $.ajax({
+                type:'post',
+                url:'dofollow',
+                data:{state:state, idactivity:idactivity},
+                dataType:'json',
+                success:function (redata) {
+                    console.log(redata);
+                    if(redata.state){
+                        $('#follow-label').text(redata.label);
+                        $.toast('操作成功');
+                    }
+                    else
+                        $.toast('操作失败','forbidden');
+                },
+                error:function () {
+                    $.toast('页面错误','forbidden');
+                }
+            });
+
+        });
+    });
+
+</script>
+
+</html>

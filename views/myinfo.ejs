@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title><%= user.nickname %></title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+</head>
+<body>
+<article id="container" class="container" style="background-color: #eaeaea">
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>头像</p>
+            </div>
+            <div class="weui_cell_ft"><img style="height: 80px;" src="<%= user.headimgurl%>"></div>
+        </div>
+        <div class="weui_cell" id="nickname">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>昵称</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.nickname %></div>
+        </div>
+
+        <div class="weui_cell" id="introduction">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>个性签名</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.introduction%></div>
+        </div>
+    </div>
+
+    <div class="weui_cells" >
+        <div class="weui_cell" id="wechatnumber">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>微信号</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.wechatnumber %></div>
+        </div>
+        <div class="weui_cell" id="phone">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>电话</p>
+            </div>
+            <div class="weui_cell_ft" ><%= user.phone%></div>
+        </div>
+    </div>
+
+    <div class="weui_cells">
+        <div class="weui_cell" id="sex">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>性别</p>
+            </div>
+            <div class="weui_cell_ft">
+                <% if(user.sex == 1) {%>
+                <%= "男"%>
+                <% }else if(user.sex == 2){%>
+                <%= "女"%>
+                <%}else{%>
+                <%= "未知"%>
+                <%}%>
+
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>地区</p>
+            </div>
+            <div class="weui_cell_ft"></div>
+        </div>
+    </div>
+</article>
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>
+
+<script>
+    $("#sex").select({
+        title : "性别",
+        items : [
+            {
+                title: "男",
+                value: 1
+            },
+            {
+                title: "女",
+                value: 2
+            }
+        ]
+
+    });
+
+    $("#sex").on('change',function () {
+        var sexnode = $(this);
+        $.ajax({
+            type : "post",
+            url : "/user/updateuser",
+            data : {column : "sex" , value : sexnode.data("values")},
+            dataType : "json",
+            success : function (redata) {
+                console.log(redata);
+                sexnode.find(".weui_cell_ft").text(sexnode.val())
+            },
+            error : function () {
+                alert("网络错误");
+            }
+        });
+    });
+
+    $("#phone").on("click", function () {
+        var node = $(this).find(".weui_cell_ft");
+        $.prompt({
+            title: '手机号码',
+            text: '请输入正确的手机号码',
+            input: node.text(),
+            empty: false, // 是否允许为空
+            onOK: function (input) {
+                $.ajax({
+                    type : "post",
+                    url : "/user/updateuserinfo",
+                    data : {column : "phone" , value : input},
+                    dataType : "json",
+                    success : function (redata) {
+                        console.log(redata);
+                    },
+                    error : function () {
+                        alert("网络错误");
+                    }
+                });
+                node.text(input);
+            },
+            onCancel: function () {
+                //点击取消
+            }
+        });
+    });
+
+    $("#introduction").on("click", function () {
+        var node = $(this).find(".weui_cell_ft");
+        $.prompt({
+            title: '个性签名',
+            text: '不超过45个字符',
+            input: node.text(),
+            empty: true, // 是否允许为空
+            onOK: function (input) {
+                $.ajax({
+                    type : "post",
+                    url : "/user/updateuserinfo",
+                    data : {column : "introduction" , value : input},
+                    dataType : "json",
+                    success : function (redata) {
+                        console.log(redata);
+                    },
+                    error : function () {
+                        alert("网络错误");
+                    }
+                });
+                node.text(input);
+            },
+            onCancel: function () {
+                //点击取消
+            }
+        });
+    });
+
+    $("#wechatnumber").on("click", function () {
+        var node = $(this).find(".weui_cell_ft");
+        $.prompt({
+            title: '微信号',
+            text: '',
+            input: node.text(),
+            empty: true, // 是否允许为空
+            onOK: function (input) {
+                $.ajax({
+                    type : "post",
+                    url : "/user/updateuserinfo",
+                    data : {column : "wechatnumber" , value : input},
+                    dataType : "json",
+                    success : function (redata) {
+                        console.log(redata);
+                    },
+                    error : function () {
+                        alert("网络错误");
+                    }
+                });
+                node.text(input);
+            },
+            onCancel: function () {
+                //点击取消
+            }
+        });
+    });
+
+    $("#nickname").on("click", function () {
+        var node = $(this).find(".weui_cell_ft");
+        $.prompt({
+            title: '昵称',
+            text: '不超过45个字符',
+            input: node.text(),
+            empty: false, // 是否允许为空
+            onOK: function (input) {
+                $.ajax({
+                    type : "post",
+                    url : "/user/updateuser",
+                    data : {column : "nickname" , value : input},
+                    dataType : "json",
+                    success : function (redata) {
+                        console.log(redata);
+                    },
+                    error : function () {
+                        alert("网络错误");
+                    }
+                });
+                node.text(input);
+            },
+            onCancel: function () {
+                //点击取消
+            }
+        });
+    });
+
+</script>
+
+</html>

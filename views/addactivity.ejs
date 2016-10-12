@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>校乡汇</title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+</head>
+<body>
+<article id="container" class="container">
+    <div class="cell">
+        <div class="web-head">
+            <h1>发布活动</h1>
+        </div>
+        <div class="weui_cells weui_cells_form">
+
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">活动标题</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="datatitle" class="weui_input" type="text" placeholder="(必填)" />
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label for="" class="weui_label">活动开始时间</label></div>
+                <div class="weui_cell_bd">
+                    <input name="datastarttime" type="text" class="avtivity-time" id='datetime-picker-start' placeholder="(必填)" />
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label for="" class="weui_label">活动结束时间</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="dataendtime" type="text" class="avtivity-time" id='datetime-picker-end' />
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">地点</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="dataaddress" class="weui_input" type="text">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">经费预算</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="databudget" class="weui_input" type="text">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui_panel">
+        <div class="weui_panel_hd">活动内容</div>
+        <div class="weui_panel_bd">
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea name="datacontent" class="weui_textarea" placeholder="(必填)" rows="5"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="weui_panel">-->
+        <!--<div class="weui_cell weui_vcode">-->
+            <!--<div class="weui_cell_hd"><label class="weui_label">验证码</label></div>-->
+            <!--<div class="weui_cell_bd weui_cell_primary">-->
+                <!--<input class="weui_input" type="number" placeholder="请输入验证码">-->
+            <!--</div>-->
+            <!--<div class="weui_cell_ft">-->
+                <!--<img src="/assets/img/vcode.jpg">-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="weui_panel">
+        <div class="weui_panel_bd">
+            <div class="weui_media_box weui_media_text">
+                <a id="activitysubmit" class="weui_btn weui_btn_disabled weui_btn_primary">发布</a>
+            </div>
+        </div>
+    </div>
+
+
+</article>
+</body>
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/jquery-weui.min.js"></script>
+
+<script src="javascripts/square.js"></script>
+<!--拓展-->
+<script src="/javascripts/swiper.js"></script>
+
+</html>

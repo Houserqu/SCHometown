@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>校乡汇</title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+</head>
+<body>
+<article id="container" class="container">
+    <div class="cell">
+        <div class="web-head">
+            <h1>编辑活动</h1>
+        </div>
+        <div class="weui_cells weui_cells_form">
+
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">活动标题</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="datatitle" class="weui_input" value="<%= activity[0].title%>" type="text" placeholder="(必填)" />
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label for="" class="weui_label">活动开始时间</label></div>
+                <div class="weui_cell_bd">
+                    <input name="datastarttime" type="text" class="avtivity-time" value="<%= activity[0].starttime%>" id='datetime-picker-start' placeholder="(必填)" />
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label for="" class="weui_label">活动结束时间</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="dataendtime" type="text" class="avtivity-time" value="<%= activity[0].endtime%>" id='datetime-picker-end' />
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">地点</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="dataaddress" class="weui_input" value="<%= activity[0].address%>" type="text">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">经费预算</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="databudget" class="weui_input" type="text" value="<%= activity[0].budget%>">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui_panel">
+        <div class="weui_panel_hd">活动内容</div>
+        <div class="weui_panel_bd">
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea name="datacontent" class="weui_textarea" placeholder="(必填)" rows="5" ><%= activity[0].content%></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui_panel">
+        <div class="weui_panel_bd">
+            <div class="weui_media_box weui_media_text">
+                <a id="activitysubmit" class="weui_btn weui_btn_disabled weui_btn_primary">重新发布</a>
+            </div>
+        </div>
+    </div>
+
+
+</article>
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>
+
+<!--拓展-->
+<script src="/javascripts/swiper.js"></script>
+<script>
+    $(document).ready(function () {
+        //发布活动
+        $('#activitysubmit').click(function () {
+            //console.log($("input[name='dataendtime']").val().replace(/-/g, "/"));
+            var title = $("input[name='datatitle']").val();
+            var starttime = $("input[name='datastarttime']").val();
+            var endtime = $("input[name='dataendtime']").val();
+            var address = $("input[name='dataaddress']").val();
+            var content = $("textarea[name='datacontent']").val();
+            var budget = $("input[name='databudget']").val();
+
+            console.log(starttime);
+
+//            if(title != '' && starttime !='' && content != '') {
+//                $.ajax({
+//                    type: 'post',
+//                    url: 'editactivity/add',
+//                    dataType: 'json',
+//                    data: {
+//                        title: title,
+//                        starttime: starttime,
+//                        endtime: endtime,
+//                        address: address,
+//                        content: content,
+//                        budget: budget
+//                    },
+//                    success: function (redata) {
+//                        if (redata.isadd) {
+//                            $.toast('发布成功', function () {
+//                                window.location.href = '/';
+//                            });
+//                        }
+//                    },
+//                    error: function () {
+//                        console.log('error');
+//                    }
+//                });
+//            }else{
+//                $.toast('请检查必填选项','forbidden');
+//            }
+        });
+    });
+
+</script>
+
+
+</html>

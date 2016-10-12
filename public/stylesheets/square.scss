@@ -1,0 +1,34 @@
+$green:#09BB07;
+$blue:#56abe4;
+$yellow:#f4c600;
+$gray:#eaeaea;
+
+
+#friends-tab{
+  display: none;
+}
+#me{
+  background-color: $gray;
+}
+#square{
+  background-color: $gray;
+}
+#friends-weibo{
+  background-color: $gray;
+}
+#friends-hometown-cells{
+  margin-top: 0;
+}
+.activity-time{
+  font-size: 1.5em;
+}
+.web-head,.page_title{
+  color: $green;
+  font-size: 1.5em;
+  text-align: center;
+  padding-top: 20px;
+}
+
+#friends-good-list{
+  margin-top: 0;
+}

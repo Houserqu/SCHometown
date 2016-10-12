@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>活动列表</title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+</head>
+<body>
+<article id="container" class="container">
+
+
+
+    <div class="weui_tab">
+        <div class="weui_navbar">
+            <a href="#activitys-time" class="weui_navbar_item weui_bar_item_on">
+                时间排序
+            </a>
+            <a href="#activitys-composite" class="weui_navbar_item">
+                综合排序
+            </a>
+        </div>
+
+        <div class="weui_tab_bd">
+
+            <div id="activitys-time" class="weui_tab_bd_item weui_tab_bd_item_active">
+                <div class="weui_panel weui_panel_access">
+                    <% for(var i = 0; i < activitys.length; i++){ %>
+
+                    <div class="weui_panel_bd" data-id=<%= activitys[i].idactivity%>>
+                        <div class="weui_media_box weui_media_text">
+                            <h4 class="weui_media_title"><%= activitys[i].title %></h4>
+                            <p class="weui_media_desc"><%= activitys[i].content %></p>
+                            <ul class="weui_media_info">
+                                <li class="weui_media_info_meta"><%= activitys[i].nickname %></li>
+                                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= new Date(activitys[i].starttime).Format('MM-dd') %></li>
+                                <li class="weui_media_info_meta"><%= new Date(activitys[i].endtime).Format('MM-dd') %></li>
+                                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= activitys[i].address %></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <% } %>
+                    <a class="weui_panel_ft" href="editactivity">添加活动</a>
+                </div>
+            </div>
+
+            <div id="activitys-composite" class="weui_tab_bd_item">
+                <div class="weui_search_bar" id="search_bar">
+                    <form class="weui_search_outer">
+                        <div class="weui_search_inner">
+                            <i class="weui_icon_search"></i>
+                            <input type="search" class="weui_search_input" id="search_input" placeholder="搜索" required/>
+                            <a href="javascript:" class="weui_icon_clear" id="search_clear"></a>
+                        </div>
+                        <label for="search_input" class="weui_search_text" id="search_text">
+                            <i class="weui_icon_search"></i>
+                            <span>搜索</span>
+                        </label>
+                    </form>
+                    <a href="javascript:" class="weui_search_cancel" id="search_cancel">取消</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!--乡友顶部导航栏 end-->
+
+</article>
+</body>
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/jquery-weui.min.js"></script>
+
+<script>
+    $('.weui_panel_bd').click(function () {
+
+        window.location.href='activitydetail/'+$(this).attr('data-id').val();
+    });
+</script>
+
+</html>

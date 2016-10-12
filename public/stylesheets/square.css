@@ -1,0 +1,35 @@
+#friends-tab {
+  display: none; }
+
+#me {
+  background-color: #eaeaea; }
+
+#square {
+  background-color: #eaeaea; }
+
+#friends-weibo {
+  background-color: #eaeaea; }
+
+#friends-hometown-cells {
+  margin-top: 0; }
+
+.activity-time {
+  font-size: 1.5em; }
+
+.web-head, .page_title {
+  color: #09BB07;
+  font-size: 1.5em;
+  text-align: center;
+  padding-top: 20px; }
+
+#friends-good-list {
+  margin-top: 0; }
+
+.weibocontent_imgs > img{
+  height: 100px;
+  width: 32%;
+  float: left;
+  margin-right: 1%;
+  margin-bottom: 1%;
+}
+/*# sourceMappingURL=square.css.map */

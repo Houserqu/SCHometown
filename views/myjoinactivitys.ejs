@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我参与的活动</title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+</head>
+<body>
+<div class="weui_panel weui_panel_access">
+    <div class="weui_panel_hd">我参与的活动</div>
+    <% for(var i=0; i<activitys.length; i++){ %>
+
+    <div class="weui_panel_bd activity-li" data-id=<%= activitys[i].idactivity %>>
+        <div class="weui_media_box weui_media_text">
+            <h4 class="weui_media_title"><%= activitys[i].title %></h4>
+            <p class="weui_media_desc"><%= activitys[i].content %></p>
+            <ul class="weui_media_info">
+                <li class="weui_media_info_meta"><%= activitys[i].nickname %></li>
+                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= new Date(activitys[i].starttime).Format('MM-dd') %></li>
+                <li class="weui_media_info_meta"><%= new Date(activitys[i].endtime).Format('MM-dd') %></li>
+                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= activitys[i].address %></li>
+            </ul>
+        </div>
+    </div>
+
+    <% }%>
+</div>
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>
+<script>
+    //查看活动详情
+    $('.activity-li').click(function () {
+        var activityid = $(this).attr('data-id');
+        window.location.href = "/activitydetail/"+activityid;
+    });
+</script>
+</html>
