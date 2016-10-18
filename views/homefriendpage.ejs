@@ -52,12 +52,15 @@
             </div>
             <div class="weui_cell_ft"></div>
         </div>
+
+        <% if(!isfriend){%>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
                 <a id="addGoodFriend" data-friendid="<%= user.userid%>" class="weui_btn weui_btn_primary">加为好友</a>
             </div>
             <div class="weui_cell_ft"></div>
         </div>
+        <%}%>
 
     </div>
 

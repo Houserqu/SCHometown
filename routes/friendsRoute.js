@@ -15,7 +15,9 @@ router.get('/goodfriendpage/:openid', function(req, res, next) {
     console.log(req.params.openid);
     friendMd.getGoodFriendinfo(req.params.openid, function (err, user) {
         userMd.getUserWeibos(req.params.openid, function (err, weibolist) {
-            res.render('userpage',{user:user[0],"weibolist":weibolist});
+            if(err) console.log(err);
+
+            res.render('goodfriendpage',{user:user[0],"weibolist":weibolist});
         });
     });
 });
@@ -24,8 +26,14 @@ router.get('/goodfriendpage/:openid', function(req, res, next) {
 router.get('/homefriendpage/:openid', function(req, res, next) {
     friendMd.getHomeFriendinfo(req.params.openid, function (err, user) {
         userMd.getUserWeibos(req.params.openid, function (err, weibolist) {
-            console.log(weibolist);
-            res.render('userpage',{user:user[0],"weibolist":weibolist});
+            friendMd.isGoodFriend(req.session.lastpage.userid, req.params.openid, function (err, isresult) {
+                if(err) console.log(err);
+
+                console.log("isfriend"+isresult);
+
+                res.render('homefriendpage',{user:user[0],weibolist:weibolist,isfriend:isresult});
+
+            });
         });
     });
 });

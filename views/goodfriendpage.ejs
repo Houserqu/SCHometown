@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title><%= user.nickname%> 个人主页</title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+    <style>
+        .container{
+            background-color: #eaeaea;
+        }
+    </style>
+</head>
+<body>
+<article id="container" class="container">
+    <div class="weui_panel">
+        <div class="weui_panel_bd">
+            <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
+                <div class="weui_media_hd">
+                    <img class="weui_media_appmsg_thumb" src="<%= user.headimgurl%>" alt="">
+                </div>
+                <div class="weui_media_bd">
+                    <h4 class="weui_media_title"><%= user.nickname %></h4>
+                    <p class="weui_media_desc"><%= user.introduction%></p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>性别</p>
+            </div>
+            <div class="weui_cell_ft">
+                <% if(user.sex == 1) {%>
+                <%= "男"%>
+                <% }else if(user.sex == 2){%>
+                <%= "女"%>
+                <%}else{%>
+                <%= "未知"%>
+                <%}%>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>地区</p>
+            </div>
+            <div class="weui_cell_ft"></div>
+        </div>
+
+    </div>
+
+
+</article>
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+
+</html>

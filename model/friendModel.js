@@ -73,4 +73,19 @@ friendMd.addFriend = function (userid, friendid, cb)  {
     });
 };
 
+//判断是否是好友关系
+friendMd.isGoodFriend = function (userid, openid, cb) {
+    pool.getConnection(function (err,conn) {
+        if (err) throw err;
+        conn.query("select * from friendship_view where userid = '"+userid+"' and openid = '"+openid+"'", function (err, result) {
+            if (err) console.log(err);
+            if(result == "" || result == null){
+                cb(err,0);
+            }else{
+                cb(err,1);
+            }
+        });
+    });
+};
+
 module.exports = friendMd;

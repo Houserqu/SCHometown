@@ -82,4 +82,5 @@ userMd.getUserWeibos = function (openid, cb) {
     });
 };
 
+
 module.exports = userMd;
