@@ -136,7 +136,6 @@ $(document).ready(function () {
 
     //获取动态
     $('#tab-friends').click(function () {
-
         $.ajax({
             type: 'get',
             url: '/friends/weibolist',

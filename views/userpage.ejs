@@ -52,16 +52,45 @@
             </div>
             <div class="weui_cell_ft"></div>
         </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <a id="addGoodFriend" data-friendid="<%= user.userid%>" class="weui_btn weui_btn_primary">加为好友</a>
+            </div>
+            <div class="weui_cell_ft"></div>
+        </div>
+
     </div>
 
 
 </article>
 </body>
-<script src="javascripts/jquery.min.js"></script>
-<script src="javascripts/jquery-weui.min.js"></script>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>
 
 <script>
-
+    $(document).ready(function () {
+        //添加好友
+        $("#addGoodFriend").on("click", function () {
+            var friendid = $(this).data("friendid");
+            $.ajax({
+                type: "post",
+                url: "/friends/addfriend",
+                datatype: "json",
+                data:{friendid: friendid},
+                success: function (redata) {
+                    console.log(redata);
+                    if(redata.state){
+                        $.toast("关注成功");
+                    }else {
+                        $.toast("关注失败","forbidden");
+                    }
+                },
+                error: function () {
+                    toast("网络错误", "forbidden");
+                }
+            });
+        })
+    });
 </script>
 
 </html>

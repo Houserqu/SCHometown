@@ -52,4 +52,25 @@ friendMd.getHomeFriendinfo = function (openid, cb) {
     });
 };
 
+//添加好友
+friendMd.addFriend = function (userid, friendid, cb)  {
+    pool.getConnection(function (err,conn) {
+        if (err) throw err;
+        conn.query("select * from friendship_view where userid = '"+userid+"' and friendid = '"+friendid+"'", function (err, result) {
+            if (err) console.log(err);
+
+            if(result == "" || result == null){
+                conn.query("insert into friendship set ?", {userid:userid, friendid:friendid}, function (err, result) {
+                    conn.release();
+                    if (err) console.log(err);
+                    cb(err, 1);
+                });
+            }else{
+                conn.release();
+                cb(err,0);
+            }
+        });
+    });
+};
+
 module.exports = friendMd;
