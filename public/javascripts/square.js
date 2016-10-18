@@ -98,7 +98,7 @@ $(document).ready(function () {
                 success: function (redata) {
                     var html = '';
                     for (var i = 0; i < redata.goodfriends.length; i++) {
-                        html += "<a class='weui_cell' href='/user/userpage/" + redata.goodfriends[i].openid + "'><div class='weui_cell_hd'><img id='headimg' src=" + redata.goodfriends[i].headimgurl + " alt='' style='width:40px;margin-right:5px;display:block'></div> <div class='weui_cell_bd weui_cell_primary'> <p>" + redata.goodfriends[i].nickname + "</p> </div> <div class='weui_cell_ft'></div></a>";
+                        html += "<a class='weui_cell' href='/friends/goodfriendpage/" + redata.goodfriends[i].openid + "'><div class='weui_cell_hd'><img id='headimg' src=" + redata.goodfriends[i].headimgurl + " alt='' style='width:40px;margin-right:5px;display:block'></div> <div class='weui_cell_bd weui_cell_primary'> <p>" + redata.goodfriends[i].nickname + "</p> </div> <div class='weui_cell_ft'></div></a>";
                     }
                     $('#friends-good-list').html(html);
                     $('#friends-good-list').attr('data-state', 1);
@@ -122,7 +122,7 @@ $(document).ready(function () {
                     var html = '';
                     console.log(redata);
                     for (var i = 0; i < redata.homefriends.length; i++) {
-                        html += "<a class='weui_cell' href='/user/userpage/" + redata.homefriends[i].openid + "'><div class='weui_cell_hd'><img id='headimg' src=" + redata.homefriends[i].headimgurl + " alt='' style='width:40px;margin-right:5px;display:block'></div> <div class='weui_cell_bd weui_cell_primary'> <p>" + redata.homefriends[i].nickname + "</p> </div> <div class='weui_cell_ft'></div></a>";
+                        html += "<a class='weui_cell' href='/friends/homefriendpage/" + redata.homefriends[i].openid + "'><div class='weui_cell_hd'><img id='headimg' src=" + redata.homefriends[i].headimgurl + " alt='' style='width:40px;margin-right:5px;display:block'></div> <div class='weui_cell_bd weui_cell_primary'> <p>" + redata.homefriends[i].nickname + "</p> </div> <div class='weui_cell_ft'></div></a>";
                     }
                     $('#friends-hometown-list').html(html);
                     $('#friends-hometown-list').attr('data-state', 1);

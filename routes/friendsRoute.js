@@ -1,6 +1,7 @@
 var express = require('express');
 var weiboMd = require('../model/weiboModel');
 var userMd = require('../model/userModel');
+var friendMd = require('../model/friendModel');
 var router = express.Router();
 
 /* GET friends page. */
@@ -8,11 +9,31 @@ router.get('/', function(req, res, next) {
     res.render('friends', { title: 'Friends' });
 });
 
-//获取好友
+
+//查看好友主页
+router.get('/goodfriendpage/:openid', function(req, res, next) {
+    console.log(req.params.openid);
+    friendMd.getGoodFriendinfo(req.params.openid, function (err, user) {
+        userMd.getUserWeibos(req.params.openid, function (err, weibolist) {
+            res.render('userpage',{user:user[0],"weibolist":weibolist});
+        });
+    });
+});
+
+//查看乡友主页
+router.get('/homefriendpage/:openid', function(req, res, next) {
+    friendMd.getHomeFriendinfo(req.params.openid, function (err, user) {
+        userMd.getUserWeibos(req.params.openid, function (err, weibolist) {
+            console.log(weibolist);
+            res.render('userpage',{user:user[0],"weibolist":weibolist});
+        });
+    });
+});
+
+//获取好友列表
 router.get('/goodlist',function (req, res) {
-    userMd.getGoodFriends(req.session.lastpage.userid,function (err, friends) {
+    friendMd.getGoodFriends(req.session.lastpage.userid,function (err, friends) {
         if(err) console.log(err);
-        console.log(friends);
         if(friends)
             res.json({state:1,goodfriends:friends});
         else
@@ -20,11 +41,10 @@ router.get('/goodlist',function (req, res) {
     });
 });
 
-//获取乡友
+//获取乡友列表
 router.get('/homelist',function (req, res) {
-    userMd.getHomeFriends(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, friends) {
+    friendMd.getHomeFriends(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, friends) {
         if(err) console.log(err);
-        console.log(friends);
         if(friends)
             res.json({state:1,homefriends:friends});
         else

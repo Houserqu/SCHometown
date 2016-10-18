@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'upload')));
 });*/
 
 app.use(function (req, res, next) {
-    var usersession = {openid:'awasdwgzqwetyt12312qsed',userid:1,schoolid:1,provinceid:2,nickname:'杨过', introduction:"海内存知己,天涯若比邻"};
+    var usersession = {openid:'olAdmuKBW_YPTnjjx1wf_bvkjLao',userid:1,schoolid:1,provinceid:2,nickname:'Houser', introduction:"技术与艺术"};
     req.session.lastpage = usersession;//写入至session
     next();
 });

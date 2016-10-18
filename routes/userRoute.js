@@ -3,13 +3,6 @@ var router = express.Router();
 var userMd = require('../model/userModel');
 
 
-//查看他人主页
-router.get('/userpage/:openid', function(req, res, next) {
-    console.log(req.params.openid);
-  userMd.getFriendinfo(req.params.openid, function (err, user) {
-    res.render('userpage',{user:user[0]});
-  });
-});
 
 //查看个人信息
 router.get('/myinfo', function(req, res, next) {

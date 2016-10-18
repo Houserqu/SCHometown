@@ -5,41 +5,6 @@ var pool = require('../config/mysql');
 
 var userMd = function () {};
 
-//获取好友列表
-userMd.getGoodFriends = function (userid, cb) {
-    pool.getConnection(function (err, conn) {
-        if(err) throw err;
-        conn.query('select * from friendship_view where userid = ? ',userid, function (err,results) {
-            conn.release();
-            if(err) throw err;
-            cb(err, results);
-        });
-    });
-};
-
-//获取乡友列表
-userMd.getHomeFriends = function (schoolid, provinceid, cb) {
-    pool.getConnection(function (err, conn) {
-        if(err) throw err;
-        conn.query("select * from user_view where schoolid = "+schoolid+" AND provinceid = "+ provinceid, function (err,results) {
-            conn.release();
-            console.log(results);
-            if(err) throw err;
-            cb(err, results);
-        });
-    });
-};
-
-userMd.getFriendinfo = function (openid, cb) {
-    pool.getConnection(function (err,conn) {
-        if(err) throw err;
-        conn.query("select * from user_view where openid = ?", openid, function (err,result) {
-            conn.release();
-            if(err) console.log(err);
-            cb(err,result);
-        });
-    });
-};
 
 //获取用户信息
 userMd.getUserinfo = function (userid, cb) {
@@ -52,6 +17,7 @@ userMd.getUserinfo = function (userid, cb) {
         });
     });
 };
+
 
 //修改User信息
 userMd.updateUser = function (userid, column, value, cb) {
@@ -96,6 +62,19 @@ userMd.getMyJoinActivitys = function (userid, cb) {
     pool.getConnection(function (err,conn) {
         if(err) throw err;
         conn.query("select * from activity_join_view where userid = ?", userid, function (err,result) {
+            conn.release();
+            if(err) console.log(err);
+            cb(err,result);
+        });
+    });
+};
+
+
+//获取用户动态列表
+userMd.getUserWeibos = function (openid, cb) {
+    pool.getConnection(function (err,conn) {
+        if(err) throw err;
+        conn.query("select * from weibo_view where openid = ?", openid, function (err,result) {
             conn.release();
             if(err) console.log(err);
             cb(err,result);

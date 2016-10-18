@@ -14,6 +14,7 @@ weiboMd.addWeibo = function (values, cb) {
     })
 };
 
+
 //获取好友动态列表
 weiboMd.getFriendsWeibolist = function (userid, cb) {
     pool.getConnection(function (err, conn) {
@@ -23,7 +24,7 @@ weiboMd.getFriendsWeibolist = function (userid, cb) {
             if(err) throw err;
 
             //获取所有好友userid组装成字符串
-            var friendids = "";
+            var friendids = userid+",";
             results.forEach(function (friend) {
                  friendids += friend.friendid+",";
             });
