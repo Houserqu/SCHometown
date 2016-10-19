@@ -52,7 +52,7 @@ friendMd.getHomeFriendinfo = function (openid, cb) {
     });
 };
 
-//添加好友
+//添加关注好友
 friendMd.addFriend = function (userid, friendid, cb)  {
     pool.getConnection(function (err,conn) {
         if (err) throw err;
@@ -68,6 +68,31 @@ friendMd.addFriend = function (userid, friendid, cb)  {
             }else{
                 conn.release();
                 cb(err,0);
+            }
+        });
+    });
+};
+
+//取消关注好友
+friendMd.delFriend = function (userid, friendid, cb)  {
+    pool.getConnection(function (err,conn) {
+        if (err) throw err;
+        conn.query("select * from friendship_view where userid = '"+userid+"' and friendid = '"+friendid+"'", function (err, result) {
+            if (err) console.log(err);
+
+            if(result == "" || result == null){
+                conn.release();
+                cb(err,0);
+            }else{
+                conn.query("delete from friendship where userid = '"+userid+"' and friendid = '"+friendid+"'", function (err, delresult) {
+                    conn.release();
+                    if (err) console.log(err);
+                    console.log(delresult);
+                    if(delresult)
+                        cb(err, 1);
+                    else
+                        cb(err, 0);
+                });
             }
         });
     });

@@ -72,9 +72,20 @@ router.get('/weibolist',function (req, res) {
     });
 });
 
-//添加好友
+//添加关注好友
 router.post("/addfriend", function (req, res) {
     friendMd.addFriend(req.session.lastpage.userid, req.body.friendid, function (err, result) {
+        console.log(result);
+        if(result)
+            res.json({state:1});
+        else
+            res.json({state:0});
+    });
+});
+
+//取消关注好友
+router.post("/delfriend", function (req, res) {
+    friendMd.delFriend(req.session.lastpage.userid, req.body.friendid, function (err, result) {
         console.log(result);
         if(result)
             res.json({state:1});

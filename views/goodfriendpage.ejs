@@ -48,7 +48,26 @@
         </div>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
+                <p>学校</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.schoolid%></div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
                 <p>地区</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.provinceid%>+<%= user.cityid%></div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>微信号</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.wechatnumber%></div>
+        </div>
+
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <a id="delGoodFriend" data-friendid="<%= user.userid%>" class="weui_btn weui_btn_warn">取消关注</a>
             </div>
             <div class="weui_cell_ft"></div>
         </div>
@@ -63,7 +82,31 @@
 
 <script>
     $(document).ready(function () {
-
+        //添加好友
+        $("#delGoodFriend").on("click", function () {
+            var friendid = $(this).data("friendid");
+            $.ajax({
+                type: "post",
+                url: "/friends/delfriend",
+                datatype: "json",
+                data:{friendid: friendid},
+                success: function (redata) {
+                    console.log(redata);
+                    if(redata.state){
+                        $.toast("取消成功",function () {
+                            window.location.href="/";
+                        });
+                    }else {
+                        $.toast("取消失败","forbidden",function () {
+                            window.location.href="/";
+                        });
+                    }
+                },
+                error: function () {
+                    toast("网络错误", "forbidden");
+                }
+            });
+        })
     });
 </script>
 
