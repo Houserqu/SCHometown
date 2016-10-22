@@ -56,6 +56,7 @@
     $(document).ready(function () {
         var weiboimgurls = "";
 
+        //发表动态
         $("#activitysubmit").on("click", function () {
             var content = $("#weibo_content").val();
             console.log(content);
@@ -79,6 +80,7 @@
             })
         });
 
+        //上传动态图片
         $("#uploadimg").on("change", function () {
             var files = $(this)[0].files;
             console.log(files);

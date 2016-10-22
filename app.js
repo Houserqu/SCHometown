@@ -10,6 +10,7 @@ var square = require('./routes/squareRoute');
 var find = require('./routes/findRoute');
 var friends = require('./routes/friendsRoute');
 var user = require('./routes/userRoute');
+var findHometown = require('./routes/findHometownRouter');
 
 var app = express();
 
@@ -50,6 +51,7 @@ app.use('/', square);
 app.use('/find', find);
 app.use('/friends', friends);
 app.use('/user', user);
+app.use('/find/hometown', findHometown);  //发现-校乡汇模块
 
 /*app.get('/login',function (req,res) {
   if(req.session.lastPage) {

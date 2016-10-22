@@ -27,6 +27,27 @@ router.post('/updateuserinfo', function(req, res, next) {
     });
 });
 
+//添加学校,家乡省市信息页面
+router.get('/basicinfo', function(req, res, next) {
+    res.render('basicinfo');
+});
+
+//修改userinfo家乡省份城市信息
+router.post('/updateuserhometown', function(req, res, next) {
+    userMd.updateUserHometown( req.session.lastpage.userid, req.body.pid, req.body.city, function (err, result) {
+        if(err) console.log(err);
+        res.json({state : result.affectedRows});
+    });
+});
+
+//修改userinfo学校信息
+router.post('/updateuserschool', function(req, res, next) {
+    userMd.updateUserSchool( req.session.lastpage.userid, req.body.pid, req.body.sid, function (err, result) {
+        if(err) console.log(err);
+        res.json({state : result.affectedRows});
+    });
+});
+
 //显示自己发起的活动
 router.get('/myactivitys', function (req, res) {
      userMd.getMyActivitys(req.session.lastpage.userid, function (err, activitys) {

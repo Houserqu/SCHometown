@@ -14,11 +14,10 @@ weiboMd.addWeibo = function (values, cb) {
     })
 };
 
-
 //获取好友动态列表
 weiboMd.getFriendsWeibolist = function (userid, cb) {
     pool.getConnection(function (err, conn) {
-        if(err) throw err;
+        if (err) throw err;
         //获取好友userid
         conn.query('select friendid from friendship_view where userid = ? ',userid, function (err,results) {
             if(err) throw err;

@@ -6,4 +6,5 @@ router.get('/', function(req, res, next) {
     res.render('find', { title: '发现' });
 });
 
+
 module.exports = router;

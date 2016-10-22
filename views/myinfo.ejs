@@ -17,7 +17,7 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <p>头像</p>
             </div>
-            <div class="weui_cell_ft"><img style="height: 80px;" src="<%= user.headimgurl%>"></div>
+            <div class="weui_cell_ft"><img style="height: 80px;" src="<%= user.headimgurl %>"></div>
         </div>
         <div class="weui_cell" id="nickname">
             <div class="weui_cell_bd weui_cell_primary">
@@ -30,11 +30,11 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <p>个性签名</p>
             </div>
-            <div class="weui_cell_ft"><%= user.introduction%></div>
+            <div class="weui_cell_ft"><%= user.introduction %></div>
         </div>
     </div>
 
-    <div class="weui_cells" >
+    <div class="weui_cells">
         <div class="weui_cell" id="wechatnumber">
             <div class="weui_cell_bd weui_cell_primary">
                 <p>微信号</p>
@@ -45,9 +45,10 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <p>电话</p>
             </div>
-            <div class="weui_cell_ft" ><%= user.phone%></div>
+            <div class="weui_cell_ft"><%= user.phone %></div>
         </div>
     </div>
+
 
     <div class="weui_cells">
         <div class="weui_cell" id="sex">
@@ -55,32 +56,42 @@
                 <p>性别</p>
             </div>
             <div class="weui_cell_ft">
-                <% if(user.sex == 1) {%>
-                <%= "男"%>
-                <% }else if(user.sex == 2){%>
-                <%= "女"%>
-                <%}else{%>
-                <%= "未知"%>
-                <%}%>
+                <% if(user.sex == 1) { %>
+                <%= "男" %>
+                <% }else if(user.sex == 2){ %>
+                <%= "女" %>
+                <% }else{ %>
+                <%= "未知" %>
+                <% } %>
 
             </div>
         </div>
-        <div class="weui_cell">
+    </div>
+
+    <div class="weui_cells">
+        <div class="weui_cell" id="wechatnumber">
             <div class="weui_cell_bd weui_cell_primary">
-                <p>地区</p>
+                <p>学校</p>
             </div>
-            <div class="weui_cell_ft"></div>
+            <div class="weui_cell_ft"><%= user.schoolname %></div>
+        </div>
+        <div class="weui_cell" id="phone">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>家乡</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.homeprovince %> <%= user.homecityname %></div>
         </div>
     </div>
 </article>
 </body>
 <script src="/javascripts/jquery.min.js"></script>
 <script src="/javascripts/jquery-weui.min.js"></script>
+<script src="/javascripts/city-picker.min.js"></script>
 
 <script>
     $("#sex").select({
-        title : "性别",
-        items : [
+        title: "性别",
+        items: [
             {
                 title: "男",
                 value: 1
@@ -93,18 +104,18 @@
 
     });
 
-    $("#sex").on('change',function () {
+    $("#sex").on('change', function () {
         var sexnode = $(this);
         $.ajax({
-            type : "post",
-            url : "/user/updateuser",
-            data : {column : "sex" , value : sexnode.data("values")},
-            dataType : "json",
-            success : function (redata) {
+            type: "post",
+            url: "/user/updateuser",
+            data: {column: "sex", value: sexnode.data("values")},
+            dataType: "json",
+            success: function (redata) {
                 console.log(redata);
                 sexnode.find(".weui_cell_ft").text(sexnode.val())
             },
-            error : function () {
+            error: function () {
                 alert("网络错误");
             }
         });
@@ -119,14 +130,14 @@
             empty: false, // 是否允许为空
             onOK: function (input) {
                 $.ajax({
-                    type : "post",
-                    url : "/user/updateuserinfo",
-                    data : {column : "phone" , value : input},
-                    dataType : "json",
-                    success : function (redata) {
+                    type: "post",
+                    url: "/user/updateuserinfo",
+                    data: {column: "phone", value: input},
+                    dataType: "json",
+                    success: function (redata) {
                         console.log(redata);
                     },
-                    error : function () {
+                    error: function () {
                         alert("网络错误");
                     }
                 });
@@ -147,14 +158,14 @@
             empty: true, // 是否允许为空
             onOK: function (input) {
                 $.ajax({
-                    type : "post",
-                    url : "/user/updateuserinfo",
-                    data : {column : "introduction" , value : input},
-                    dataType : "json",
-                    success : function (redata) {
+                    type: "post",
+                    url: "/user/updateuserinfo",
+                    data: {column: "introduction", value: input},
+                    dataType: "json",
+                    success: function (redata) {
                         console.log(redata);
                     },
-                    error : function () {
+                    error: function () {
                         alert("网络错误");
                     }
                 });
@@ -175,14 +186,14 @@
             empty: true, // 是否允许为空
             onOK: function (input) {
                 $.ajax({
-                    type : "post",
-                    url : "/user/updateuserinfo",
-                    data : {column : "wechatnumber" , value : input},
-                    dataType : "json",
-                    success : function (redata) {
+                    type: "post",
+                    url: "/user/updateuserinfo",
+                    data: {column: "wechatnumber", value: input},
+                    dataType: "json",
+                    success: function (redata) {
                         console.log(redata);
                     },
-                    error : function () {
+                    error: function () {
                         alert("网络错误");
                     }
                 });
@@ -203,14 +214,14 @@
             empty: false, // 是否允许为空
             onOK: function (input) {
                 $.ajax({
-                    type : "post",
-                    url : "/user/updateuser",
-                    data : {column : "nickname" , value : input},
-                    dataType : "json",
-                    success : function (redata) {
+                    type: "post",
+                    url: "/user/updateuser",
+                    data: {column: "nickname", value: input},
+                    dataType: "json",
+                    success: function (redata) {
                         console.log(redata);
                     },
-                    error : function () {
+                    error: function () {
                         alert("网络错误");
                     }
                 });
@@ -221,6 +232,7 @@
             }
         });
     });
+
 
 </script>
 

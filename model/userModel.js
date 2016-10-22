@@ -10,7 +10,7 @@ var userMd = function () {};
 userMd.getUserinfo = function (userid, cb) {
     pool.getConnection(function (err,conn) {
         if(err) throw err;
-        conn.query("select * from user_view where userid = ?", userid, function (err,result) {
+        conn.query("select * from user_view where iduser = ?", userid, function (err,result) {
             conn.release();
             if(err) console.log(err);
             cb(err,result);
@@ -44,6 +44,30 @@ userMd.updateUserinfo = function (userid, column, value, cb) {
         });
     });
 };
+
+//修改家乡身份城市信息
+userMd.updateUserHometown = function (userid, pid, city, cb) {
+    pool.getConnection(function (err,conn) {
+        if(err) throw err;
+        conn.query("update userinfo set homeprovinceid = ? ,homecityid = ?  where userid = ? " , [pid, city, userid], function (err,result) {
+            conn.release();
+            if(err) console.log(err);
+            cb(err,result);
+        });
+    });
+};
+
+//修改学校信息
+userMd.updateUserSchool = function (userid, pid, sid, cb) {
+    pool.getConnection(function (err,conn) {
+        if(err) throw err;
+        conn.query("update userinfo set schoolprovinceid = ? ,schoolid = ?  where userid = ? " , [pid, sid, userid], function (err,result) {
+            conn.release();
+            if(err) console.log(err);
+            cb(err,result);
+        });
+    });
+}
 
 //获取自己发起的活动
 userMd.getMyActivitys = function (userid, cb) {
