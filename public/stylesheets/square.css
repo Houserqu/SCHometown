@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #friends-tab {
   display: none; }
 
@@ -25,11 +26,23 @@
 #friends-good-list {
   margin-top: 0; }
 
-.weibocontent_imgs > img{
-  height: 100px;
-  width: 32%;
-  float: left;
-  margin-right: 1%;
-  margin-bottom: 1%;
-}
+#share {
+  margin-bottom: 55px; }
+
+#sharebtn {
+  display: block;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  padding: 7px 0 0;
+  -webkit-tap-highlight-color: transparent; }
+
+/*首页幻灯*/
+.squareswiper, .squareswiper-wrapper, .squareswiper-slide {
+  height: 120px; }
+
+.squareswiper-slide img {
+  height: 120px;
+  width: 100%; }
+
 /*# sourceMappingURL=square.css.map */

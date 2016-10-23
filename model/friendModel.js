@@ -18,7 +18,7 @@ friendMd.getGoodFriends = function (userid, cb) {
 friendMd.getHomeFriends = function (schoolid, provinceid, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
-        conn.query("select * from user_view where schoolid = "+schoolid+" AND provinceid = "+ provinceid, function (err,results) {
+        conn.query("select * from user_view where schoolid = "+schoolid+" AND homeprovinceid = "+ provinceid, function (err,results) {
             conn.release();
             console.log(results);
             if(err) throw err;

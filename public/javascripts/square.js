@@ -1,6 +1,6 @@
 $(document).ready(function () {
     //Tabbar 切换背景图片
-    $('.weui_tabbar a').click(function () {
+    $('.weui_tabbar_item').click(function () {
 
         var oldsrc = $('.weui_tabbar_item img');
         for (var i = 0; i < oldsrc.length; i++) {
@@ -218,5 +218,29 @@ $(document).ready(function () {
 
         pb.open();
     });
+
+    //分享弹出菜单
+    $("#sharebtn").on("click",function () {
+        var state = $(this).attr("data-state");
+        console.log(state);
+        if(state == 0){
+            $("#share").popup();
+            $(this).attr("data-state",1);
+            $(this).find("img").attr("src",'/images/share_on.png');
+        }else{
+            console.log("close");
+            $.closePopup();
+            $(this).attr("data-state",0);
+            $(this).find("img").attr("src",'/images/share.png');
+        }
+    });
+
+    //首页幻灯
+    var squareSwiper = new Swiper('.squareswiper',{
+        speed: 400,
+        autoplay: 1500,
+        spaceBetween: 100
+
+    })
 
 });

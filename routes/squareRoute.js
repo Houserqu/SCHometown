@@ -3,6 +3,7 @@ var pool = require('../config/mysql');
 var router = express.Router();
 var activityMd = require('../model/activityModel');
 var weiboMd = require('../model/weiboModel');
+var hometownMd = require('../model/hometownModel');
 var formidable = require("formidable");
 var path = require('path');
 var fs = require('fs');
@@ -11,13 +12,16 @@ var fs = require('fs');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     activityMd.getActivitys(
-        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity'],
+        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl'],
         req.session.lastpage.schoolid,
         req.session.lastpage.provinceid,
         0,
         5,
-        function (err, results) {
-            res.render('square', {activitys: results, user: req.session.lastpage});
+        function (err, activitys) {
+            hometownMd.getHometown(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, hometown) {
+                if(err) console.log(err);
+                res.render('square', {activitys: activitys, user: req.session.lastpage, hometown: hometown});
+            });
         });
 });
 
@@ -30,6 +34,7 @@ router.get('/activitys', function (req, res, next) {
         0,
         10,
         function (err, results) {
+
             res.render('activitys', {activitys: results});
         });
 });

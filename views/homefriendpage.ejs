@@ -48,9 +48,21 @@
         </div>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
-                <p>地区</p>
+                <p>学校</p>
             </div>
-            <div class="weui_cell_ft"></div>
+            <div class="weui_cell_ft"><%= user.schoolname%></div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>家乡</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.homeprovince%> <%= user.homecityname%></div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>微信号</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.wechatnumber%></div>
         </div>
 
         <% if(!isfriend){%>

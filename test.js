@@ -1,0 +1,13 @@
+// var pool = require("./config/mysql")
+//
+// var province = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35] ;
+// pool.getConnection(function (err, conn) {
+//
+//     province.forEach(function (value, index, arr){
+//         for(var i=1; i<2596; i++){
+//             conn.query("insert into hometown (`schoolid`, `homeprovinceid`) values (?,?)",[i,value], function (err,result) {
+//                 console.log(err);
+//             });
+//         }
+//     });
+// });

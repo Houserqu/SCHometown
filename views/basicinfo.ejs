@@ -95,8 +95,6 @@
             var cid = citys.indexOf(e.value[1])+1;
             var hometown = {pid : pid, city:cid}
 
-            console.log(hometown);
-            console.log(e);
             $.ajax({
                 type: "post",
                 url: "/user/updateuserhometown",
@@ -125,8 +123,6 @@ $("#user-school").schoolPicker({
             var sid = school.indexOf(e.value[1])+1;
             var schoolinfo = {pid : pid, sid:sid}
 
-            console.log(schoolinfo);
-            console.log(e);
             $.ajax({
                 type: "post",
                 url: "/user/updateuserschool",
@@ -144,7 +140,6 @@ $("#user-school").schoolPicker({
     });
 
 $("#user-nickname").on("change", function () {
-    console.log($(this).val());
     $.ajax({
         type: "post",
         url: "/user/updateuser",
@@ -167,10 +162,6 @@ $("#subbasicinfo").on("click", function () {
     var nickname = $("#user-nickname").val();
     var school = $("#user-school").val();
     var hometown = $("#user-hometown").val();
-
-    console.log("nickname"+nickname);
-    console.log("school"+school);
-    console.log("hometown"+hometown);
 
     if((nickname.length !=0) && (school.length !=0) && (hometown.length !=0)){
         $.ajax({

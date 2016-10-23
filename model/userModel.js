@@ -10,7 +10,19 @@ var userMd = function () {};
 userMd.getUserinfo = function (userid, cb) {
     pool.getConnection(function (err,conn) {
         if(err) throw err;
-        conn.query("select * from user_view where iduser = ?", userid, function (err,result) {
+        conn.query("select * from userinfo where userid = ?", userid, function (err,result) {
+            conn.release();
+            if(err) console.log(err);
+            cb(err,result);
+        });
+    });
+};
+
+//获取用户视图信息
+userMd.getUserView = function (userid, cb) {
+    pool.getConnection(function (err,conn) {
+        if(err) throw err;
+        conn.query("select * from user_view where userid = ?", userid, function (err,result) {
             conn.release();
             if(err) console.log(err);
             cb(err,result);

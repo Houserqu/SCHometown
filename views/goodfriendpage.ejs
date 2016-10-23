@@ -50,13 +50,13 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <p>学校</p>
             </div>
-            <div class="weui_cell_ft"><%= user.schoolid%></div>
+            <div class="weui_cell_ft"><%= user.schoolname%></div>
         </div>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
-                <p>地区</p>
+                <p>家乡</p>
             </div>
-            <div class="weui_cell_ft"><%= user.provinceid%>+<%= user.cityid%></div>
+            <div class="weui_cell_ft"><%= user.homeprovince%> <%= user.homecityname%></div>
         </div>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
@@ -82,7 +82,7 @@
 
 <script>
     $(document).ready(function () {
-        //添加好友
+        //取消关注好友
         $("#delGoodFriend").on("click", function () {
             var friendid = $(this).data("friendid");
             $.ajax({
