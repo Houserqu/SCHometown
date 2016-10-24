@@ -37,6 +37,10 @@
   padding: 7px 0 0;
   -webkit-tap-highlight-color: transparent; }
 
+.weibocontent_imgs > img {
+  width: 33%;
+  float: left; }
+
 /*首页幻灯*/
 .squareswiper, .squareswiper-wrapper, .squareswiper-slide {
   height: 120px; }

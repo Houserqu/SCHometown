@@ -11,16 +11,28 @@ var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    activityMd.getActivitys(
-        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl'],
+    activityMd.getActivitys(        //获取活动列表
+        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl', 'origintime'],
         req.session.lastpage.schoolid,
         req.session.lastpage.provinceid,
         0,
         5,
         function (err, activitys) {
+            //获取老乡会信息
             hometownMd.getHometown(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, hometown) {
-                if(err) console.log(err);
-                res.render('square', {activitys: activitys, user: req.session.lastpage, hometown: hometown});
+                //获取动态信息
+                weiboMd.getHometownWeibolist(req.session.lastpage.schoolid, req.session.lastpage.provinceid,function (err, hometownWeibo) {
+                    if(err) console.log(err);
+                    var list = hometownWeibo.concat(activitys);
+
+                    list.sort(function (a, b) {
+                        return  new Date(a.origintime).getTime() < new Date(b.origintime).getTime()? 1 : -1;
+                    });
+                    console.log(list);
+
+                    res.render('square', {list: list, user: req.session.lastpage, hometown: hometown, squareFun:squareFun});
+                });
+
             });
         });
 });
@@ -309,6 +321,44 @@ Date.prototype.Format = function (fmt) { //author: meizz
     return fmt;
 };
 
+//计算指定时间到今天0点的差值
+Date.prototype.reverseTime = function reverseTime() {
+        var reversetime = "";
+        var timeDifference = new Date(new Date().toLocaleDateString()).getTime() - this.getTime();
 
+        if(timeDifference > 0){   //如果为正  用天计算
+            var weibotime = this.getHours();  //发布时间(小时)
+            var timeDays =  timeDifference/86400000;        //距当前天数
+            if(timeDays < 1){
+                reversetime = "昨天 "+weibotime+"点";
+            }else{
+                reversetime = Math.floor(timeDays)+"天前 "+weibotime+"点";
+            }
+        }else{  //差值为负   用小时做单位
 
+            //计算指定时间到现在时间的小时差值
+            var timeHours =  (new Date().getTime() - this.getTime())/86400000*24;
+            if(timeHours < 1){
+                reversetime = "刚刚";
+            }else{
+                reversetime = Math.floor(timeHours)+"小时前";
+            }
+        }
+        return reversetime;
+    };
+
+var squareFun = function() {};
+
+squareFun.imgs = function (imgstr) {
+    var imghtml = "";
+    var time = "";
+    if(imgstr != "" && imgstr != null) {
+        var imgs = imgstr.split("||");
+        imgs.pop();
+        imgs.forEach(function (img) {
+            imghtml += "<img src='/weiboimg/" + img + "'>"
+        });
+    }
+   return imgs;
+};
 module.exports = router;

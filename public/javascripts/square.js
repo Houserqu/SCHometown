@@ -157,27 +157,7 @@ $(document).ready(function () {
                             });
                         }
 
-                        //计算指定时间到今天0点的差值
-                        var timeDifference = new Date(new Date().toLocaleDateString()).getTime() - new Date(redata.weibolist[i].time).getTime();
-
-                        if(timeDifference > 0){   //如果为正  用天计算
-                            var weibotime = new Date(redata.weibolist[i].time).getHours();  //发布时间(小时)
-                            var timeDays =  timeDifference/86400000;        //距当前天数
-                            if(timeDays < 1){
-                                time = "昨天 "+weibotime+"点";
-                            }else{
-                                time = Math.floor(timeDays)+"天前 "+weibotime+"点";
-                            }
-                        }else{  //差值为负   用小时做单位
-
-                            //计算指定时间到现在时间的小时差值
-                            var timeHours =  (new Date().getTime() - new Date(redata.weibolist[i].time).getTime())/86400000*24;
-                            if(timeHours < 1){
-                                time = "刚刚";
-                            }else{
-                                time = Math.floor(timeHours)+"小时前";
-                            }
-                        }
+                        time = reverseTime(redata.weibolist[i].origintime);
 
                         html += '<div class="weui_panel weui_panel_access"><div class="weui_panel_hd">'+redata.weibolist[i].nickname+'发表动态</div><div class="weui_panel_bd"> <div class="weui_media_box weui_media_text weibocontent"> <p class="weui_media_desc">'+redata.weibolist[i].content+'</p> <div class="weibocontent_imgs">'+imghtml+'<div style="clear: both"></div> </div> <ul class="weui_media_info"> <li class="weui_media_info_meta">'+time+'</li> <li class="weui_media_info_meta weui_media_info_meta_extra">评论</li> </ul> </div> </div> </div>'
                     }
@@ -195,11 +175,31 @@ $(document).ready(function () {
 
     });
 
-    //查看活动详情
-    $('.activity-li').click(function () {
-        var activityid = $(this).attr('data-id');
-        window.location.href = "/activitydetail/" + activityid;
-    });
+    //计算指定时间到今天0点的差值
+    function reverseTime(inTime) {
+        var reversetime = "";
+        var timeDifference = new Date(new Date().toLocaleDateString()).getTime() - new Date(inTime).getTime();
+
+        if(timeDifference > 0){   //如果为正  用天计算
+            var weibotime = new Date(inTime).getHours();  //发布时间(小时)
+            var timeDays =  timeDifference/86400000;        //距当前天数
+            if(timeDays < 1){
+                reversetime = "昨天 "+weibotime+"点";
+            }else{
+                reversetime = Math.floor(timeDays)+"天前 "+weibotime+"点";
+            }
+        }else{  //差值为负   用小时做单位
+
+            //计算指定时间到现在时间的小时差值
+            var timeHours =  (new Date().getTime() - new Date(inTime).getTime())/86400000*24;
+            if(timeHours < 1){
+                reversetime = "刚刚";
+            }else{
+                reversetime = Math.floor(timeHours)+"小时前";
+            }
+        }
+        return reversetime;
+    }
 
     //查看动态图片
     $('.weibocontent_imgs > img').on("click",function () {

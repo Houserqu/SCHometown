@@ -124,7 +124,7 @@ activityMd.getActivityFollows = function (idavtivivty,cb) {
 activityMd.getActivityComments = function (idavtivivty, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
-        conn.query('select * from activity_comment_view where idactivity = ? ',idavtivivty, function (err,results) {
+        conn.query('select * from activity_comment_view where idactivity = ? order by time desc limit 30',idavtivivty, function (err,results) {
             conn.release();
             if(err) throw err;
             cb(err, results);
