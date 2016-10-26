@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title><%= schometown.schoolname %>+<%= schometown.homeprovince%></title>
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/schometown.css">
+</head>
+<body>
+<article id="container" class="container">
+    <header class="weui-row">
+        <h1><%= schometown.schoolname%> <%= schometown.homeprovince%> 老乡会</h1>
+    </header>
+    <div class="weui_grids">
+        <a href="javascript:;" class="weui_grid js_grid" data-id="button">
+            <div class="weui_grid_icon">
+                <img src="./images/activity_green.png" alt="">
+            </div>
+            <p class="weui_grid_label">
+                活动: <%= schometown.activitynumber%>
+            </p>
+        </a>
+        <a href="javascript:;" class="weui_grid js_grid" data-id="cell">
+            <div class="weui_grid_icon">
+                <img src="./images/weibo.png" alt="">
+            </div>
+            <p class="weui_grid_label">
+                动态: <%= schometown.weibonumber%>
+            </p>
+        </a>
+        <a href="javascript:;" class="weui_grid js_grid" data-id="toast">
+            <div class="weui_grid_icon">
+                <img src="./images/me_on.png" alt="">
+            </div>
+            <p class="weui_grid_label">
+                会员: <%= schometown.homefriendsnumber%>
+            </p>
+        </a>
+    </div>
+    <!--<section class="weui-row">-->
+            <!--<div class="weui-col-33">-->
+                <!--<%= schometown.activitynumber%>-->
+                <!--活动数-->
+            <!--</div>-->
+            <!--<div class="weui-col-33">-->
+                <!--动态数=<%= schometown.weibonumber%>-->
+            <!--</div>-->
+            <!--<div class="weui-col-33">-->
+                <!--friends=<%= schometown.homefriendsnumber%>-->
+            <!--</div>-->
+    <!--</section>-->
+</article>
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>

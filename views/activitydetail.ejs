@@ -123,7 +123,7 @@
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>当前参与人数</p>
                                 </div>
-                                <div class="weui_cell_ft"><%= joiners.length %> 人</div>
+                                <div class="weui_cell_ft"><span id="joinernumber"><%= joiners.length %> </span> 人</div>
                             </a>
                         </div>
                         <div class="weui_cells weui_cells_form joinselect">
@@ -154,7 +154,7 @@
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>当前关注人数</p>
                                 </div>
-                                <div class="weui_cell_ft"><%= follows.length %> 人</div>
+                                <div class="weui_cell_ft"><span id="follownumber"><%= follows.length %></span> 人</div>
                             </a>
                         </div>
                         <div class="weui_cells weui_cells_form joinselect">
@@ -233,7 +233,7 @@
                             <ul class="weui_media_info">
                                 <li class="weui_media_info_meta">Houser</li>
                                 <li class="weui_media_info_meta"><%= new Date(comments[i].time).Format('MM-dd hh:mm') %></li>
-                                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= comments[i].praise %>赞
+                                <li class="weui_media_info_meta weui_media_info_meta_extra" id="praisebtn" data-commentid="<%=comments[i].idactivity_comment%>"><span id="praisenumber"><%= comments[i].praise %></span>赞
                                 </li>
                             </ul>
                         </div>
@@ -257,9 +257,6 @@
 </body>
 <script src="/javascripts/jquery.min.js"></script>
 <script src="/javascripts/jquery-weui.min.js"></script>
-
-<script src="/javascripts/swiper.js"></script>
-
 
 <script>
     $(document).ready(function () {
@@ -295,6 +292,7 @@
             }
         });
 
+        //参与/不参与
         $('#join-switch').on('change', 'input', function () {
             var check = $(this).attr('data-ischeck');
             var idactivity = $("#activity-title").attr('data-idactivity');
@@ -316,7 +314,11 @@
                     if (redata.state) {
                         $('#join-label').text(redata.label);
                         $.toast('操作成功');
-                        var
+                        var joinernumber = $("#joinernumber").text();
+                        if(state == 1)
+                            joinernumber++;
+                        else joinernumber--;
+                        $("#joinernumber").text(joinernumber);
                     }
                     else
                         $.toast('操作失败', 'forbidden');
@@ -328,16 +330,17 @@
 
         });
 
+        //关注/不关注
         $('#follow-switch').on('change', 'input', function () {
             var check = $(this).attr('data-ischeck');
             var idactivity = $("#activity-title").attr('data-idactivity');
             var state;
             if (check == 1) {
                 $(this).attr('data-ischeck', '0');
-                state = 0;//不惨与
+                state = 0;//不关注
             } else {
                 $(this).attr('data-ischeck', '1');
-                state = 1;//参与
+                state = 1;//关注
             }
 
             $.ajax({
@@ -350,6 +353,42 @@
                     if (redata.state) {
                         $('#follow-label').text(redata.label);
                         $.toast('操作成功');
+                        var follownumber = $("#follownumber").text();
+                        if(state == 1)
+                            follownumber++;
+                        else follownumber--;
+                        $("#follownumber").text(follownumber);
+                    }
+                    else
+                        $.toast('操作失败', 'forbidden');
+                },
+                error: function () {
+                    $.toast('页面错误', 'forbidden');
+                }
+            });
+
+        });
+
+        //评论点赞
+        $('.weui_media_info').on('click', '#praisebtn', function () {
+            var praisenumbernode = $(this).find("#praisenumber");
+            var commentid = $(this).attr("data-commentid");
+
+            $.ajax({
+                type: 'post',
+                url: '',
+                data: {state: state, idactivity: idactivity},
+                dataType: 'json',
+                success: function (redata) {
+                    console.log(redata);
+                    if (redata.state) {
+                        $('#follow-label').text(redata.label);
+                        $.toast('操作成功');
+                        var follownumber = $("#follownumber").text();
+                        if(state == 1)
+                            follownumber++;
+                        else follownumber--;
+                        $("#follownumber").text(follownumber);
                     }
                     else
                         $.toast('操作失败', 'forbidden');

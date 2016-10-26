@@ -21,16 +21,19 @@ router.get('/', function (req, res, next) {
             //获取老乡会信息
             hometownMd.getHometown(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, hometown) {
                 //获取动态信息
-                weiboMd.getHometownWeibolist(req.session.lastpage.schoolid, req.session.lastpage.provinceid,function (err, hometownWeibo) {
-                    if(err) console.log(err);
+                weiboMd.getHometownWeibolist(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, hometownWeibo) {
+                    if (err) console.log(err);
                     var list = hometownWeibo.concat(activitys);
 
                     list.sort(function (a, b) {
-                        return  new Date(a.origintime).getTime() < new Date(b.origintime).getTime()? 1 : -1;
+                        return new Date(a.origintime).getTime() < new Date(b.origintime).getTime() ? 1 : -1;
                     });
-                    console.log(list);
-
-                    res.render('square', {list: list, user: req.session.lastpage, hometown: hometown, squareFun:squareFun});
+                    res.render('square', {
+                        list: list,
+                        user: req.session.lastpage,
+                        hometown: hometown,
+                        squareFun: squareFun
+                    });
                 });
 
             });
@@ -90,14 +93,12 @@ router.get('/activitydetail/:id', function (req, res, next) {
 //显示活动参与者列表
 router.get('/activitydetail/joinerlist/:id', function (req, res) {
     activityMd.getActivityJoins(req.params.id, function (err, joiners) {
-        console.log(joiners);
         res.render('joinerlist', {joiners: joiners});
     });
 });
 
 //参与、不参与
 router.post('/activitydetail/dojoin', function (req, res) {
-    console.log(req.body);
     if (req.body.state == '1') {
         activityMd.doJoinIn({
             userid: req.session.lastpage.userid,
@@ -130,7 +131,6 @@ router.get('/activitydetail/followlist/:id', function (req, res) {
 
 //关注、取消关注
 router.post('/activitydetail/dofollow', function (req, res) {
-    console.log(req.body);
     if (req.body.state == '1') {
         activityMd.doFollowIn({
             userid: req.session.lastpage.userid,
@@ -155,7 +155,6 @@ router.post('/activitydetail/dofollow', function (req, res) {
 
 //添加活动评论
 router.post('/addactivitycomment', function (req, res) {
-    console.log(req.body);
     activityMd.addActivityComment({
             idactivity: req.body.idactivity,
             content: req.body.comment,
@@ -199,7 +198,6 @@ router.post('/editactivity/add', function (req, res, next) {
         schoolid: req.session.lastpage.schoolid,
         provinceid: req.session.lastpage.provinceid
     };
-    console.log(activity);
     if (activity.title != '' && activity.starttime != '' && activity.content != '') {
         activityMd.addActivity(activity, function (err, result) {
             if (err) console.log(err);
@@ -218,6 +216,25 @@ router.post('/editactivity/add', function (req, res, next) {
 router.get('/addweibo', function (req, res) {
 
     res.render("addweibo");
+});
+
+//老乡会主页
+router.get('/schometown', function (req, res, next) {
+    var schoolid = req.query.school;
+    var provinceid = req.query.province;
+    hometownMd.getHometown(schoolid, provinceid, function (err, result) {
+        hometownMd.getAcyivityNumber(schoolid, provinceid, function (err, activitynumber) {
+            hometownMd.getWeiboNumber(schoolid, provinceid, function (err, weibonumber) {
+                hometownMd.getHomeFriendsNumber(schoolid, provinceid, function (err, homefriendsnumber) {
+                    if (err) console.log(err);
+                    result.activitynumber = activitynumber;
+                    result.weibonumber = weibonumber;
+                    result.homefriendsnumber = homefriendsnumber;
+                    res.render("schometownpage", {schometown: result});
+                });
+            });
+        });
+    });
 });
 
 //发布动态
@@ -245,8 +262,7 @@ router.post("/upweiboimg", function (req, res) {
 
     form.parse(req, function (err, fields, files) {
         var redata = "";
-        console.log(files);
-        var targetDir = path.join(__dirname , "../upload/weiboimg");
+        var targetDir = path.join(__dirname, "../upload/weiboimg");
 
         if (err) throw err;
         var filesUrl = "";
@@ -263,14 +279,14 @@ router.post("/upweiboimg", function (req, res) {
                 //移动文件
                 fs.renameSync(filePath, targetFile);
                 // 文件的Url（相对路径）
-                filesUrl += fileName+"||";
+                filesUrl += fileName + "||";
             }
         });
 
-        if(redatacode == 0){
-            res.json({code:0, info:"图片错误"});
-        }else {
-            res.json({code:1, info:filesUrl});
+        if (redatacode == 0) {
+            res.json({code: 0, info: "图片错误"});
+        } else {
+            res.json({code: 1, info: filesUrl});
 
         }
     });
@@ -323,42 +339,40 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 //计算指定时间到今天0点的差值
 Date.prototype.reverseTime = function reverseTime() {
-        var reversetime = "";
-        var timeDifference = new Date(new Date().toLocaleDateString()).getTime() - this.getTime();
+    var reversetime = "";
+    var timeDifference = new Date(new Date().toLocaleDateString()).getTime() - this.getTime();
 
-        if(timeDifference > 0){   //如果为正  用天计算
-            var weibotime = this.getHours();  //发布时间(小时)
-            var timeDays =  timeDifference/86400000;        //距当前天数
-            if(timeDays < 1){
-                reversetime = "昨天 "+weibotime+"点";
-            }else{
-                reversetime = Math.floor(timeDays)+"天前 "+weibotime+"点";
-            }
-        }else{  //差值为负   用小时做单位
-
-            //计算指定时间到现在时间的小时差值
-            var timeHours =  (new Date().getTime() - this.getTime())/86400000*24;
-            if(timeHours < 1){
-                reversetime = "刚刚";
-            }else{
-                reversetime = Math.floor(timeHours)+"小时前";
-            }
+    if (timeDifference > 0) {   //如果为正  用天计算
+        var weibotime = this.getHours();  //发布时间(小时)
+        var timeDays = timeDifference / 86400000;        //距当前天数
+        if (timeDays < 1) {
+            reversetime = "昨天 " + weibotime + "点";
+        } else {
+            reversetime = Math.floor(timeDays) + "天前 " + weibotime + "点";
         }
-        return reversetime;
-    };
+    } else {  //差值为负   用小时做单位
 
-var squareFun = function() {};
+        //计算指定时间到现在时间的小时差值
+        var timeHours = (new Date().getTime() - this.getTime()) / 86400000 * 24;
+        if (timeHours < 1) {
+            reversetime = "刚刚";
+        } else {
+            reversetime = Math.floor(timeHours) + "小时前";
+        }
+    }
+    return reversetime;
+};
+
+var squareFun = function () {
+};
 
 squareFun.imgs = function (imgstr) {
-    var imghtml = "";
-    var time = "";
-    if(imgstr != "" && imgstr != null) {
-        var imgs = imgstr.split("||");
+    var imgs = Array();
+    if (imgstr != "" && imgstr != null) {
+        imgs = imgstr.split("||");
         imgs.pop();
-        imgs.forEach(function (img) {
-            imghtml += "<img src='/weiboimg/" + img + "'>"
-        });
     }
-   return imgs;
+    return imgs;
 };
+
 module.exports = router;

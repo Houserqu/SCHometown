@@ -44,9 +44,16 @@ $red:#F13838;
   padding: 7px 0 0;
   -webkit-tap-highlight-color: transparent;
 }
+.weibocontent_imgs{
+  margin-top: 8px;
+}
 .weibocontent_imgs > img{
   width: 33%;
   float: left;
+}
+#weibocell_ft:after{
+  transform:rotate(135deg);
+  -webkit-transform:rotate(135deg)
 }
 /*首页幻灯*/
 .squareswiper, .squareswiper-wrapper, .squareswiper-slide{

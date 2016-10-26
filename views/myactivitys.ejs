@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>我发起的活动</title>
+    <title><%= activitys.type%></title>
     <!--weui-jquery 样式-->
     <link rel="stylesheet" href="/stylesheets/weui.css">
     <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
@@ -13,26 +13,39 @@
     <link rel="stylesheet" href="/stylesheets/square.css">
 </head>
 <body>
-<div class="weui_panel weui_panel_access">
-    <div class="weui_panel_hd">我发起的活动</div>
+<article id="container" class="container" style="background-color: #eaeaea">
+    <div class="weui_panel">
+        <div class="weui_panel_hd"><%= activitys.type %></div>
+
+    </div>
     <% for(var i=0; i<activitys.length; i++){ %>
 
-    <div class="weui_panel_bd activity-li" data-id=<%= activitys[i].idactivity %>>
-        <div class="weui_media_box weui_media_text">
-            <h4 class="weui_media_title"><%= activitys[i].title %></h4>
-            <p class="weui_media_desc"><%= activitys[i].content %></p>
-            <ul class="weui_media_info">
-                <li class="weui_media_info_meta"><%= activitys[i].nickname %></li>
-                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= new Date(activitys[i].starttime).Format('MM-dd') %></li>
-                <li class="weui_media_info_meta"><%= new Date(activitys[i].endtime).Format('MM-dd') %></li>
-                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= activitys[i].address %></li>
-                <li class="weui_media_info_meta weui_media_info_meta_extra"><%= activitys[i].address %></li>
-            </ul>
-        </div>
+    <div class="weui_panel weui_panel_access">
+        <a href="/activitydetail/<%= activitys[i].idactivity %>">
+            <div class="weui_panel_hd" style="padding: 8px 15px;">
+                <img src="<%= activitys[i].headimgurl %>" alt="<%= activitys[i].nickname %>"
+                     style="width:20px;margin-right:5px;">
+                <span><%= activitys[i].nickname %></span>
+            </div>
+            <div class="weui_panel_bd activity-li" data-id=<%= activitys[i].idactivity %>>
+                <div class="weui_media_box weui_media_text">
+                    <h4 class="weui_media_title" style="color: #000000"><%= activitys[i].title %></h4>
+                    <p class="weui_media_desc"><%= activitys[i].content %></p>
+                    <ul class="weui_media_info">
+                        <li class="weui_media_info_meta">发布</li>
+                        <li class="weui_media_info_meta"><%= new Date(activitys[i].origintime).Format('MM-dd') %></li>
+                        <li class="weui_media_info_meta weui_media_info_meta_extra">周期</li>
+                        <li class="weui_media_info_meta"><%= new Date(activitys[i].starttime).Format('MM-dd') %></li>
+                        <li class="weui_media_info_meta"><%= new Date(activitys[i].endtime).Format('MM-dd') %></li>
+                        <li class="weui_media_info_meta weui_media_info_meta_extra">地点</li>
+                        <li class="weui_media_info_meta"><%= activitys[i].address %></li>
+                    </ul>
+                </div>
+            </div>
+        </a>
     </div>
-
     <% }%>
-</div>
+    </article>
 </body>
 <script src="/javascripts/jquery.min.js"></script>
 <script src="/javascripts/jquery-weui.min.js"></script>

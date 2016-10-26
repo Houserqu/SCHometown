@@ -57,7 +57,7 @@ router.post('/updateuserschool', function(req, res, next) {
 router.get('/myactivitys', function (req, res) {
      userMd.getMyActivitys(req.session.lastpage.userid, function (err, activitys) {
          if(err) console.log(err);
-         console.log(activitys);
+         activitys.type="我发起的活动";
          res.render("myactivitys", {activitys:activitys})
      });
 });
@@ -66,11 +66,18 @@ router.get('/myactivitys', function (req, res) {
 router.get('/myjoinactivitys', function (req, res) {
     userMd.getMyJoinActivitys(req.session.lastpage.userid, function (err, activitys) {
         if(err) console.log(err);
-        console.log(activitys);
-        res.render("myjoinactivitys", {activitys:activitys})
+        activitys.type="我参与的活动";
+        res.render("myactivitys", {activitys:activitys})
     });
 });
 
-
+//显示自己关注的活动
+router.get('/myfollowactivitys', function (req, res) {
+    userMd.getFollowActivitys(req.session.lastpage.userid, function (err, activitys) {
+        if(err) console.log(err);
+        activitys.type="我关注的活动";
+        res.render("myactivitys", {activitys:activitys})
+    });
+});
 
 module.exports = router;

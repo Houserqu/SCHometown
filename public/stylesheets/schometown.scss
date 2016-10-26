@@ -1,0 +1,13 @@
+header{
+  height: 300px;
+  width: 100%;
+  background-image: url("/images/schometown.jpg");
+  background-size: cover;
+}
+
+header > h1{
+  color: #ffffff;
+  text-align: center;
+  width: 100%;
+  margin: 120px auto;
+}

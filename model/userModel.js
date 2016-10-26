@@ -105,6 +105,17 @@ userMd.getMyJoinActivitys = function (userid, cb) {
     });
 };
 
+//获取自己关注的活动
+userMd.getFollowActivitys = function (userid, cb) {
+    pool.getConnection(function (err,conn) {
+        if(err) throw err;
+        conn.query("select * from activity_follow_view where userid = ?", userid, function (err,result) {
+            conn.release();
+            if(err) console.log(err);
+            cb(err,result);
+        });
+    });
+};
 
 //获取用户动态列表
 userMd.getUserWeibos = function (openid, cb) {

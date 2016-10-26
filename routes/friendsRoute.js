@@ -12,7 +12,6 @@ router.get('/', function(req, res, next) {
 
 //查看好友主页
 router.get('/goodfriendpage/:openid', function(req, res, next) {
-    console.log(req.params.openid);
     friendMd.getGoodFriendinfo(req.params.openid, function (err, user) {
         userMd.getUserWeibos(req.params.openid, function (err, weibolist) {
             if(err) console.log(err);
@@ -64,7 +63,6 @@ router.get('/homelist',function (req, res) {
 router.get('/weibolist',function (req, res) {
     weiboMd.getFriendsWeibolist(req.session.lastpage.userid, function (err, weibolist) {
         if(err) console.log(err);
-        console.log(weibolist);
         if(weibolist)
             res.json({state:1,weibolist:weibolist});
         else
@@ -75,7 +73,6 @@ router.get('/weibolist',function (req, res) {
 //添加关注好友
 router.post("/addfriend", function (req, res) {
     friendMd.addFriend(req.session.lastpage.userid, req.body.friendid, function (err, result) {
-        console.log(result);
         if(result)
             res.json({state:1});
         else
@@ -86,7 +83,6 @@ router.post("/addfriend", function (req, res) {
 //取消关注好友
 router.post("/delfriend", function (req, res) {
     friendMd.delFriend(req.session.lastpage.userid, req.body.friendid, function (err, result) {
-        console.log(result);
         if(result)
             res.json({state:1});
         else

@@ -2,6 +2,7 @@ var pool = require("../config/mysql");
 
 var hometownMd = function () { };
 
+//获取老乡会信息
 hometownMd.getHometown = function (schoolid, homeprovinceid, cb) {
     pool.getConnection(function(err, conn){
         conn.query("select * from hometown_view where schoolid = ? and homeprovinceid = ?", [schoolid, homeprovinceid], function (err, result) {
@@ -12,4 +13,37 @@ hometownMd.getHometown = function (schoolid, homeprovinceid, cb) {
     });
 };
 
+//获取老乡会活动数量
+hometownMd.getAcyivityNumber = function (schoolid, provinceid, cb) {
+    pool.getConnection(function(err, conn){
+        conn.query("select * from activity where schoolid = ? and provinceid = ?", [schoolid, provinceid], function (err, result) {
+            conn.release();
+            if(err) throw err;
+            cb(err,result.length);
+        });
+    });
+};
+
+//获取老乡会动态数量
+hometownMd.getWeiboNumber = function (schoolid, homeprovinceid, cb) {
+    pool.getConnection(function(err, conn){
+        conn.query("select * from weibo_view where schoolid = ? and homeprovinceid = ?", [schoolid, homeprovinceid], function (err, result) {
+            conn.release();
+            if(err) throw err;
+            cb(err,result.length);
+        });
+    });
+};
+
+//获取乡友数量
+hometownMd.getHomeFriendsNumber = function (schoolid, provinceid, cb) {
+    pool.getConnection(function (err, conn) {
+        if(err) throw err;
+        conn.query("select * from user_view where schoolid = ? AND homeprovinceid = ?",[schoolid, provinceid], function (err,results) {
+            conn.release();
+            if(err) throw err;
+            cb(err, results.length);
+        });
+    });
+};
 module.exports = hometownMd;
