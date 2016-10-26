@@ -12,7 +12,7 @@ router.get('/responMsg',function (req, res, next) {
 
     var timestamp = req.params.timestamp;
     var nonce = req.params.nonce;
-    var echostr = req.params.echostr;
+    var echostr = req.query.echostr;
 
     console.log(echostr);
 
@@ -24,7 +24,7 @@ router.get('/responMsg',function (req, res, next) {
     // if(signature == sha1(str)){
     //     res.send(echostr)
     // }
-    res.send(true);
+    res.send(echostr);
 
 
 });
