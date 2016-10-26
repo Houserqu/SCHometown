@@ -1,8 +1,10 @@
-var pool = require("../config/mysql");
+var express = require('express');
+var router = express.Router();
+
 var wechatconfig = require("../config/wechat");
 var sha1 = require("../config/sha1");
+var pool = require("../config/mysql");
 
-var router = express.Router();
 
 //检验signature
 router.get('/checkSignature',function (req, res, next) {
