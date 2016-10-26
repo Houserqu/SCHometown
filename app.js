@@ -11,6 +11,7 @@ var find = require('./routes/findRoute');
 var friends = require('./routes/friendsRoute');
 var user = require('./routes/userRoute');
 var findHometown = require('./routes/findHometownRouter');
+var login = require('./routes/loginRouter');
 
 var app = express();
 
@@ -48,6 +49,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/', square);
+app.use('/login', login);
 app.use('/find', find);
 app.use('/friends', friends);
 app.use('/user', user);
