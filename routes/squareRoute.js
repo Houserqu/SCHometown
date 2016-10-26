@@ -251,6 +251,19 @@ router.post("/doaddweibo", function (req, res) {
 
 });
 
+//动态详情
+router.get("/weibodetail/:wid", function (req, res) {
+    var wid = req.params.wid;
+    weiboMd.getOneWeibo(wid, function (err, weibo) {
+        weiboMd.getWeiboComment(wid, function (err, weibocomments) {
+            if(err) console.log(err);
+            console.log(weibo);
+            console.log(weibocomments);
+            res.render("weibodetail", {weibo: weibo[0], weibocomments:weibocomments, squareFun: squareFun})
+        });
+    });
+});
+
 //动态图片上传
 router.post("/upweiboimg", function (req, res) {
     var redatacode = 1;
@@ -293,6 +306,20 @@ router.post("/upweiboimg", function (req, res) {
 
 });
 
+//添加活动评论
+router.post('/addweibocomment', function (req, res) {
+    weiboMd.addWeiboComment({
+            weiboid: req.body.weiboid,
+            content: req.body.comment,
+            userid: req.session.lastpage.userid
+        },
+        function (err, result) {
+            if (result.affectedRows)
+                res.json({state: 1});
+            else res.json({state: 0});
+        });
+});
+
 
 /* 登录 */
 router.get('/login', function (req, res, next) {
@@ -311,7 +338,6 @@ router.get('/login', function (req, res, next) {
 router.get('/loginpage', function (req, res, next) {
     res.render('loginpage');
 });
-
 
 // 对Date的扩展，将 Date 转化为指定格式的String
 // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，

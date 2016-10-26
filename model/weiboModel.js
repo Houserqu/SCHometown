@@ -26,6 +26,29 @@ weiboMd.addWeibo = function (values, cb) {
     })
 };
 
+//获取动态详情
+weiboMd.getOneWeibo = function (weiboid, cb) {
+    pool.getConnection(function (err, conn) {
+        if (err) throw err;
+        conn.query('select * from weibo_view where idweibo =  ?',weiboid , function (err, result) {
+            conn.release();
+            if (err) throw err;
+            cb(err, result);
+        });
+    })
+};
+
+//获取动态评论
+weiboMd.getWeiboComment = function (weiboid, cb) {
+    pool.getConnection(function (err, conn) {
+        if (err) throw err;
+        conn.query('select * from weibo_comment_view where weiboid = ?',weiboid , function (err, result) {
+            conn.release();
+            if (err) throw err;
+            cb(err, result);
+        });
+    })
+};
 //获取好友动态列表
 weiboMd.getFriendsWeibolist = function (userid, cb) {
     pool.getConnection(function (err, conn) {
@@ -50,6 +73,18 @@ weiboMd.getFriendsWeibolist = function (userid, cb) {
             });
         });
 
+    });
+};
+
+//添加动态评论
+weiboMd.addWeiboComment = function(values, cb) {
+    pool.getConnection(function (err, conn) {
+        if(err) throw err;
+        conn.query('insert into weibo_comment set ?',values, function (err,results) {
+            conn.release();
+            if(err) throw err;
+            cb(err, results);
+        });
     });
 };
 

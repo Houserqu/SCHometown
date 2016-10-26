@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title></title>
+    <!--weui-jquery 样式-->
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="/stylesheets/swiper.css">
+    <link rel="stylesheet" href="/stylesheets/square.css">
+</head>
+<body ontouchstart="">
+<article class="container">
+
+    <div class="weui_panel weui_panel_access">
+        <a class="weui_cell" id="pageurl" href="/friends/homefriendpage/<%= weibo.openid %>">
+            <div class="weui_cell_hd"><img id="headimg" src="<%= weibo.headimgurl %>" alt="" style="width:40px;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p id="nickname" style="color: #000000"><%= weibo.nickname %></p>
+            </div>
+            <div class="weui_cell_ft">查看主页</div>
+        </a>
+    </div>
+
+    <div class="weui_panel weui_panel_access">
+        <div class="weui_panel_bd activity-li" data-id=<%= weibo.idweibo %>>
+            <div class="weui_media_box weui_media_text">
+                <p class="weui_media_desc"><%= weibo.content %></p>
+                <div class="weibocontent_imgs">
+                    <% squareFun.imgs(weibo.imgurl).forEach(function (value, index, arr) { %>
+                    <img src="/weiboimg/<%= value %>">
+                    <% }) %>
+
+                    <div style="clear: both"></div>
+                    <ul class="weui_media_info">
+                        <li class="weui_media_info_meta"><%= new Date(weibo.origintime).reverseTime() %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui_btn_area">
+        <a class="weui_btn weui_btn_primary" id="subcomment" data-weibo="<%= weibo.idweibo %>">发表评论</a>
+        <iframe id="tmp_downloadhelper_iframe" style="display: none;"></iframe>
+    </div>
+
+    <div class="weui_panel weui_panel_access">
+        <div class="weui_panel_hd" id="commentlist">评论列表</div>
+        <% weibocomments.forEach(function (value, index, arr) { %>
+            <div class="weui_panel_bd">
+                <div class="weui_media_box weui_media_text">
+                    <h4 class="weui_media_title">
+                        <a href="/friends/homefriendpage/<%= value.openid%>"><img class="weui_media_appmsg_thumb" src="<%= value.headimgurl %>" alt="<%= value.nickname %>"
+                             style="height: 35px;margin-right: 10px;"></a>
+                        <span><%= value.nickname %></span>
+                    </h4>
+                    <p class="weui_media_desc"><%= value.content %></p>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+
+
+</article>
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#subcomment").on("click",function () {
+            $.prompt({
+                empty: false, // 是否允许为空
+                onOK: function (input) {
+                    var weiboid = $("#subcomment").attr("data-weibo");
+                    $.ajax({
+                        type: 'post',
+                        url: '/addweibocomment',
+                        data: {comment: input, weiboid: weiboid},
+                        dataType: 'json',
+                        success: function (redata) {
+                            if (redata){
+                                $.toast('评论成功',function () {
+                                    var nickname = $("#nickname").text();
+                                    var headimgurl = $("#headimg").attr("src");
+                                    var pageurl = $("#pageurl").attr("href");
+                                    var html = '<div class="weui_panel_bd"> <div class="weui_media_box weui_media_text"> <h4 class="weui_media_title"> <a href="'+pageurl+'"><img class="weui_media_appmsg_thumb" src="'+headimgurl+'" alt=""style="height: 35px;margin-right: 10px;"></a> <span>'+nickname+'</span> </h4> <p class="weui_media_desc">'+input+'</p> </div></div>'
+                                    $("#commentlist").after(html);
+                                });
+                            } else
+                                $.toast('评论失败', 'forbidden');
+                        },
+                        error: function () {
+                            $.toast('网络错误', 'forbidden');
+                        }
+                    });
+                },
+                onCancel: function () {
+                    //点击取消
+                }
+            });
+        });
+    });
+</script>

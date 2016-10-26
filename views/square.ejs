@@ -121,6 +121,7 @@
                 <% for(var i = 0; i < list.length; i++){ %>
                 <% if("idweibo" in list[i]){ %>
                 <div class="weui_panel weui_panel_access">
+                    <a href="/weibodetail/<%= list[i].idweibo %>">
                     <div class="weui_panel_hd" style="padding: 8px 15px;">
                         <img src="<%= list[i].headimgurl %>" alt="<%= list[i].nickname %>"
                              style="width:20px;margin-right:5px;">
@@ -141,6 +142,7 @@
                             </div>
                         </div>
                     </div>
+                        </a>
                 </div>
                 <% }else{ %>
                 <div class="weui_panel weui_panel_access">
