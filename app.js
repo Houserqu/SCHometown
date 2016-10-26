@@ -12,6 +12,7 @@ var friends = require('./routes/friendsRoute');
 var user = require('./routes/userRoute');
 var findHometown = require('./routes/findHometownRouter');
 var login = require('./routes/loginRouter');
+var wechat = require('./routes/wechatRouter');
 
 var app = express();
 
@@ -53,6 +54,7 @@ app.use('/login', login);
 app.use('/find', find);
 app.use('/friends', friends);
 app.use('/user', user);
+app.use('/wechat', wechat);
 app.use('/find/hometown', findHometown);  //发现-校乡汇模块
 
 /*app.get('/login',function (req,res) {
