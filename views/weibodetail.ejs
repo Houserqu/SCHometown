@@ -72,6 +72,7 @@
     $(document).ready(function () {
         $("#subcomment").on("click",function () {
             $.prompt({
+                title:"评论",
                 empty: false, // 是否允许为空
                 onOK: function (input) {
                     var weiboid = $("#subcomment").attr("data-weibo");
