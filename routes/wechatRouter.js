@@ -24,7 +24,7 @@ router.get('/responMsg',function (req, res, next) {
     // if(signature == sha1(str)){
     //     res.send(echostr)
     // }
-    res.send(echostr);
+    res.send(true);
 
 
 });
