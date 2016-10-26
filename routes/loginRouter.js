@@ -19,7 +19,7 @@ router.get('/checkSignature',function (req, res, next) {
 
     var str = arr[0] + arr[1] + arr[2];
 
-    if(signature == hex_sha1(str)){
+    if(signature == sha1(str)){
         res.send(echostr)
     }
 

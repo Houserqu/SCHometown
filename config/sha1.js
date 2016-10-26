@@ -17,7 +17,7 @@ var chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode    */
  * These are the functions you'll usually want to call
  * They take string arguments and return either hex or base-64 encoded strings
  */
-function hex_sha1(s) {
+var sha1 = function hex_sha1(s) {
     return binb2hex(core_sha1(str2binb(s), s.length * chrsz));
 }
 function b64_sha1(s) {
@@ -171,3 +171,5 @@ function binb2b64(binarray) {
     }
     return str;
 }
+
+module.exports = sha1();
