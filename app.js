@@ -50,7 +50,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/', square);
-app.use('/login', login);
+//app.use('/login', login);
 app.use('/find', find);
 app.use('/friends', friends);
 app.use('/user', user);

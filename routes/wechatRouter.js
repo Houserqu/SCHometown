@@ -26,6 +26,6 @@ router.get("/login",function () {
 });
 
 var getCode = function (qppid, encodeurl) {
-    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
 };
 module.exports = router;
