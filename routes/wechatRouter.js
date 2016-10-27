@@ -25,7 +25,8 @@ router.get("/login", function (req, res, next) {
             }else{
                 getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, userinfo) {
                     addUserinfo(userinfo, function (err, isadd) {
-                        if(result){
+                        if(err) console.log(err);
+                        if(isadd){
                             res.redirect("/");
                         }else{
                             res.send("登录失败");
@@ -38,13 +39,13 @@ router.get("/login", function (req, res, next) {
     });
 });
 
-var userExist = function (value, cb) {
+var addUserinfo = function (value, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
         conn.query('insert into user set ?',value, function (err,result) {
             conn.release();
             if(err) throw err;
-            if(result[0].affectedRows){
+            if(result.affectedRows){
                 cb(err, 1);
             }else{
                 cb(err, 0);
@@ -53,7 +54,7 @@ var userExist = function (value, cb) {
     });
 };
 
-var addUserinfo = function (value, cb) {
+var userExist = function (openid, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
         conn.query('select * from user where openid = ?',openid, function (err,result) {
