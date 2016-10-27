@@ -17,21 +17,43 @@ router.get('/responMsg', function (req, res, next) {
 
 router.get("/login", function (req, res, next) {
     var code = req.query.code;
-    var state = req.query.state;
 
-    console.log("code:" + code);
-    console.log("state:" + state);
-
-    //微信获取用户资料第二步通过code换取网页授权access_token
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret,code,function (err, accesstoken) {
-
-        getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, userinfo) {
-            res.send(userinfo);
+        userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
+            if(result){
+                res.redirect("/");
+            }else{
+                getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, userinfo) {
+                    addUserinfo(userinfo, function (err, isadd) {
+                        if(result){
+                            res.redirect("/");
+                        }else{
+                            res.send("登录失败");
+                        }
+                    });
+                });
+            }
         });
+
     });
 });
 
-var userExist = function (openid, cb) {
+var userExist = function (value, cb) {
+    pool.getConnection(function (err, conn) {
+        if(err) throw err;
+        conn.query('insert into user set ?',value, function (err,result) {
+            conn.release();
+            if(err) throw err;
+            if(result[0].affectedRows){
+                cb(err, 1);
+            }else{
+                cb(err, 0);
+            }
+        });
+    });
+};
+
+var addUserinfo = function (value, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
         conn.query('select * from user where openid = ?',openid, function (err,result) {
@@ -47,9 +69,8 @@ var userExist = function (openid, cb) {
 }
 var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
 
-
+//通过code换取网页授权access_token
 var getAccessToken = function (appid, secret, code, cb) {
-    //微信获取用户资料第二步通过code换取网页授权access_token
     var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code=" + code + "&grant_type=authorization_code"
     request.get({url:url ,form:{}}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -59,6 +80,7 @@ var getAccessToken = function (appid, secret, code, cb) {
     });
 };
 
+//通过access_token拉取用户信息
 var getUserinfo = function (access_token, openid, cb) {
     request.get({url:"https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid+"&lang=zh_CN ",form:{}}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
