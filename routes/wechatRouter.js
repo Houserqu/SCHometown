@@ -54,7 +54,7 @@ var getAccessToken = function (appid, secret, code, cb) {
     request.get({url:url ,form:{}}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var jsondata = JSON.parse(body);
-            cb(err, jsondata);
+            cb(error, jsondata);
         }
     });
 };
@@ -63,7 +63,7 @@ var getUserinfo = function (access_token, openid, cb) {
     request.get({url:"https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid+"&lang=zh_CN ",form:{}}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var userinfo = JSON.parse(body);
-            cb(err, userinfo);
+            cb(error, userinfo);
         }
     });
 };
