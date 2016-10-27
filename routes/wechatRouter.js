@@ -6,22 +6,25 @@ var wechatconfig = require("../config/wechat");
 var pool = require("../config/mysql");
 
 
-router.get('/responMsg',function (req, res, next) {
+router.get('/responMsg', function (req, res, next) {
 
 });
 
-router.get("/login",function (req, res, next) {
+router.get("/login", function (req, res, next) {
     var code = req.query.code;
     var state = req.query.state;
 
-    console.log(code);
+    console.log("code:" + code);
+    console.log("state:" + state);
 
-    var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx86caab40dba425ba&secret=d4624c36b6795d1d99dcf0547af5443d&code="+code+"&grant_type=authorization_code"
+    var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx86caab40dba425ba&secret=d4624c36b6795d1d99dcf0547af5443d&code=" + code + "&grant_type=authorization_code"
     https.get(url, function (redata) {
-        redata.on("data",function (data) {
-            console.log(data);
-            res.send(data);
+        redata.on("data", function (d) {
+            process.stdout.write(d);
+            console.log(d);
         });
+    }).on('error', function (e) {
+        console.error(e);
     });
 });
 
