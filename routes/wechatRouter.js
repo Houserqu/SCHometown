@@ -20,8 +20,12 @@ router.get("/login", function (req, res, next) {
     var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx86caab40dba425ba&secret=d4624c36b6795d1d99dcf0547af5443d&code=" + code + "&grant_type=authorization_code"
     https.get(url, function (redata) {
         redata.on("data", function (d) {
-            process.stdout.write(d);
             console.log(d);
+            https.get("https://api.weixin.qq.com/sns/userinfo?access_token="+d.access_token+"&openid="+d.openid+"&lang=zh_CN ", function (info) {
+                info.on("data",function (userinfo) {
+                    console.log(userinfo);
+                });
+            });
         });
     }).on('error', function (e) {
         console.error(e);
