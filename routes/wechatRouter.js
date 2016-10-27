@@ -19,7 +19,7 @@ router.get("/login", function (req, res, next) {
 
     //微信获取用户资料第二步通过code换取网页授权access_token
     var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx86caab40dba425ba&secret=d4624c36b6795d1d99dcf0547af5443d&code=" + code + "&grant_type=authorization_code"
-    request.get({url:url ,form:{}}, function (error, respon, body) {
+    request.get({url:url ,form:{}}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             console.log(body);
             var jsondata = JSON.parse(body);
