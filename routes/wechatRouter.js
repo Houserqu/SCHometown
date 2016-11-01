@@ -21,7 +21,14 @@ router.get("/login", function (req, res, next) {
         userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
             console.log("userexits:"+result);
             if(result.length > 0){
-                req.session.lastpage = {openid:result.openid, userid:result.iduser, nickname:result.nickname, headimgurl:result.headimgurl};
+                req.session.lastpage = {
+                    openid:result[0].openid,
+                    userid:result[0].userid,
+                    nickname:result[0].nickname,
+                    headimgurl:result[0].headimgurl,
+                    schoolid:result[0].schoolid,
+                    provinceid:result[0].homeprovinceid
+                };
 
                 res.redirect("/");
             }else{
@@ -90,7 +97,7 @@ var addUserinfo = function (value, cb) {
 var userExist = function (openid, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
-        conn.query('select * from user where openid = ?',openid, function (err,result) {
+        conn.query('select * from user_view where openid = ?',openid, function (err,result) {
             conn.release();
             if(err) throw err;
             console.log(result);
