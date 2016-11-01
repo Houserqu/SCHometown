@@ -20,7 +20,10 @@ router.get("/login", function (req, res, next) {
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret,code,function (err, accesstoken) {
         userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
             console.log("userexits:"+result);
-            if(result){
+            if(result.length > 0){
+                var usersession = {openid:result.openid, userid:result.iduser, nickname:result.nickname, headimgurl:result.headimgurl};
+                req.session.lastpage = usersession;//写入至session
+
                 res.redirect("/");
             }else{
                 getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, userinfo) {
@@ -30,10 +33,12 @@ router.get("/login", function (req, res, next) {
                     }else{
                         userinfo.privilege = userinfo.privilege.toString();
                         addUserinfo(userinfo, function (err, isadd) {
-                            if(err || isadd == 0) {
+                            console.log(isadd);
+                            if(err) {
                                 console.log(err);
                                 res.send("登录失败");
                             } else {
+
                                 res.redirect("/");
                             }
                         });
@@ -51,11 +56,7 @@ var addUserinfo = function (value, cb) {
         conn.query('insert into user set ?',value, function (err,result) {
             conn.release();
             if(err) throw err;
-            if(result.affectedRows){
-                cb(err, 1);
-            }else{
-                cb(err, 0);
-            }
+            cb(err, result);
         });
     });
 };
@@ -67,11 +68,7 @@ var userExist = function (openid, cb) {
             conn.release();
             if(err) throw err;
             console.log(result);
-            if(result.length > 0){
-                cb(err, 1);
-            }else{
-                cb(err, 0);
-            }
+            cb(err, result);
         });
     });
 }
