@@ -21,25 +21,40 @@ router.get("/login", function (req, res, next) {
         userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
             console.log("userexits:"+result);
             if(result.length > 0){
-                var usersession = {openid:result.openid, userid:result.iduser, nickname:result.nickname, headimgurl:result.headimgurl};
-                req.session.lastpage = usersession;//写入至session
+                req.session.lastpage = {openid:result.openid, userid:result.iduser, nickname:result.nickname, headimgurl:result.headimgurl};
 
                 res.redirect("/");
             }else{
-                getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, userinfo) {
-                    console.log(userinfo);
-                    if(userinfo.hasOwnProperty("errcode")){
+                getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, getuserinfo) { //拉取用户信息
+                    console.log(getuserinfo);
+                    if(getuserinfo.hasOwnProperty("errcode")){
                         res.send("登录失败")
                     }else{
-                        userinfo.privilege = userinfo.privilege.toString();
-                        addUserinfo(userinfo, function (err, isadd) {
+
+                        getuserinfo.privilege = getuserinfo.privilege.toString();
+                        addUser(getuserinfo, function (err, isadd) {   //添加新用户
                             console.log(isadd);
                             if(err) {
                                 console.log(err);
                                 res.send("登录失败");
-                            } else {
 
-                                res.redirect("/");
+                            } else {
+                                addUserinfo({userid: isadd.insertId},function (err, userinfo) {  //添加新userinfo
+
+                                    if(userinfo.affectedRows > 0) {
+                                        req.session.lastpage = {
+                                            openid: getuserinfo.openid,
+                                            userid: isadd.insertId,
+                                            nickname: getuserinfo.nickname,
+                                            headimgurl: getuserinfo.headimgurl
+                                        };
+
+                                        res.redirect("/user/basicinfo");
+                                    }
+                                    else
+                                        res.send("error");
+                                });
+
                             }
                         });
                     }
@@ -50,7 +65,7 @@ router.get("/login", function (req, res, next) {
     });
 });
 
-var addUserinfo = function (value, cb) {
+var addUser = function (value, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
         conn.query('insert into user set ?',value, function (err,result) {
@@ -60,6 +75,17 @@ var addUserinfo = function (value, cb) {
         });
     });
 };
+
+var addUserinfo = function (value, cb) {
+    pool.getConnection(function (err, conn) {
+        if(err) throw err;
+        conn.query('insert into userinfo set ?',value, function (err,result) {
+            conn.release();
+            if(err) throw err;
+            cb(err, result);
+        });
+    });
+}
 
 var userExist = function (openid, cb) {
     pool.getConnection(function (err, conn) {
