@@ -50,6 +50,7 @@ var addUserinfo = function (value, cb) {
         conn.query('insert into user set ?',value, function (err,result) {
             conn.release();
             if(err) throw err;
+            console.log(result);
             if(result.affectedRows){
                 cb(err, 1);
             }else{
