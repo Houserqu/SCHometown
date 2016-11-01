@@ -19,6 +19,7 @@ router.get("/login", function (req, res, next) {
 
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret,code,function (err, accesstoken) {
         userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
+            console.log("userexits:"+result);
             if(result){
                 res.redirect("/");
             }else{
@@ -66,7 +67,7 @@ var userExist = function (openid, cb) {
             conn.release();
             if(err) throw err;
             console.log(result);
-            if(result){
+            if(result.length > 0){
                 cb(err, 1);
             }else{
                 cb(err, 0);
