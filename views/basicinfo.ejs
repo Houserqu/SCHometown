@@ -166,7 +166,7 @@ $("#subbasicinfo").on("click", function () {
     if((nickname.length !=0) && (school.length !=0) && (hometown.length !=0)){
         $.ajax({
             type: "post",
-            url: "/user/updateuserinfo",
+            url: "/user/confirmbasicinfo",
             data: {column: "basicmodify", value: 0},
             dataType: "json",
             success: function (redata) {
