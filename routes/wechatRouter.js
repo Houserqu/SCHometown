@@ -29,7 +29,7 @@ router.get("/login", function (req, res, next) {
                     }else{
                         userinfo.privilege = userinfo.privilege.toString();
                         addUserinfo(userinfo, function (err, isadd) {
-                            if(err || isadd) {
+                            if(err || isadd == 0) {
                                 console.log(err);
                                 res.send("登录失败");
                             } else {
