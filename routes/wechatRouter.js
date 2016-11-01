@@ -27,6 +27,7 @@ router.get("/login", function (req, res, next) {
                     if(userinfo.hasOwnProperty("errcode")){
                         res.send("登录失败")
                     }else{
+                        userinfo.privilege = userinfo.privilege.toString();
                         addUserinfo(userinfo, function (err, isadd) {
                             if(err || isadd) {
                                 console.log(err);
