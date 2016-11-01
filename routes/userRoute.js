@@ -27,6 +27,7 @@ router.post('/updateuserinfo', function(req, res, next) {
 
 //添加学校,家乡省市信息页面
 router.get('/basicinfo', function(req, res, next) {
+    console.log(session.lastpage);
     userMd.getUserinfo(req.session.lastpage.userid,function (err, userinfo){
         if(userinfo[0].basicmodify == 0){
             res.redirect("/");
@@ -48,6 +49,8 @@ router.post('/updateuserhometown', function(req, res, next) {
 
 //修改确认基本信息
 router.post('/confirmbasicinfo', function(req, res, next) {
+    console.log(session.lastpage);
+    console.log(req.body);
     userMd.updateUserinfo( req.session.lastpage.userid, req.body.column, req.body.value, function (err, user) {
         userMd.getUserView(req.session.lastpage.userid,function (err,userinfo) {
             if(err) console.log(err);
