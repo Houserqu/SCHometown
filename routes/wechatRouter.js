@@ -4,13 +4,12 @@ var pool = require("../config/mysql");
 
 var router = express.Router();
 
-var pool = require("../config/mysql");
-
 var wechatconfig = {
     appid:"wx86caab40dba425ba",
     appsecret:"d4624c36b6795d1d99dcf0547af5443d",
     Token:"houser"
 }
+
 router.get('/responMsg', function (req, res, next) {
 
 });
@@ -24,14 +23,19 @@ router.get("/login", function (req, res, next) {
                 res.redirect("/");
             }else{
                 getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, userinfo) {
-                    addUserinfo(userinfo, function (err, isadd) {
-                        if(err) console.log(err);
-                        if(isadd){
-                            res.redirect("/");
-                        }else{
-                            res.send("登录失败");
-                        }
-                    });
+                    console.log(userinfo);
+                    if(userinfo.hasOwnProperty("errcode")){
+                        res.send("登录失败")
+                    }else{
+                        addUserinfo(userinfo, function (err, isadd) {
+                            if(err || isadd) {
+                                console.log(err);
+                                res.send("登录失败");
+                            } else {
+                                res.redirect("/");
+                            }
+                        });
+                    }
                 });
             }
         });
