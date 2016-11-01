@@ -27,21 +27,22 @@ router.post('/updateuserinfo', function(req, res, next) {
 
 //添加学校,家乡省市信息页面
 router.get('/basicinfo', function(req, res, next) {
-
-    console.log(req.session.lastpage);
-
-    userMd.getUserinfo(req.session.lastpage.userid,function (err, userinfo){
-        if(userinfo[0].basicmodify == 0){
-            res.redirect("/");
-        }else{
+    console.log(req.session.lastpage)
+    // console.log(req.session.lastpage);
+    //
+    // userMd.getUserinfo(req.session.lastpage.userid,function (err, userinfo){
+    //     if(userinfo[0].basicmodify == 0){
+    //         res.redirect("/");
+    //     }else{
             res.render('basicinfo');
-        }
-    });
+    //     }
+    // });
 
 });
 
 //修改userinfo家乡省份城市信息
 router.post('/updateuserhometown', function(req, res, next) {
+    console.log(req.body);
     userMd.updateUserHometown( req.session.lastpage.userid, req.body.pid, req.body.city, function (err, result) {
         if(err) console.log(err);
 
@@ -54,18 +55,25 @@ router.post('/confirmbasicinfo', function(req, res, next) {
     console.log(req.session.lastpage);
     console.log(req.body);
     userMd.updateUserinfo( req.session.lastpage.userid, req.body.column, req.body.value, function (err, user) {
-        userMd.getUserView(req.session.lastpage.userid,function (err,userinfo) {
-            if(err) console.log(err);
-            req.session.lastpage = {
-                openid:userinfo.openid,
-                userid:userinfo.iduser,
-                nickname:userinfo.nickname,
-                headimgurl:userinfo.headimgurl,
-                schoolid:userinfo.schoolid,
-                provinceid:userinfo.homeprovinceid
-            };
-            res.redirect("/");
-        });
+        if(err){
+            res.send({state:0})
+        }else{
+            userMd.getUserView(req.session.lastpage.userid,function (err,userinfo) {
+                if(err) console.log(err);
+                console.log(userinfo[0])
+                req.session.lastpage = {
+                    openid:userinfo[0].openid,
+                    userid:userinfo[0].userid,
+                    nickname:userinfo[0].nickname,
+                    headimgurl:userinfo[0].headimgurl,
+                    schoolid:userinfo[0].schoolid,
+                    provinceid:userinfo[0].homeprovinceid
+                };
+                console.log(req.session.lastpage);
+                res.send({state:1})
+            });
+        }
+
 
     });
 });

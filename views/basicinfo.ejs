@@ -45,13 +45,6 @@
         <div class="weui_cells weui_cells_form">
 
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label">昵称</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" id="user-nickname" type="text"/>
-                </div>
-            </div>
-
-            <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">家乡所在地</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input class="weui_input" id="user-hometown" type="text"/>
@@ -139,38 +132,20 @@ $("#user-school").schoolPicker({
         }
     });
 
-$("#user-nickname").on("change", function () {
-    $.ajax({
-        type: "post",
-        url: "/user/updateuser",
-        data: {column: "nickname", value: $(this).val()},
-        dataType: "json",
-        success: function (redata) {
-            if(!redata){
-                $.toast("修改失败","forbidden");
-            }
-        },
-        error: function () {
-            alert("网络错误");
-        }
-    });
-
-});
-
 //确认提交信息
 $("#subbasicinfo").on("click", function () {
     var nickname = $("#user-nickname").val();
     var school = $("#user-school").val();
     var hometown = $("#user-hometown").val();
 
-    if((nickname.length !=0) && (school.length !=0) && (hometown.length !=0)){
+    if((school.length !=0) && (hometown.length !=0)){
         $.ajax({
             type: "post",
             url: "/user/confirmbasicinfo",
             data: {column: "basicmodify", value: 0},
             dataType: "json",
             success: function (redata) {
-                if(redata){
+                if(redata.state){
                     $.toast("提交成功",function () {
                         window.location.href="/";
                     });

@@ -42,6 +42,12 @@ app.use(express.static(path.join(__dirname, 'upload')));
   }
   next();
 });*/
+//
+// app.use(function (req, res, next) {
+//     var usersession = {openid:'olAdmuKBW_YPTnjjx1wf_bvkjLao',userid:1,schoolid:1305,provinceid:13,nickname:'Houser',headimgurl:'/headimg/default.jpg', introduction:"技术与艺术"};
+//     req.session.lastpage = usersession;//写入至session
+//     next();
+// });
 
 app.use('/', square);
 //app.use('/login', login);
