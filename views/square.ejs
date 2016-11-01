@@ -157,13 +157,11 @@
                                 <h4 class="weui_media_title" style="color: #000000"><%= list[i].title %></h4>
                                 <p class="weui_media_desc"><%= list[i].content %></p>
                                 <ul class="weui_media_info">
-                                    <li class="weui_media_info_meta">发布</li>
                                     <li class="weui_media_info_meta"><%= new Date(list[i].origintime).Format('MM-dd') %></li>
                                     <li class="weui_media_info_meta weui_media_info_meta_extra">周期</li>
-                                    <li class="weui_media_info_meta"><%= new Date(list[i].starttime).Format('MM-dd') %></li>
+                                    <li class="weui_media_info_meta"><%= new Date(list[i].starttime).Format('MM-dd') %>至</li>
                                     <li class="weui_media_info_meta"><%= new Date(list[i].endtime).Format('MM-dd') %></li>
-                                    <li class="weui_media_info_meta weui_media_info_meta_extra">地点</li>
-                                    <li class="weui_media_info_meta"><%= list[i].address %></li>
+                                    <li class="weui_media_info_meta weui_media_info_meta_extra"><%= list[i].address %></li>
                                 </ul>
                             </div>
                         </div>
@@ -508,42 +506,42 @@
         </div>
         <div class="weui_tab_bd">
             <div id="friends-weibo" class="weui_tab_bd_item weui_tab_bd_item_active">
-                <div class="weui_panel">
-                    <div class="weui_panel_hd">消息</div>
-                    <div class="weui_panel_bd">
-                        <div class="weui_media_box weui_media_small_appmsg">
-                            <div class="weui_cells weui_cells_access">
-                                <a class="weui_cell" href="javascript:;">
-                                    <div class="weui_cell_hd"><img src="/images/active.png" alt=""
-                                                                   style="width:20px;margin-right:5px;display:block">
-                                    </div>
-                                    <div class="weui_cell_bd weui_cell_primary">
-                                        <p>活动参与</p>
-                                    </div>
-                                    <span class="weui_cell_ft"></span>
-                                </a>
-                                <a class="weui_cell" href="javascript:;">
-                                    <div class="weui_cell_hd"><img src="/images/comment.png" alt=""
-                                                                   style="width:20px;margin-right:5px;display:block">
-                                    </div>
-                                    <div class="weui_cell_bd weui_cell_primary">
-                                        <p>评论</p>
-                                    </div>
-                                    <span class="weui_cell_ft"></span>
-                                </a>
-                                <a class="weui_cell" href="javascript:;">
-                                    <div class="weui_cell_hd"><img src="/images/agree.png" alt=""
-                                                                   style="width:20px;margin-right:5px;display:block">
-                                    </div>
-                                    <div class="weui_cell_bd weui_cell_primary">
-                                        <p>赞</p>
-                                    </div>
-                                    <span class="weui_cell_ft"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="weui_panel">-->
+                    <!--<div class="weui_panel_hd">消息</div>-->
+                    <!--<div class="weui_panel_bd">-->
+                        <!--<div class="weui_media_box weui_media_small_appmsg">-->
+                            <!--<div class="weui_cells weui_cells_access">-->
+                                <!--<a class="weui_cell" href="javascript:;">-->
+                                    <!--<div class="weui_cell_hd"><img src="/images/active.png" alt=""-->
+                                                                   <!--style="width:20px;margin-right:5px;display:block">-->
+                                    <!--</div>-->
+                                    <!--<div class="weui_cell_bd weui_cell_primary">-->
+                                        <!--<p>活动参与</p>-->
+                                    <!--</div>-->
+                                    <!--<span class="weui_cell_ft"></span>-->
+                                <!--</a>-->
+                                <!--<a class="weui_cell" href="javascript:;">-->
+                                    <!--<div class="weui_cell_hd"><img src="/images/comment.png" alt=""-->
+                                                                   <!--style="width:20px;margin-right:5px;display:block">-->
+                                    <!--</div>-->
+                                    <!--<div class="weui_cell_bd weui_cell_primary">-->
+                                        <!--<p>评论</p>-->
+                                    <!--</div>-->
+                                    <!--<span class="weui_cell_ft"></span>-->
+                                <!--</a>-->
+                                <!--<a class="weui_cell" href="javascript:;">-->
+                                    <!--<div class="weui_cell_hd"><img src="/images/agree.png" alt=""-->
+                                                                   <!--style="width:20px;margin-right:5px;display:block">-->
+                                    <!--</div>-->
+                                    <!--<div class="weui_cell_bd weui_cell_primary">-->
+                                        <!--<p>赞</p>-->
+                                    <!--</div>-->
+                                    <!--<span class="weui_cell_ft"></span>-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="weui_panel">
                     <div class="weui_panel_bd">
                         <div class="weui_media_box weui_media_small_appmsg">

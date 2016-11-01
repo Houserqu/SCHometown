@@ -42,7 +42,6 @@ router.get('/basicinfo', function(req, res, next) {
 
 //修改userinfo家乡省份城市信息
 router.post('/updateuserhometown', function(req, res, next) {
-    console.log(req.body);
     userMd.updateUserHometown( req.session.lastpage.userid, req.body.pid, req.body.city, function (err, result) {
         if(err) console.log(err);
 
@@ -52,8 +51,6 @@ router.post('/updateuserhometown', function(req, res, next) {
 
 //修改确认基本信息
 router.post('/confirmbasicinfo', function(req, res, next) {
-    console.log(req.session.lastpage);
-    console.log(req.body);
     userMd.updateUserinfo( req.session.lastpage.userid, req.body.column, req.body.value, function (err, user) {
         if(err){
             res.send({state:0})
@@ -69,12 +66,9 @@ router.post('/confirmbasicinfo', function(req, res, next) {
                     schoolid:userinfo[0].schoolid,
                     provinceid:userinfo[0].homeprovinceid
                 };
-                console.log(req.session.lastpage);
                 res.send({state:1})
             });
         }
-
-
     });
 });
 
