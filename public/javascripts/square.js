@@ -202,7 +202,8 @@ $(document).ready(function () {
     }
 
     //查看动态图片
-    $('.weibocontent_imgs > img').on("click",function () {
+    $('.weibocontent_imgs > img').on("click",function (e) {
+
         var photoitem = new Array();
 
         var index = $(this).index();
@@ -217,6 +218,8 @@ $(document).ready(function () {
         var pb = $.photoBrowser({items:photoitem, initIndex:index});
 
         pb.open();
+
+        return false;
     });
 
     //分享弹出菜单

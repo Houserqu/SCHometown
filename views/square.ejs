@@ -64,13 +64,13 @@
                      data-autoplay="1000">
                     <div class="swiper-wrapper squareswiper-wrapper">
                         <div class="swiper-slide squareswiper-slide"><img
-                                    src="//gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i1/TB1n3rZHFXXXXX9XFXXXXXXXXXX_!!0-item_pic.jpg_320x320q60.jpg"
+                                    src="/boardcast/swiper1.jpg"
                                     alt=""></div>
                         <div class="swiper-slide squareswiper-slide"><img
-                                    src="//gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i4/TB10rkPGVXXXXXGapXXXXXXXXXX_!!0-item_pic.jpg_320x320q60.jpg"
+                                    src="/boardcast/swiper2.jpg"
                                     alt=""></div>
                         <div class="swiper-slide squareswiper-slide"><img
-                                    src="//gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i1/TB1kQI3HpXXXXbSXFXXXXXXXXXX_!!0-item_pic.jpg_320x320q60.jpg"
+                                    src="/boardcast/swiper3.jpg"
                                     alt=""></div>
                     </div>
                 </div>
@@ -158,8 +158,7 @@
                                 <p class="weui_media_desc"><%= list[i].content %></p>
                                 <ul class="weui_media_info">
                                     <li class="weui_media_info_meta"><%= new Date(list[i].origintime).Format('MM-dd') %></li>
-                                    <li class="weui_media_info_meta weui_media_info_meta_extra">周期</li>
-                                    <li class="weui_media_info_meta"><%= new Date(list[i].starttime).Format('MM-dd') %>至</li>
+                                    <li class="weui_media_info_meta weui_media_info_meta_extra"><%= new Date(list[i].starttime).Format('MM-dd') %> 至</li>
                                     <li class="weui_media_info_meta"><%= new Date(list[i].endtime).Format('MM-dd') %></li>
                                     <li class="weui_media_info_meta weui_media_info_meta_extra"><%= list[i].address %></li>
                                 </ul>
