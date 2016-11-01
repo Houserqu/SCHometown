@@ -65,6 +65,7 @@ var userExist = function (openid, cb) {
         conn.query('select * from user where openid = ?',openid, function (err,result) {
             conn.release();
             if(err) throw err;
+            console.log(result);
             if(result){
                 cb(err, 1);
             }else{
