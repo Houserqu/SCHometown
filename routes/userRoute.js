@@ -49,7 +49,7 @@ router.post('/updateuserhometown', function(req, res, next) {
 
 //修改确认基本信息
 router.post('/confirmbasicinfo', function(req, res, next) {
-    console.log(session.lastpage);
+    console.log(req.session.lastpage);
     console.log(req.body);
     userMd.updateUserinfo( req.session.lastpage.userid, req.body.column, req.body.value, function (err, user) {
         userMd.getUserView(req.session.lastpage.userid,function (err,userinfo) {
