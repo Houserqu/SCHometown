@@ -5,8 +5,8 @@ var pool = require("../config/mysql");
 var router = express.Router();
 
 var wechatconfig = {
-    appid:"wx86caab40dba425ba",
-    appsecret:"d4624c36b6795d1d99dcf0547af5443d",
+    appid:"wx43e92e841f4bfcc1",
+    appsecret:"c966f8621441ba80261bfaf8aad0849d",
     Token:"houser"
 };
 
@@ -117,7 +117,7 @@ var userExist = function (openid, cb) {
         });
     });
 };
-var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wechatconfig.appid+"&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
 
 //通过code换取网页授权access_token
 var getAccessToken = function (appid, secret, code, cb) {
