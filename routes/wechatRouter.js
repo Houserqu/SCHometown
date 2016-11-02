@@ -82,6 +82,51 @@ router.get("/login", function (req, res, next) {
     });
 });
 
+//微校配置
+router.get("/wexiao",function (req, res, next) {
+    var type = req.query.type;
+
+    switch (type){
+        case 'open' :
+            weixiaoopen(); break;
+        case 'close' :
+            weixiaoclose(); break;
+        case 'config' :
+            weixiaoconfig(); break;
+        case 'monitor' :
+            weixiaomonitor(); break;
+        case 'trigger' :
+            weixiaotrigger(); break;
+        default :
+             break;
+    }
+});
+
+//微校应用开启
+function weixiaoopen() {
+    
+}
+
+//微校应用关闭
+function weixiaoclose() {
+    
+}
+
+//微校应用开启
+function weixiaoconfig() {
+    
+}
+
+//微校应用开启
+function weixiaomonitor() {
+    
+}
+
+//微校应用开启
+function weixiaotrigger() {
+    
+}
+
 //添加用户
 var addUser = function (value, cb) {
     pool.getConnection(function (err, conn) {

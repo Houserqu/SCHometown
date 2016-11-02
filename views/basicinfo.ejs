@@ -139,24 +139,34 @@ $("#subbasicinfo").on("click", function () {
     var hometown = $("#user-hometown").val();
 
     if((school.length !=0) && (hometown.length !=0)){
-        $.ajax({
-            type: "post",
-            url: "/user/confirmbasicinfo",
-            data: {column: "basicmodify", value: 0},
-            dataType: "json",
-            success: function (redata) {
-                if(redata.state){
-                    $.toast("提交成功",function () {
-                        window.location.href="/";
-                    });
-                }else{
-                    $.toast("提交失败","forbidden");
-                }
+
+        $.confirm({
+            title: '确认提交?',
+            text: "学校 :"+school+'<br/>'+"家乡:"+hometown,
+            onOK: function () {
+                $.ajax({
+                    type: "post",
+                    url: "/user/confirmbasicinfo",
+                    data: {column: "basicmodify", value: 0},
+                    dataType: "json",
+                    success: function (redata) {
+                        if(redata.state){
+                            $.toast("提交成功",function () {
+                                window.location.href="/";
+                            });
+                        }else{
+                            $.toast("提交失败","forbidden");
+                        }
+                    },
+                    error: function () {
+                        alert("网络错误");
+                    }
+                });
             },
-            error: function () {
-                alert("网络错误");
+            onCancel: function () {
             }
         });
+
     } else{
         $.toast("请完整填写信息","cancel");
     }
