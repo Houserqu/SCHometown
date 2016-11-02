@@ -48,22 +48,23 @@ app.use(express.static(path.join(__dirname, 'upload')));
 //     req.session.lastpage = usersession;//写入至session
 //     next();
 // });
-//
-// app.use(function (req, res, next) {
-//     if (req.session.lastpage) {
-//         next();
-//     } else {
-//         // 解析用户请求的路径
-//         var arr = req.url.split('/');
-//
-//         if( arr[1]== 'wechat' && arr[2]=="login"){
-//             next();
-//         } else {  // 登录拦截
-//             res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');  // 将用户重定向到登录页面
-//         }
-//     }
-//
-// });
+
+app.use(function (req, res, next) {
+    console.log(req.session.lastpage);
+    if (req.session.lastpage) {
+        next();
+    } else {
+        // 解析用户请求的路径
+        var url = req.url;
+
+        if( url == "/wechat/login"){
+            next();
+        } else {  // 登录拦截
+            res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');  // 将用户重定向到登录页面
+        }
+    }
+
+});
 
 app.use('/', square);
 //app.use('/login', login);
