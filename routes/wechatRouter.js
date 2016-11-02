@@ -8,7 +8,7 @@ var wechatconfig = {
     appid:"wx86caab40dba425ba",
     appsecret:"d4624c36b6795d1d99dcf0547af5443d",
     Token:"houser"
-}
+};
 
 router.get('/responMsg', function (req, res, next) {
 
@@ -17,9 +17,15 @@ router.get('/responMsg', function (req, res, next) {
 router.get("/login", function (req, res, next) {
     var code = req.query.code;
 
+    //判断是否是微信服务器发送的请求
+    if(!code){
+        res.render("error",{error:"错误",message:"直接访问或者微信服务器错误,"});
+    }
+
+    //获取accesstoken
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret,code,function (err, accesstoken) {
         userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
-            console.log("userexits:"+result);
+            //存在,写入session
             if(result.length > 0){
                 req.session.lastpage = {
                     openid:result[0].openid,
@@ -32,7 +38,8 @@ router.get("/login", function (req, res, next) {
 
                 res.redirect("/");
             }else{
-                getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, getuserinfo) { //拉取用户信息
+                //拉取用户信息
+                getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, getuserinfo) {
                     console.log(getuserinfo);
                     if(getuserinfo.hasOwnProperty("errcode")){
                         res.send("登录失败")
@@ -72,6 +79,7 @@ router.get("/login", function (req, res, next) {
     });
 });
 
+//添加用户
 var addUser = function (value, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
@@ -83,6 +91,7 @@ var addUser = function (value, cb) {
     });
 };
 
+//添加用户信息
 var addUserinfo = function (value, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
@@ -92,7 +101,7 @@ var addUserinfo = function (value, cb) {
             cb(err, result);
         });
     });
-}
+};
 
 var userExist = function (openid, cb) {
     pool.getConnection(function (err, conn) {
@@ -104,7 +113,7 @@ var userExist = function (openid, cb) {
             cb(err, result);
         });
     });
-}
+};
 var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
 
 //通过code换取网页授权access_token
