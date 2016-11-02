@@ -1,5 +1,6 @@
 var express = require('express');
 var request = require("request");
+var md5 = require("md5");
 var pool = require("../config/mysql");
 
 var router = express.Router();
@@ -7,7 +8,8 @@ var router = express.Router();
 var wechatconfig = {
     appid:"wx43e92e841f4bfcc1",
     appsecret:"c966f8621441ba80261bfaf8aad0849d",
-    Token:"houser"
+    Token:"houser",
+    ApiSecret:"7B36DF4C1E8F184BBDC6D5AA3A15DDB3",   //微校
 };
 
 router.get('/responMsg', function (req, res, next) {
@@ -83,12 +85,16 @@ router.get("/login", function (req, res, next) {
 });
 
 //微校配置
-router.get("/wexiao",function (req, res, next) {
+router.get("/weixiao",function (req, res, next) {
     var type = req.query.type;
+    var postdata = req.body;
+
+    console.log(type);
+    console.log(postdata);
 
     switch (type){
         case 'open' :
-            weixiaoopen(); break;
+            weixiaoopen(postdata); break;
         case 'close' :
             weixiaoclose(); break;
         case 'config' :
@@ -103,8 +109,14 @@ router.get("/wexiao",function (req, res, next) {
 });
 
 //微校应用开启
-function weixiaoopen() {
-    
+function weixiaoopen(postdata) {
+    var sign = postdata.sign;
+    delete postdata.sign;
+
+    if(sign == calSign(postdata)){
+        var interval = new Date().getTime() - postdata.timestamp;
+    }
+
 }
 
 //微校应用关闭
@@ -125,6 +137,27 @@ function weixiaomonitor() {
 //微校应用开启
 function weixiaotrigger() {
     
+}
+
+//签名算法
+function calSign(jsondata) {
+    var keyarray = [];
+
+    for(var key in jsondata){
+        keyarray.push(key);
+    }
+    keyarray.sort();
+
+    var stringA = "";
+    keyarray.forEach(function (key) {
+        stringA += key+"="+jsondata[key]+"&";
+    });
+
+    stringA += "key="+wechatconfig.ApiSecret;
+    var signValue = md5(stringA);
+
+    return signValue.toUpperCase();
+
 }
 
 //添加用户
@@ -184,4 +217,6 @@ var getUserinfo = function (access_token, openid, cb) {
         }
     });
 };
+
+
 module.exports = router;
