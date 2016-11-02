@@ -18,13 +18,14 @@ router.get("/login", function (req, res, next) {
     var code = req.query.code;
 
     //判断是否是微信服务器发送的请求
-    if(!code){
-        res.render("error",{error:"错误",message:"直接访问或者微信服务器错误,"});
-    }
+    // if(!code){
+    //     res.render("error",{error:"错误",message:"直接访问或者微信服务器错误,"});
+    // }
 
     //获取accesstoken
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret,code,function (err, accesstoken) {
         userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
+            console.log("存在,写入session");
             //存在,写入session
             if(result.length > 0){
                 req.session.lastpage = {
@@ -38,6 +39,7 @@ router.get("/login", function (req, res, next) {
 
                 res.redirect("/");
             }else{
+                console.log("不存在,拉取用户信息");
                 //拉取用户信息
                 getUserinfo(accesstoken.access_token, accesstoken.openid,function (err, getuserinfo) {
                     console.log(getuserinfo);
