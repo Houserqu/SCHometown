@@ -50,14 +50,17 @@ app.use(express.static(path.join(__dirname, 'upload')));
 // });
 
 app.use(function (req, res, next) {
-    console.log(req.session.lastpage);
     if (req.session.lastpage) {
         next();
     } else {
         // 解析用户请求的路径
-        var url = req.url;
+        var arr = req.url.split('/');
+        // 去除 GET 请求路径上携带的参数
+        for (var i = 0, length = arr.length; i < length; i++) {
+            arr[i] = arr[i].split('?')[0];
+        }
 
-        if( url == "/wechat/login"){
+        if(arr.length > 2 && arr[1] == 'wechat' && arr[2]=='login'){
             next();
         } else {  // 登录拦截
             res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');  // 将用户重定向到登录页面
