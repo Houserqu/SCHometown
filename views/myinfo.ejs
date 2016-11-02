@@ -135,7 +135,9 @@
                     data: {column: "phone", value: input},
                     dataType: "json",
                     success: function (redata) {
-                        console.log(redata);
+                        if(redata.state.affectedRows){
+                            $.toptip('操作成功', 'success');
+                        }
                     },
                     error: function () {
                         alert("网络错误");
@@ -163,7 +165,9 @@
                     data: {column: "introduction", value: input},
                     dataType: "json",
                     success: function (redata) {
-                        console.log(redata);
+                        if(redata.state.affectedRows){
+                            $.toptip('操作成功', 'success');
+                        }
                     },
                     error: function () {
                         alert("网络错误");
@@ -191,7 +195,9 @@
                     data: {column: "wechatnumber", value: input},
                     dataType: "json",
                     success: function (redata) {
-                        console.log(redata);
+                        if(redata.state.affectedRows){
+                            $.toptip('操作成功', 'success');
+                        }
                     },
                     error: function () {
                         alert("网络错误");
@@ -219,7 +225,9 @@
                     data: {column: "nickname", value: input},
                     dataType: "json",
                     success: function (redata) {
-                        console.log(redata);
+                        if(redata.state.affectedRows){
+                            $.toptip('操作成功', 'success');
+                        }
                     },
                     error: function () {
                         alert("网络错误");

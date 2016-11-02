@@ -26,7 +26,7 @@
         <div class="bd">
 
             <div class="weui_cells weui_cells_access">
-                <a class="weui_cell" href="<%= "/user/userpage/" + activitydetail[0].openid %> ">
+                <a class="weui_cell" href="/friends/homefriendpage/<%=activitydetail[0].openid %>">
                     <div class="weui_cell_hd"><img id="headimg" src="<%= activitydetail[0].headimgurl %>"
                                                    alt="" style="width:40px;margin-right:5px;display:block"></div>
                     <div class="weui_cell_bd weui_cell_primary">
@@ -276,7 +276,7 @@
                                 var　nickname　=　$("#nickname").text();
                                 var time = new Date();
                                 var timestr = time.getMonth()+'-'+time.getDate()+' '+time.getHours()+':'+time.getMinutes();
-                                var　commenthtml　=　'<div class="weui_panel_bd"> <div class="weui_media_box weui_media_text"> <p class="weui_media_desc">'+comment+'</p> <ul class="weui_media_info"> <li class="weui_media_info_meta">'+nickname+'</li><li class="weui_media_info_meta">'+timestr+'</li> <li class="weui_media_info_meta weui_media_info_meta_extra">0赞 </li> </ul> </div> </div>';
+                                var　commenthtml　=　'<div class="weui_panel_bd"> <div class="weui_media_box weui_media_text"> <p class="weui_media_desc">'+comment+'</p> <ul class="weui_media_info"> <li class="weui_media_info_meta">'+nickname+'</li><li class="weui_media_info_meta weui_media_info_meta_extra">'+timestr+'</li></ul> </div> </div>';
                                 $("#commentslist").prepend(commenthtml);
                             });
 
