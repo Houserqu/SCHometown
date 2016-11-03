@@ -98,7 +98,7 @@ router.all("/weixiao",function (req, res, next) {
     }
 
     var postjson = JSON.parse(jsonstr);
-
+    console.log(postjson);
 
     switch (type){
         case 'open' :
@@ -121,11 +121,14 @@ function weixiaoopen(postdata,res) {
     var sign = postdata.sign;
     delete postdata.sign;
 
-    var calsign = calSign(postdata)
+    var calsign = calSign(postdata);
+    console.log(calsign);
 
     if(sign == calsign){
+        console.log("sing yew")
         var interval = Date.parse(new Date()) - postdata.timestamp*1000;
         if(interval < 600000){
+            console.log(interval);
             res.send({"errcode":0, "errmsg":"开启成功", "is_config":0});
         }else {
             res.send({"errcode":1, "errmsg":"超时", "is_config":0});
