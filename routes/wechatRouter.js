@@ -85,8 +85,8 @@ router.get("/login", function (req, res, next) {
 });
 
 //微校配置
-router.get("/weixiao",function (req, res, next) {
-    var type = req.query.type;
+router.get("/weixiao/:type",function (req, res, next) {
+    var type = req.param.type;
     var postdata = req.body;
 
     console.log(type);
