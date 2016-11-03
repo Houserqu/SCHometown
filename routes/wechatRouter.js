@@ -85,7 +85,7 @@ router.get("/login", function (req, res, next) {
 });
 
 //微校配置
-router.get("/weixiao/:type",function (req, res, next) {
+router.post("/weixiao/:type",function (req, res, next) {
     var type = req.param.type;
     var postdata = req.body;
 
@@ -115,6 +115,8 @@ function weixiaoopen(postdata) {
 
     if(sign == calSign(postdata)){
         var interval = new Date().getTime() - postdata.timestamp;
+
+        res.send({"errcode":0, "errmsg":"", "is_config":0})
     }
 
 }
