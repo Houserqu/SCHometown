@@ -114,6 +114,7 @@ function tojson(postdata) {
     for(var key in postdata){
         jsonstr = key;
     }
+    console.log(jsonstr);
     return JSON.parse(jsonstr);
 }
 
