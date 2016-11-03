@@ -92,19 +92,25 @@ router.all("/weixiao",function (req, res, next) {
     console.log(type);
     console.log(postdata);
 
-    res.send({"errcode":0, "errmsg":"", "is_config":0})
+    var jsonstr;
+    for(var key in returndata){
+        jsonstr = key;
+    }
+
+    var postjson = JSON.parse(jsonstr);
+
 
     switch (type){
         case 'open' :
-            weixiaoopen(postdata,res); break;
+            weixiaoopen(postjson,res); break;
         case 'close' :
-            weixiaoclose(); break;
+            weixiaoclose(postdata,res); break;
         case 'config' :
-            weixiaoconfig(); break;
+            weixiaoconfig(postdata,res); break;
         case 'monitor' :
-            weixiaomonitor(); break;
+            weixiaomonitor(postdata,res); break;
         case 'trigger' :
-            weixiaotrigger(); break;
+            weixiaotrigger(postdata,res); break;
         default :
              break;
     }
@@ -115,31 +121,53 @@ function weixiaoopen(postdata,res) {
     var sign = postdata.sign;
     delete postdata.sign;
 
-    if(sign == calSign(postdata)){
-        var interval = new Date().getTime() - postdata.timestamp;
+    var calsign = calSign(postdata)
 
-        res.send({"errcode":0, "errmsg":"", "is_config":0})
+    if(sign == calsign){
+        var interval = Date.parse(new Date()) - postdata.timestamp*1000;
+        if(interval < 600000){
+            res.send({"errcode":0, "errmsg":"开启成功", "is_config":0});
+        }else {
+            res.send({"errcode":1, "errmsg":"超时", "is_config":0});
+        }
+    }else{
+        res.send({"errcode":1, "errmsg":"签名错误", "is_config":0});
     }
+
 }
 
 //微校应用关闭
 function weixiaoclose() {
-    
+    var sign = postdata.sign;
+    delete postdata.sign;
+
+    var calsign = calSign(postdata)
+
+    if(sign == calsign){
+        var interval = Date.parse(new Date()) - postdata.timestamp*1000;
+        if(interval < 600000){
+            res.send({"errcode":0, "errmsg":"OK"});
+        }else {
+            res.send({"errcode":1, "errmsg":"超时"});
+        }
+    }else{
+        res.send({"errcode":1, "errmsg":"签名错误"});
+    }
 }
 
-//微校应用开启
+//微校应用配置
 function weixiaoconfig() {
     
 }
 
-//微校应用开启
+//微校应用监控
 function weixiaomonitor() {
     
 }
 
-//微校应用开启
+//微校应用触发
 function weixiaotrigger() {
-    
+    res.redirect(url);
 }
 
 //签名算法
