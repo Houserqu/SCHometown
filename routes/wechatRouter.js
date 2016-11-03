@@ -120,7 +120,7 @@ function tojson(postdata) {
 //微校应用开启
 function weixiaoopen(postdata,req,res) {
     var jsondata = tojson(postdata);
-    console.log("jsondata "+jsondata);
+    console.log("jsondata "+jsondata.toString());
 
     var sign = jsondata.sign;
     delete jsondata.sign;
