@@ -114,14 +114,12 @@ function tojson(postdata) {
     for(var key in postdata){
         jsonstr = key;
     }
-    console.log(jsonstr);
     return JSON.parse(jsonstr);
 }
 
 //微校应用开启
 function weixiaoopen(postdata,req,res) {
     var jsondata = tojson(postdata);
-    console.log("jsondata "+jsondata.toString());
 
     var sign = jsondata.sign;
     delete jsondata.sign;
@@ -233,7 +231,7 @@ var userExist = function (openid, cb) {
         });
     });
 };
-var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wechatconfig.appid+"&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx43e92e841f4bfcc1&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
 //通过code换取网页授权access_token
 var getAccessToken = function (appid, secret, code, cb) {
