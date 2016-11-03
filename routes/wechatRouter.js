@@ -127,12 +127,12 @@ function weixiaoopen(postdata,req,res) {
 
             pool.getConnection(function (err, conn) {
 
-                if(err) throw err;
+                if(err) console.log( err);
                 conn.query('select * from media where media_id = ?',mediainfo.media_id, function (err,result) {
-                    if(err) throw err;
+                    if(err) console.log( err);
                     if(result.affectedRows < 1){
                         conn.query('insert into media set ?',mediainfo, function (err, isadd) {
-                            if(err) throw err;
+                            if(err) console.log( err);
                         });
                     }
                 });
