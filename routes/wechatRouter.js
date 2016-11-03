@@ -10,6 +10,7 @@ var wechatconfig = {
     appsecret:"c966f8621441ba80261bfaf8aad0849d",
     Token:"houser",
     ApiSecret:"7B36DF4C1E8F184BBDC6D5AA3A15DDB3",   //微校
+    ApiKey:"88CD15FA61E0C03B"
 };
 
 router.get('/responMsg', function (req, res, next) {
@@ -28,7 +29,6 @@ router.get("/login", function (req, res, next) {
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret,code,function (err, accesstoken) {
         console.log(accesstoken);
         userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
-            console.log("存在,写入session");
             //存在,写入session
             if(result.length > 0){
                 req.session.lastpage = {
@@ -119,7 +119,26 @@ function tojson(postdata) {
 
 //微校应用开启
 function weixiaoopen(postdata,req,res) {
-    var jsondata = tojson(postdata);
+    var jsondata = tojson(postdata);    //处理获取的json
+
+    //保存公众信息
+    getmedia(jsondata,function (err,mediainfo) {
+        if(!mediainfo.hasOwnProperty("errcode")){
+
+            pool.getConnection(function (err, conn) {
+
+                if(err) throw err;
+                conn.query('select * from media where media_id = ?',mediainfo.media_id, function (err,result) {
+                    if(err) throw err;
+                    if(result.affectedRows < 1){
+                        conn.query('insert into media set ?',mediainfo, function (err, isadd) {
+                            if(err) throw err;
+                        });
+                    }
+                });
+            });
+        }
+    });
 
     var sign = jsondata.sign;
     delete jsondata.sign;
@@ -165,14 +184,30 @@ function weixiaoconfig(postdata,req,res) {
 
 //微校应用监控
 function weixiaomonitor(postdata,req,res) {
-    
+    res.send(req.jquery.echostr);
 }
 
 //微校应用触发
 function weixiaotrigger(postdata,req,res) {
+    var requertjson = {
+        media_id: req.query.media_id,
+        api_key:wechatconfig.ApiKey
+    };
+
     console.log(req.query.media_id);
     console.log("trigger");
     res.redirect(url);
+}
+
+//获取公众号信息
+function getmedia(postdata,cb) {
+    var url = "http://weixiao.qq.com/common/get_media_info";
+    request.post(postdata, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var mediadinfo = JSON.parse(body);
+            cb(error, mediadinfo);
+        }
+    });
 }
 
 //签名算法
@@ -193,7 +228,6 @@ function calSign(jsondata) {
     var signValue = md5(stringA);
 
     return signValue.toUpperCase();
-
 }
 
 //添加用户
@@ -231,7 +265,7 @@ var userExist = function (openid, cb) {
         });
     });
 };
-var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx43e92e841f4bfcc1&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
+var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wechatconfig.appid+"&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
 //通过code换取网页授权access_token
 var getAccessToken = function (appid, secret, code, cb) {
