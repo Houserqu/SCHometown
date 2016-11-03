@@ -122,13 +122,10 @@ function weixiaoopen(postdata,req,res) {
     delete postdata.sign;
 
     var calsign = calSign(postdata);
-    console.log(calsign);
 
     if(sign == calsign){
-        console.log("sing yew")
         var interval = Date.parse(new Date()) - postdata.timestamp*1000;
         if(interval < 600000){
-            console.log(interval);
             res.send({"errcode":0, "errmsg":"开启成功", "is_config":0});
         }else {
             res.send({"errcode":1, "errmsg":"超时", "is_config":0});
@@ -170,6 +167,8 @@ function weixiaomonitor(postdata,req,res) {
 
 //微校应用触发
 function weixiaotrigger(postdata,req,res) {
+    console.log(req.query.media_id);
+    console.log("trigger");
     res.redirect(url);
 }
 
