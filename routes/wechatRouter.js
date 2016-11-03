@@ -93,10 +93,10 @@ router.all("/weixiao",function (req, res, next) {
     console.log(postdata);
 
     var jsonstr;
-    for(var key in returndata){
+    for(var key in postdata){
         jsonstr = key;
     }
-
+    console.log(jsonstr);
     var postjson = JSON.parse(jsonstr);
     console.log(postjson);
 
