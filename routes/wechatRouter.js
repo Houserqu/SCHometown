@@ -126,7 +126,7 @@ function weixiaoopen(postdata,req,res) {
     var sign = jsondata.sign;
     delete jsondata.sign;
 
-    var calsign = calSign(postdata);
+    var calsign = calSign(jsondata);
 
     if(sign == calsign){
         var interval = Date.parse(new Date()) - jsondata.timestamp*1000;
