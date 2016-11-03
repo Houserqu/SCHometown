@@ -102,22 +102,22 @@ router.all("/weixiao",function (req, res, next) {
 
     switch (type){
         case 'open' :
-            weixiaoopen(postjson,res); break;
+            weixiaoopen(postdata,req,res); break;
         case 'close' :
-            weixiaoclose(postdata,res); break;
+            weixiaoclose(postdata,req,res); break;
         case 'config' :
-            weixiaoconfig(postdata,res); break;
+            weixiaoconfig(postdata,req,res); break;
         case 'monitor' :
-            weixiaomonitor(postdata,res); break;
+            weixiaomonitor(postdata,req,res); break;
         case 'trigger' :
-            weixiaotrigger(postdata,res); break;
+            weixiaotrigger(postdata,req,res); break;
         default :
              break;
     }
 });
 
 //微校应用开启
-function weixiaoopen(postdata,res) {
+function weixiaoopen(postdata,req,res) {
     var sign = postdata.sign;
     delete postdata.sign;
 
@@ -140,7 +140,7 @@ function weixiaoopen(postdata,res) {
 }
 
 //微校应用关闭
-function weixiaoclose() {
+function weixiaoclose(postdata,req,res) {
     var sign = postdata.sign;
     delete postdata.sign;
 
@@ -159,17 +159,17 @@ function weixiaoclose() {
 }
 
 //微校应用配置
-function weixiaoconfig() {
+function weixiaoconfig(postdata,req,res) {
     
 }
 
 //微校应用监控
-function weixiaomonitor() {
+function weixiaomonitor(postdata,req,res) {
     
 }
 
 //微校应用触发
-function weixiaotrigger() {
+function weixiaotrigger(postdata,req,res) {
     res.redirect(url);
 }
 
