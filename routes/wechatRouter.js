@@ -202,7 +202,7 @@ function weixiaotrigger(postdata,req,res) {
 //获取公众号信息
 function getmedia(postdata,cb) {
     var url = "http://weixiao.qq.com/common/get_media_info";
-    console.log(url);
+    console.log(postdata);
     request.post({url:url ,form:postdata}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var mediadinfo = JSON.parse(body);
