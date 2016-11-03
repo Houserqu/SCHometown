@@ -92,14 +92,6 @@ router.all("/weixiao",function (req, res, next) {
     console.log(type);
     console.log(postdata);
 
-    var jsonstr;
-    for(var key in postdata){
-        jsonstr = key;
-    }
-    console.log(jsonstr);
-    var postjson = JSON.parse(jsonstr);
-    console.log(postjson);
-
     switch (type){
         case 'open' :
             weixiaoopen(postdata,req,res); break;
@@ -116,15 +108,27 @@ router.all("/weixiao",function (req, res, next) {
     }
 });
 
+//将微校post处理为json
+function tojson(postdata) {
+    var jsonstr;
+    for(var key in postdata){
+        jsonstr = key;
+    }
+    return JSON.parse(jsonstr);
+}
+
 //微校应用开启
 function weixiaoopen(postdata,req,res) {
-    var sign = postdata.sign;
-    delete postdata.sign;
+    var jsondata = tojson(postdata);
+    console.log("jsondata "+jsondata);
+
+    var sign = jsondata.sign;
+    delete jsondata.sign;
 
     var calsign = calSign(postdata);
 
     if(sign == calsign){
-        var interval = Date.parse(new Date()) - postdata.timestamp*1000;
+        var interval = Date.parse(new Date()) - jsondata.timestamp*1000;
         if(interval < 600000){
             res.send({"errcode":0, "errmsg":"开启成功", "is_config":0});
         }else {
