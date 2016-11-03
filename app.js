@@ -62,7 +62,7 @@ app.use(function (req, res, next) {
             arr[i] = arr[i].split('?')[0];
         }
 
-        if(arr.length > 2 && arr[1] == 'wechat' && arr[2]=='login'){
+        if(arr.length > 2 && arr[1] == 'wechat' && (arr[2]=='login' || arr[2] == 'weixiao')){
             next();
         } else {  // 登录拦截
             res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');  // 将用户重定向到登录页面

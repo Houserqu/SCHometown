@@ -85,16 +85,18 @@ router.get("/login", function (req, res, next) {
 });
 
 //微校配置
-router.post("/weixiao/:type",function (req, res, next) {
-    var type = req.param.type;
+router.all("/weixiao",function (req, res, next) {
+    var type = req.query.type;
     var postdata = req.body;
 
     console.log(type);
     console.log(postdata);
 
+    res.send({"errcode":0, "errmsg":"", "is_config":0})
+
     switch (type){
         case 'open' :
-            weixiaoopen(postdata); break;
+            weixiaoopen(postdata,res); break;
         case 'close' :
             weixiaoclose(); break;
         case 'config' :
@@ -109,7 +111,7 @@ router.post("/weixiao/:type",function (req, res, next) {
 });
 
 //微校应用开启
-function weixiaoopen(postdata) {
+function weixiaoopen(postdata,res) {
     var sign = postdata.sign;
     delete postdata.sign;
 
@@ -118,7 +120,6 @@ function weixiaoopen(postdata) {
 
         res.send({"errcode":0, "errmsg":"", "is_config":0})
     }
-
 }
 
 //微校应用关闭
