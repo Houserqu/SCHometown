@@ -110,6 +110,9 @@ router.all("/weixiao",function (req, res, next) {
 
 //将微校post处理为json
 function tojson(postdata) {
+    if(postdata == null)
+        return {};
+
     var jsonstr;
     for(var key in postdata){
         jsonstr = key;
@@ -119,22 +122,22 @@ function tojson(postdata) {
 
 //微校应用开启
 function weixiaoopen(postdata,req,res) {
+    if(postdata == null)
+        res.send({"errcode":1, "errmsg":"参数错误", "is_config":0});
+
     var jsondata = tojson(postdata);    //处理获取的json
 
     //保存公众信息
     getmedia(jsondata,function (err,mediainfo) {
-        console.log(mediainfo);
 
         if(!mediainfo.hasOwnProperty("errcode")){
-            console.log("no errcode");
 
             pool.getConnection(function (err, conn) {
 
                 if(err) console.log( err);
                 conn.query('select * from media where media_id = ?',mediainfo.media_id, function (err,result) {
-                    console.log(result);
 
-                    if(err) console.log( err);
+                    if(err) throw(err);
                     if(result.length < 1){
                         pool.getConnection(function (err, addconn) {
                             addconn.query('insert into media set ?',mediainfo, function (err, isadd) {
