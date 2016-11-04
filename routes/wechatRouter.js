@@ -135,10 +135,12 @@ function weixiaoopen(postdata,req,res) {
                     console.log(result);
 
                     if(err) console.log( err);
-                    if(result.affectedRows < 1){
-                        conn.query('insert into media set ?',mediainfo, function (err, isadd) {
-                            if(err) console.log( err);
-                        });
+                    if(result.length < 1){
+                        pool.getConnection(function (err, addconn) {
+                            addconn.query('insert into media set ?',mediainfo, function (err, isadd) {
+                                if(err) console.log( err);
+                            });
+                        })
                     }
                 });
             });
