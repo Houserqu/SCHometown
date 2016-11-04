@@ -123,12 +123,17 @@ function weixiaoopen(postdata,req,res) {
 
     //保存公众信息
     getmedia(jsondata,function (err,mediainfo) {
+        console.log(mediainfo);
+
         if(!mediainfo.hasOwnProperty("errcode")){
+            console.log("no errcode");
 
             pool.getConnection(function (err, conn) {
 
                 if(err) console.log( err);
                 conn.query('select * from media where media_id = ?',mediainfo.media_id, function (err,result) {
+                    console.log(result);
+
                     if(err) console.log( err);
                     if(result.affectedRows < 1){
                         conn.query('insert into media set ?',mediainfo, function (err, isadd) {
@@ -202,15 +207,12 @@ function weixiaotrigger(postdata,req,res) {
 //获取公众号信息
 function getmedia(postdata,cb) {
     var url = "http://weixiao.qq.com/common/get_media_info";
-    console.log(postdata);
     var poststr = JSON.stringify(postdata);
-    console.log(poststr);
 
     request.post({url:url ,form:poststr}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            var mediadinfo = JSON.parse(body);
-            console.log(mediadinfo);
-            cb(error, mediadinfo);
+            var mediainfo = JSON.parse(body);
+            cb(error, mediainfo);
         }
     });
 }
