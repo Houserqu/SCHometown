@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'upload')));
 
 //获取并保存JSSDK 的signature
-app.use(function () {
+app.use(function (next) {
     var tokenurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx43e92e841f4bfcc1&secret=c966f8621441ba80261bfaf8aad0849d";
     request.get({url:tokenurl,form:{}},function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -56,6 +56,7 @@ app.use(function () {
                         jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage'] // 必填，需要使用的JS接口列表
                     };
                     console.log(global);
+                    next();
                 }
             });
         }
