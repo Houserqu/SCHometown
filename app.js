@@ -55,6 +55,7 @@ app.use(function () {
                         signature: signature,// 必填，签名，见附录1
                         jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage'] // 必填，需要使用的JS接口列表
                     }
+                    console.log(global);
                 }
             });
         }
