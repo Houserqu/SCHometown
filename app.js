@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var sha1 = require("sha1");
+var request = require("request");
 
 var square = require('./routes/squareRoute');
 var find = require('./routes/findRoute');
@@ -30,18 +32,35 @@ app.use(session({secret: 'hometown', cookie: {maxAge: 360000}, resave: false, sa
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'upload')));
 
-//登录拦截
-/*app.use(function (req, res, next) {
- if(!req.session.lastpage) {
+//获取并保存JSSDK 的signature
+app.use(function () {
+    var tokenurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+wechatconfig.appid+"&secret="+wechatconfig.appsecret;
+    request.get({url:tokenurl,form:{}},function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var jstoken = JSON.parse(body);
+            console.log(jstoken);
 
- var url = req.originalUrl;
+            var jsapiurl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+jstoken.access_token+"&type=jsapi"
+            request.get({url:jsapiurl,form:{}},function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var js_ticket = JSON.parse(body);
 
- if (url != "/loginpage" && url != "/login") {
- return res.redirect("/loginpage");
- }
- }
- next();
- });*/
+                    var sha1str = "jsapi_ticket="+js_ticket.ticket+"&noncestr=58FCEE6C341A454DCCC4BA4D44726888&timestamp=1478225876&url=http://wechat.itwang.wang/addweibo";
+                    var signature = sha1(sha1str);
+                    global.jssdkconfig = {
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: 'wx43e92e841f4bfcc1', // 必填，公众号的唯一标识
+                        timestamp: 1478225876, // 必填，生成签名的时间戳
+                        nonceStr: '58FCEE6C341A454DCCC4BA4D44726888', // 必填，生成签名的随机串
+                        signature: signature,// 必填，签名，见附录1
+                        jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage'] // 必填，需要使用的JS接口列表
+                    }
+                }
+            });
+        }
+    });
+});
+
 //
 // app.use(function (req, res, next) {
 //     var usersession = {openid:'olAdmuKBW_YPTnjjx1wf_bvkjLao',userid:1,schoolid:1305,provinceid:13,nickname:'Houser',headimgurl:'/headimg/default.jpg', introduction:"技术与艺术"};
@@ -77,14 +96,6 @@ app.use('/friends', friends);
 app.use('/user', user);
 app.use('/wechat', wechat);
 app.use('/find/hometown', findHometown);  //发现-校乡汇模块
-
-/*app.get('/login',function (req,res) {
- if(req.session.lastPage) {
- console.log('Last page was: ' + req.session.lastPage + ".");
- }
- req.session.lastPage = {'schoolid':'123','proviceid':'123'}; //每一次访问时，session对象的lastPage会自动的保存或更新内存中的session中去。
- res.send("You're Awesome. And the session expired time is: " + req.session.cookie.maxAge);
- });*/
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

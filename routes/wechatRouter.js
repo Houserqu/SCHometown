@@ -305,4 +305,23 @@ var getUserinfo = function (access_token, openid, cb) {
 };
 
 
+//JSSDL 获取access_token
+function getJstoken(err, cd){
+    var tokenurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+wechatconfig.appid+"&secret="+wechatconfig.appsecret;
+    request.get({url:url,form:{}},function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var tokenurl = JSON.parse(body);
+            console.log(jstoken);
+            var jsapiurl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+jstoken.access_token+"&type=jsapi"
+            request.get({url:jsapiurl,form:{}},function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var js_ticket = JSON.parse(body);
+
+                    var sha1str = "jsapi_ticket="+js_ticket.ticket+"&noncestr=58FCEE6C341A454DCCC4BA4D44726888&timestamp=1478225876&url=http://wechat.itwang.wang/addweibo";
+                }
+            });
+        }
+    });
+}
+
 module.exports = router;

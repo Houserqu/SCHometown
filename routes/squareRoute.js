@@ -214,7 +214,6 @@ router.post('/editactivity/add', function (req, res, next) {
 
 //发布动态页面
 router.get('/addweibo', function (req, res) {
-
     res.render("addweibo");
 });
 
