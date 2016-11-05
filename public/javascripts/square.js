@@ -144,14 +144,12 @@ $(document).ready(function () {
             success: function (redata) {
                 if(redata.state){
                     var html = '';
-                    console.log(redata);
                     for (var i = 0; i < redata.weibolist.length; i++) {
                         var imghtml = "";
                         var time = "";
                         if(redata.weibolist[i].imgurl != "" && redata.weibolist[i].imgurl != null) {
                             var imgs = redata.weibolist[i].imgurl.split("||");
                             imgs.pop();
-                            console.log(imgs);
                             imgs.forEach(function (img) {
                                 imghtml += "<img src='/weiboimg/" + img + "'>"
                             });

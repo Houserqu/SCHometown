@@ -123,7 +123,7 @@ function tojson(postdata) {
 //微校应用开启
 function weixiaoopen(postdata,req,res) {
     if(postdata == null){
-        res.send({"errcode":0, "errmsg":"参数错误", "is_config":0});
+        res.send({"errcode":1, "errmsg":"参数错误", "is_config":0});
 
     }else{
         var jsondata = tojson(postdata);    //处理获取的json
