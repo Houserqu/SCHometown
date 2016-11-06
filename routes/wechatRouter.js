@@ -123,7 +123,7 @@ function tojson(postdata) {
         jsonstr = key;
     }
     return JSON.parse(jsonstr);
-}
+};
 
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
@@ -137,6 +137,8 @@ function weixiaoopen(postdata, req, res) {
         getmedia(jsondata, function (err, mediainfo) {
 
             if (!mediainfo.hasOwnProperty("errcode")) {
+
+                console.log(mediainfo);
 
                 pool.getConnection(function (err, conn) {
 
