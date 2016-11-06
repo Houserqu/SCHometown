@@ -126,7 +126,13 @@
         });
 
 
-        wx.config(<%=global.jssdkconfig%>);
+        wx.config({
+            debug: true,
+            appId: 'wx43e92e841f4bfcc1',
+            timestamp: 1478225876,
+            nonceStr: '58FCEE6C341A454DCCC4BA4D44726888',
+            signature: '8405e79cf6045d7be54530956ef2af10603ccfdf',
+            jsApiList: [ 'chooseImage', 'previewImage', 'uploadImage', 'downloadImage' ] } );
 
         wx.ready(function(){
             alert("jssdk")
