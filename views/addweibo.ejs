@@ -52,7 +52,7 @@
 <script src="javascripts/jquery-weui.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <!--拓展-->
-<script src="/javascripts/swiper.js"></script>
+<script src="javascripts/swiper.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         var weiboimgurls = "";
@@ -125,17 +125,25 @@
             }
         });
 
+        var jssdkconfig = {
+            debug: '<%= global.jssdkconfig.debug%>',
+            appId: '<%= global.jssdkconfig.appId%>',
+            timestamp: '<%= global.jssdkconfig.timestamp%>',
+            nonceStr: '<%= global.jssdkconfig.nonceStr%>',
+            signature: '<%= global.jssdkconfig.signature%>',
+            jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage']
+        };
 
-        wx.config('<%=global.jssdkconfig%>');
+        console.log(jssdkconfig);
+
+        wx.config(jssdkconfig);
 
         wx.ready(function(){
             alert("jssdk")
-            console.log(global.jssdkconfig);
         });
 
         wx.error(function(res){
             alert(res)
-            console.log(global.jssdkconfig);
         });
     });
 
