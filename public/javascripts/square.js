@@ -157,7 +157,7 @@ $(document).ready(function () {
 
                         time = reverseTime(redata.weibolist[i].origintime);
 
-                        html += '<div class="weui_panel weui_panel_access"><div class="weui_panel_hd">'+redata.weibolist[i].nickname+'发表动态</div><div class="weui_panel_bd"> <div class="weui_media_box weui_media_text weibocontent"> <p class="weui_media_desc">'+redata.weibolist[i].content+'</p> <div class="weibocontent_imgs">'+imghtml+'<div style="clear: both"></div> </div> <ul class="weui_media_info"> <li class="weui_media_info_meta">'+time+'</li> <li class="weui_media_info_meta weui_media_info_meta_extra">评论</li> </ul> </div> </div> </div>'
+                        html += '<div class="weui_panel weui_panel_access"><div class="weui_panel_hd">'+redata.weibolist[i].nickname+'发表动态</div><div class="weui_panel_bd"> <div class="weui_media_box weui_media_text weibocontent"> <p class="weui_media_desc">'+redata.weibolist[i].content+'</p> <div class="weibocontent_imgs">'+imghtml+'<div style="clear: both"></div> </div> <ul class="weui_media_info"> <li class="weui_media_info_meta">'+time+'</li></ul> </div> </div> </div>'
                     }
                     $("#friends-weibo").append(html);
 

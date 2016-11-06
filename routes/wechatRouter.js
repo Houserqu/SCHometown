@@ -19,7 +19,7 @@ router.get('/responMsg', function (req, res, next) {
 
 router.get("/login", function (req, res, next) {
     var code = req.query.code;
-    console.log(code);
+    console.log("code:"+code);
     //判断是否是微信服务器发送的请求
     // if(!code){
     //     res.render("error",{error:"错误",message:"直接访问或者微信服务器错误,"});
@@ -27,7 +27,7 @@ router.get("/login", function (req, res, next) {
 
     //获取accesstoken
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
-        console.log(accesstoken);
+        console.log("accesstoken:"+accesstoken);
         userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
             //存在,写入session
             if (result.length > 0) {
@@ -135,10 +135,9 @@ function weixiaoopen(postdata, req, res) {
 
         //保存公众信息
         getmedia(jsondata, function (err, mediainfo) {
+            console.log(mediainfo);
 
             if (!mediainfo.hasOwnProperty("errcode")) {
-
-                console.log(mediainfo);
 
                 pool.getConnection(function (err, conn) {
 
