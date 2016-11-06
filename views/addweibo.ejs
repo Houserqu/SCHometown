@@ -30,9 +30,8 @@
                         <ul class="weui_uploader_files" id="uploaded_imgs">
                         </ul>
                         <div class="weui_uploader_input_wrp">
-                            <!--<input id="uploadimg" class="weui_uploader_input" type="file"-->
-                                   <!--accept="image/jpg,image/jpeg,image/png,image/gif" multiple="multiple">-->
-                            <button id="uploadimg">上传图片</button>
+                            <input id="uploadimg" class="weui_uploader_input" type="file"
+                                   accept="image/jpg,image/jpeg,image/png,image/gif" multiple="multiple">
                         </div>
                     </div>
                 </div>
@@ -49,8 +48,6 @@
 <script src="javascripts/jquery.min.js"></script>
 <script src="javascripts/jquery-weui.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<!--拓展-->
-<script src="javascripts/swiper.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         var weiboimgurls = "";
@@ -81,74 +78,64 @@
 
         //上传动态图片
         $("#uploadimg").on("change", function () {
-//            var files = $(this)[0].files;
-//            console.log(files);
-//            if (files.length) {
-//                var formData = new FormData();
-//                var fileslength = files.length;
-//                for (var i = 0; i < fileslength; i++) {
-//                    formData.append("img"+i, files[i]);
-//                }
-//
-//                $.ajax({
-//                    url: '/upweiboimg',
-//                    type: 'POST',
-//                    cache: false,
-//                    data: formData,
-//                    processData: false,
-//                    contentType: false,
-//                    success : function (redata) {
-//                        console.log(redata);
-//                        if(redata.code){
-//                            weiboimgurls += redata.info;
-//                            var urls = redata.info.split("||");
-//                            console.log(urls);
-//                            var uploaded_html = "";
-//                            var urlslength = urls.length-1;
-//                            for(var i=0; i < urlslength; i++){
-//                                uploaded_html += "<li class='weui_uploader_file' style='background-image:url(/weiboimg/"+urls[i]+")'></li>";
-//                            }
-//
-//                            $("#uploaded_imgs").append(uploaded_html);
-//                            $("#uploaded_number").text(urlslength+"/5");
-//
-//                        }else{
-//                            $.toast(redata.info, "forbidden");
-//                        }
-//                    },
-//                    error : function () {
-//                        $.toast("网络错误", "forbidden");
-//                    }
-//                });
-//            }
-            wx.chooseImage({
-                count: 2, // 默认9
-                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                success: function (res) {
-                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+            var files = $(this)[0].files;
+            console.log(files);
+            if (files.length) {
+                var formData = new FormData();
+                var fileslength = files.length;
+                for (var i = 0; i < fileslength; i++) {
+                    formData.append("img"+i, files[i]);
                 }
-            });
+
+                $.ajax({
+                    url: '/upweiboimg',
+                    type: 'POST',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success : function (redata) {
+                        console.log(redata);
+                        if(redata.code){
+                            weiboimgurls += redata.info;
+                            var urls = redata.info.split("||");
+                            console.log(urls);
+                            var uploaded_html = "";
+                            var urlslength = urls.length-1;
+                            for(var i=0; i < urlslength; i++){
+                                uploaded_html += "<li class='weui_uploader_file' style='background-image:url(/weiboimg/"+urls[i]+")'></li>";
+                            }
+
+                            $("#uploaded_imgs").append(uploaded_html);
+                            $("#uploaded_number").text(urlslength+"/5");
+
+                        }else{
+                            $.toast(redata.info, "forbidden");
+                        }
+                    },
+                    error : function () {
+                        $.toast("网络错误", "forbidden");
+                    }
+                });
+            }
+//            wx.chooseImage({
+//                count: 2, // 默认9
+//                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+//                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+//                success: function (res) {
+//                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+//                }
+//            });
         });
 
-        var jssdkconfig = {
-            debug: '<%= global.jssdkconfig.debug%>',
-            appId: '<%= global.jssdkconfig.appId%>',
-            timestamp: '<%= global.jssdkconfig.timestamp%>',
-            nonceStr: '<%= global.jssdkconfig.nonceStr%>',
-            signature: '<%= global.jssdkconfig.signature%>',
-            jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage']
-        };
-
-        wx.config(jssdkconfig);
-
-        wx.ready(function(){
-            alert("jssdk")
-        });
-
-        wx.error(function(res){
-            alert(res)
-        });
+        <!--var jssdkconfig = {-->
+            <!--debug: '<%= global.jssdkconfig.debug%>',-->
+            <!--appId: '<%= global.jssdkconfig.appId%>',-->
+            <!--timestamp: '<%= global.jssdkconfig.timestamp%>',-->
+            <!--nonceStr: '<%= global.jssdkconfig.nonceStr%>',-->
+            <!--signature: '<%= global.jssdkconfig.signature%>',-->
+            <!--jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage']-->
+        <!--};-->
 
 
     });
