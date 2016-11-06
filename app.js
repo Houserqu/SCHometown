@@ -34,36 +34,9 @@ app.use(express.static(path.join(__dirname, 'upload')));
 
 //获取并保存JSSDK 的signature
 app.use(function (req,res,next) {
-    setInterval(function () {
-        var tokenurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx43e92e841f4bfcc1&secret=c966f8621441ba80261bfaf8aad0849d";
-        request.get({url:tokenurl,form:{}},function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var jstoken = JSON.parse(body);
-                console.log(jstoken);
-
-                var jsapiurl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+jstoken.access_token+"&type=jsapi"
-                request.get({url:jsapiurl,form:{}},function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        var js_ticket = JSON.parse(body);
-
-                        var sha1str = "jsapi_ticket="+js_ticket.ticket+"&noncestr=58FCEE6C341A454DCCC4BA4D44726888&timestamp=1478225876&url=http://wechat.itwang.wang/addweibo";
-                        var signature = sha1(sha1str);
-                        global.jssdkconfig = {
-                            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                            appId: 'wx43e92e841f4bfcc1', // 必填，公众号的唯一标识
-                            timestamp: 1478225876, // 必填，生成签名的时间戳
-                            nonceStr: '58FCEE6C341A454DCCC4BA4D44726888', // 必填，生成签名的随机串
-                            signature: signature,// 必填，签名，见附录1
-                            jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage'] // 必填，需要使用的JS接口列表
-                        };
-
-                    }
-                    next();
-                });
-            }
-        });
-    },5400000);
-
+    refreshJSSDK();
+    setInterval(refreshJSSDK,5400000);
+    next();
 });
 
 
@@ -135,5 +108,32 @@ app.use(function (err, req, res, next) {
     });
 });
 
+function refreshJSSDK() {
+    var tokenurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx43e92e841f4bfcc1&secret=c966f8621441ba80261bfaf8aad0849d";
+    request.get({url:tokenurl,form:{}},function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var jstoken = JSON.parse(body);
+            console.log(jstoken);
+
+            var jsapiurl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+jstoken.access_token+"&type=jsapi"
+            request.get({url:jsapiurl,form:{}},function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var js_ticket = JSON.parse(body);
+
+                    var sha1str = "jsapi_ticket="+js_ticket.ticket+"&noncestr=58FCEE6C341A454DCCC4BA4D44726888&timestamp=1478225876&url=http://wechat.itwang.wang/addweibo";
+                    var signature = sha1(sha1str);
+                    global.jssdkconfig = {
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: 'wx43e92e841f4bfcc1', // 必填，公众号的唯一标识
+                        timestamp: 1478225876, // 必填，生成签名的时间戳
+                        nonceStr: '58FCEE6C341A454DCCC4BA4D44726888', // 必填，生成签名的随机串
+                        signature: signature,// 必填，签名，见附录1
+                        jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage'] // 必填，需要使用的JS接口列表
+                    };
+                }
+            });
+        }
+    });
+}
 
 module.exports = app;
