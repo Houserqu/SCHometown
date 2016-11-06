@@ -108,6 +108,7 @@ app.use(function (err, req, res, next) {
     });
 });
 
+//刷新jssdk的配置,并保存到全局变量中
 function refreshJSSDK() {
     var tokenurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx43e92e841f4bfcc1&secret=c966f8621441ba80261bfaf8aad0849d";
     request.get({url:tokenurl,form:{}},function (error, response, body) {

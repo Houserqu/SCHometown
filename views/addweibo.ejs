@@ -83,46 +83,54 @@
 
         //上传动态图片
         $("#uploadimg").on("change", function () {
-            var files = $(this)[0].files;
-            console.log(files);
-            if (files.length) {
-                var formData = new FormData();
-                var fileslength = files.length;
-                for (var i = 0; i < fileslength; i++) {
-                    formData.append("img"+i, files[i]);
+//            var files = $(this)[0].files;
+//            console.log(files);
+//            if (files.length) {
+//                var formData = new FormData();
+//                var fileslength = files.length;
+//                for (var i = 0; i < fileslength; i++) {
+//                    formData.append("img"+i, files[i]);
+//                }
+//
+//                $.ajax({
+//                    url: '/upweiboimg',
+//                    type: 'POST',
+//                    cache: false,
+//                    data: formData,
+//                    processData: false,
+//                    contentType: false,
+//                    success : function (redata) {
+//                        console.log(redata);
+//                        if(redata.code){
+//                            weiboimgurls += redata.info;
+//                            var urls = redata.info.split("||");
+//                            console.log(urls);
+//                            var uploaded_html = "";
+//                            var urlslength = urls.length-1;
+//                            for(var i=0; i < urlslength; i++){
+//                                uploaded_html += "<li class='weui_uploader_file' style='background-image:url(/weiboimg/"+urls[i]+")'></li>";
+//                            }
+//
+//                            $("#uploaded_imgs").append(uploaded_html);
+//                            $("#uploaded_number").text(urlslength+"/5");
+//
+//                        }else{
+//                            $.toast(redata.info, "forbidden");
+//                        }
+//                    },
+//                    error : function () {
+//                        $.toast("网络错误", "forbidden");
+//                    }
+//                });
+//            }
+            wx.chooseImage({
+                count: 2, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                 }
-
-                $.ajax({
-                    url: '/upweiboimg',
-                    type: 'POST',
-                    cache: false,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success : function (redata) {
-                        console.log(redata);
-                        if(redata.code){
-                            weiboimgurls += redata.info;
-                            var urls = redata.info.split("||");
-                            console.log(urls);
-                            var uploaded_html = "";
-                            var urlslength = urls.length-1;
-                            for(var i=0; i < urlslength; i++){
-                                uploaded_html += "<li class='weui_uploader_file' style='background-image:url(/weiboimg/"+urls[i]+")'></li>";
-                            }
-
-                            $("#uploaded_imgs").append(uploaded_html);
-                            $("#uploaded_number").text(urlslength+"/5");
-
-                        }else{
-                            $.toast(redata.info, "forbidden");
-                        }
-                    },
-                    error : function () {
-                        $.toast("网络错误", "forbidden");
-                    }
-                });
-            }
+            });
         });
 
         var jssdkconfig = {
@@ -134,8 +142,6 @@
             jsApiList: ['chooseImage','previewImage','uploadImage','downloadImage']
         };
 
-        console.log(jssdkconfig);
-
         wx.config(jssdkconfig);
 
         wx.ready(function(){
@@ -145,6 +151,8 @@
         wx.error(function(res){
             alert(res)
         });
+
+
     });
 
 
