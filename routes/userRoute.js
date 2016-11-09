@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var userMd = require('../model/userModel');
+var hometown = require('../model/hometownModel');
 
 //查看个人信息
 router.get('/myinfo', function (req, res, next) {
@@ -27,11 +28,16 @@ router.post('/updateuserinfo', function (req, res, next) {
 
 //添加学校,家乡省市信息页面
 router.get('/basicinfo', function (req, res, next) {
+    console.log(req.session.lastpage);
     userMd.getUserinfo(req.session.lastpage.userid, function (err, userinfo) {
         if (userinfo[0].basicmodify == 0) {
             res.redirect("/");
         } else {
-            res.render('basicinfo');
+            hometown.getMedia(req.session.lastpage.media_id,function (err, result) {
+                console.log(result);
+                res.render('basicinfo',{media:result[0]});
+            });
+
         }
     });
 });

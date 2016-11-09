@@ -15,10 +15,10 @@ friendMd.getGoodFriends = function (userid, cb) {
 };
 
 //获取乡友列表
-friendMd.getHomeFriends = function (schoolid, provinceid, cb) {
+friendMd.getHomeFriends = function (media_id, provinceid, cb) {
     pool.getConnection(function (err, conn) {
         if(err) throw err;
-        conn.query("select * from user_view where schoolid = ? AND homeprovinceid = ?",[schoolid, provinceid], function (err,results) {
+        conn.query("select * from user_view where media_id = ? AND homeprovinceid = ?",[media_id, provinceid], function (err,results) {
             conn.release();
             console.log(results);
             if(err) throw err;

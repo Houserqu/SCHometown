@@ -1,47 +1,68 @@
 var pool = require("../config/mysql");
 
-var hometownMd = function () { };
+var hometownMd = function () {
+};
 
 //获取老乡会信息
-hometownMd.getHometown = function (schoolid, homeprovinceid, cb) {
-    pool.getConnection(function(err, conn){
-        conn.query("select * from hometown_view where schoolid = ? and homeprovinceid = ?", [schoolid, homeprovinceid], function (err, result) {
-            conn.release();
-            if(err) throw err;
-            cb(err,result[0]);
+hometownMd.getHometown = function (media_id, homeprovinceid, cb) {
+    pool.getConnection(function (err, conn) {
+        conn.query("select * from media where media_id = ? ", media_id, function (err, mediaresult) {
+
+            conn.query("select * from province_info where idprovince = ? ", homeprovinceid, function (err, provinceresult) {
+                conn.release();
+                cb(err, {
+                    schoolname: mediaresult[0].school_name,
+                    media_id: media_id,
+                    media_name:mediaresult[0].name,
+                    homeprovince: provinceresult[0].provincename,
+                    homeprovinceid: homeprovinceid
+                });
+            });
         });
     });
 };
 
 //获取老乡会活动数量
-hometownMd.getAcyivityNumber = function (schoolid, provinceid, cb) {
-    pool.getConnection(function(err, conn){
-        conn.query("select * from activity where schoolid = ? and provinceid = ?", [schoolid, provinceid], function (err, result) {
+hometownMd.getMedia = function (media_id,  cb) {
+    console.log(media_id);
+    pool.getConnection(function (err, conn) {
+        conn.query("select * from media where media_id = ? ", media_id, function (err, result) {
             conn.release();
-            if(err) throw err;
-            cb(err,result.length);
+            if (err) throw err;
+            cb(err, result);
+        });
+    });
+};
+
+//获取老乡会活动数量
+hometownMd.getAcyivityNumber = function (media_id, homeprovinceid, cb) {
+    pool.getConnection(function (err, conn) {
+        conn.query("select * from activity where media_id = ? and homeprovinceid = ?", [media_id, homeprovinceid], function (err, result) {
+            conn.release();
+            if (err) throw err;
+            cb(err, result.length);
         });
     });
 };
 
 //获取老乡会动态数量
-hometownMd.getWeiboNumber = function (schoolid, homeprovinceid, cb) {
-    pool.getConnection(function(err, conn){
-        conn.query("select * from weibo_view where schoolid = ? and homeprovinceid = ?", [schoolid, homeprovinceid], function (err, result) {
+hometownMd.getWeiboNumber = function (media_id, homeprovinceid, cb) {
+    pool.getConnection(function (err, conn) {
+        conn.query("select * from weibo_view where media_id = ? and homeprovinceid = ?", [media_id, homeprovinceid], function (err, result) {
             conn.release();
-            if(err) throw err;
-            cb(err,result.length);
+            if (err) throw err;
+            cb(err, result.length);
         });
     });
 };
 
 //获取乡友数量
-hometownMd.getHomeFriendsNumber = function (schoolid, provinceid, cb) {
+hometownMd.getHomeFriendsNumber = function (media_id, homeprovinceid, cb) {
     pool.getConnection(function (err, conn) {
-        if(err) throw err;
-        conn.query("select * from user_view where schoolid = ? AND homeprovinceid = ?",[schoolid, provinceid], function (err,results) {
+        if (err) throw err;
+        conn.query("select * from user_view where media_id = ? AND homeprovinceid = ?", [media_id, homeprovinceid], function (err, results) {
             conn.release();
-            if(err) throw err;
+            if (err) throw err;
             cb(err, results.length);
         });
     });

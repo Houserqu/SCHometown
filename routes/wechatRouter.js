@@ -37,7 +37,8 @@ router.get("/login", function (req, res, next) {
                     nickname: result[0].nickname,
                     headimgurl: result[0].headimgurl,
                     schoolid: result[0].schoolid,
-                    provinceid: result[0].homeprovinceid
+                    provinceid: result[0].homeprovinceid,
+                    media_id:result[0].media_id,
                 };
 
                 res.redirect("/");
@@ -208,14 +209,16 @@ function weixiaomonitor(postdata, req, res) {
 
 //微校应用触发
 function weixiaotrigger(postdata, req, res) {
-    var requertjson = {
-        media_id: req.query.media_id,
-        api_key: wechatconfig.ApiKey
-    };
+    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatconfig.appid + "&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
-    console.log(req.query.media_id);
-    console.log("trigger");
-    res.redirect(url);
+    if(req.query.media_id == null || req.query.media_id == '')
+        res.send("无法获取公众号信息");
+    else{
+        req.session.lastpage.media_id = req.query.media_id;
+        console.log(req.query.media_id);
+        console.log("trigger");
+        res.redirect(url);
+    }
 }
 
 //获取公众号信息
@@ -286,7 +289,7 @@ var userExist = function (openid, cb) {
         });
     });
 };
-var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatconfig.appid + "&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
+
 
 //通过code换取网页授权access_token
 var getAccessToken = function (appid, secret, code, cb) {

@@ -31,31 +31,31 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'upload')));
 
 //模拟登陆
-// app.use(function (req, res, next) {
-//     req.session.lastpage = {openid:'olAdmuKBW_YPTnjjx1wf_bvkjLao',userid:1,schoolid:1305,provinceid:13,nickname:'Houser',headimgurl:'/headimg/default.jpg', introduction:"技术与艺术"};
-//     next();
-// });
-
-
-//登录拦截
 app.use(function (req, res, next) {
-    if (req.session.lastpage) {
-        next();
-    } else {
-        // 解析用户请求的路径
-        var arr = req.url.split('/');
-        // 去除 GET 请求路径上携带的参数
-        for (var i = 0, length = arr.length; i < length; i++) {
-            arr[i] = arr[i].split('?')[0];
-        }
-
-        if(arr.length > 2 && arr[1] == 'wechat' && (arr[2]=='login' || arr[2] == 'weixiao')){
-            next();
-        } else {  // 登录拦截
-            res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');  // 将用户重定向到登录页面
-        }
-    }
+    req.session.lastpage = {openid:'333',userid:3,media_id:'1',homeprovinceid:2,nickname:'Houser2',headimgurl:'/headimg/default.jpg', introduction:"技术与艺术"};
+    next();
 });
+
+
+// //登录拦截
+// app.use(function (req, res, next) {
+//     if (req.session.lastpage) {
+//         next();
+//     } else {
+//         // 解析用户请求的路径
+//         var arr = req.url.split('/');
+//         // 去除 GET 请求路径上携带的参数
+//         for (var i = 0, length = arr.length; i < length; i++) {
+//             arr[i] = arr[i].split('?')[0];
+//         }
+//
+//         if(arr.length > 2 && arr[1] == 'wechat' && (arr[2]=='login' || arr[2] == 'weixiao')){
+//             next();
+//         } else {  // 登录拦截
+//             res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');  // 将用户重定向到登录页面
+//         }
+//     }
+// });
 
 app.use('/', square);
 //app.use('/login', login);

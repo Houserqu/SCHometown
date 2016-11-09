@@ -3,11 +3,24 @@ var pool = require("../config/mysql");
 var activityMd = function () { };
 
 //获取老乡会活动列表 (需要获取的字段, 学校id , 身份id)
-activityMd.getActivitys = function(columns, schoolid, provinceid, limitstart, limitend, cb ){
+activityMd.getHomeActivitys = function(columns, media_id, provinceid, limitstart, limitend, cb ){
     pool.getConnection(function (err, conn) {
         if (err) throw err;
 
-        conn.query("select ?? from activity_view where schoolid = ? and provinceid = ? limit ?,?", [columns, schoolid, provinceid, limitstart, limitend], function (err, results) {
+        conn.query("select ?? from activity_view where media_id = ? and homeprovinceid = ? limit ?,?", [columns, media_id, provinceid, limitstart, limitend], function (err, results) {
+            conn.release();     //释放连接,让连接返回到连接池
+            if(err) console.log(err);
+            cb(err, results);
+        });
+    });
+};
+
+//获取公众号下所有老乡会活动列表 (需要获取的字段, 公众号id , 身份id)
+activityMd.getMediaActivitys = function(columns, media_id, limitstart, limitend, cb ){
+    pool.getConnection(function (err, conn) {
+        if (err) throw err;
+
+        conn.query("select ?? from activity_view where media_id = ? limit ?,?", [columns, media_id, limitstart, limitend], function (err, results) {
             conn.release();     //释放连接,让连接返回到连接池
             if(err) console.log(err);
             cb(err, results);

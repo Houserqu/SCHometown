@@ -11,27 +11,27 @@ var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    activityMd.getActivitys(        //获取活动列表
-        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl', 'origintime'],
-        req.session.lastpage.schoolid,
-        req.session.lastpage.provinceid,
+    activityMd.getMediaActivitys(        //获取活动列表
+        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl', 'origintime','provincename'],
+        req.session.lastpage.media_id,
         0,
         5,
         function (err, activitys) {
             //获取老乡会信息
-            hometownMd.getHometown(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, hometown) {
+            hometownMd.getHometown(req.session.lastpage.media_id, req.session.lastpage.homeprovinceid, function (err, hometown) {
                 //获取动态信息
-                weiboMd.getHometownWeibolist(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, hometownWeibo) {
+                weiboMd.getMediaWeibolist(req.session.lastpage.media_id, function (err, hometownWeibo) {
                     if (err) console.log(err);
                     var list = hometownWeibo.concat(activitys);
 
                     list.sort(function (a, b) {
                         return new Date(a.origintime).getTime() < new Date(b.origintime).getTime() ? 1 : -1;
                     });
+                    console.log(list);
                     res.render('square', {
                         list: list,
                         user: req.session.lastpage,
-                        hometown: hometown,
+                        hometown:hometown,
                         squareFun: squareFun
                     });
                 });
@@ -42,12 +42,11 @@ router.get('/', function (req, res, next) {
 
 //所有活动列表
 router.get('/activitys', function (req, res, next) {
-    activityMd.getActivitys(
-        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity'],
-        req.session.lastpage.schoolid,
-        req.session.lastpage.provinceid,
+    activityMd.getMediaActivitys(
+        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity','provincename'],
+        req.session.lastpage.media_id,
         0,
-        10,
+        30,
         function (err, results) {
 
             res.render('activitys', {activitys: results});
@@ -195,8 +194,8 @@ router.post('/editactivity/add', function (req, res, next) {
         budget: req.body.budget,
         content: req.body.content,
         userid: req.session.lastpage.userid,
-        schoolid: req.session.lastpage.schoolid,
-        provinceid: req.session.lastpage.provinceid
+        media_id: req.session.lastpage.media_id,
+        homeprovinceid: req.session.lastpage.homeprovinceid
     };
     if (activity.title != '' && activity.starttime != '' && activity.content != '') {
         activityMd.addActivity(activity, function (err, result) {
@@ -219,12 +218,12 @@ router.get('/addweibo', function (req, res) {
 
 //老乡会主页
 router.get('/schometown', function (req, res, next) {
-    var schoolid = req.query.school;
+    var media_id = req.query.media_id;
     var provinceid = req.query.province;
-    hometownMd.getHometown(schoolid, provinceid, function (err, result) {
-        hometownMd.getAcyivityNumber(schoolid, provinceid, function (err, activitynumber) {
-            hometownMd.getWeiboNumber(schoolid, provinceid, function (err, weibonumber) {
-                hometownMd.getHomeFriendsNumber(schoolid, provinceid, function (err, homefriendsnumber) {
+    hometownMd.getHometown(media_id, provinceid, function (err, result) {
+        hometownMd.getAcyivityNumber(media_id, provinceid, function (err, activitynumber) {
+            hometownMd.getWeiboNumber(media_id, provinceid, function (err, weibonumber) {
+                hometownMd.getHomeFriendsNumber(media_id, provinceid, function (err, homefriendsnumber) {
                     if (err) console.log(err);
                     result.activitynumber = activitynumber;
                     result.weibonumber = weibonumber;

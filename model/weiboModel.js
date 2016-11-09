@@ -4,16 +4,28 @@ var weiboMd = function () {
 };
 
 //获取乡友动态
-weiboMd.getHometownWeibolist = function ( schoolid, homeprovinceid, cb) {
+weiboMd.getHometownWeibolist = function ( media_id, homeprovinceid, cb) {
     pool.getConnection(function (err, conn) {
-        sql = "select * from weibo_view where homeprovinceid = ? and schoolid = ? order by origintime desc  limit 30 ";
-        conn.query(sql, [homeprovinceid, schoolid], function (err, result) {
+        sql = "select * from weibo_view where homeprovinceid = ? and media_id = ? order by origintime desc  limit 30 ";
+        conn.query(sql, [homeprovinceid, media_id], function (err, result) {
             conn.release();
             if (err) console.log(err);
             cb(err, result);
         });
     });
 };
+//获取公众号下所有老乡会动态
+weiboMd.getMediaWeibolist = function ( media_id, cb) {
+    pool.getConnection(function (err, conn) {
+        sql = "select * from weibo_view where media_id = ? order by origintime desc  limit 30 ";
+        conn.query(sql, media_id, function (err, result) {
+            conn.release();
+            if (err) console.log(err);
+            cb(err, result);
+        });
+    });
+};
+
 //添加动态
 weiboMd.addWeibo = function (values, cb) {
     pool.getConnection(function (err, conn) {

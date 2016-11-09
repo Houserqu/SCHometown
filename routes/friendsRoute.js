@@ -50,7 +50,7 @@ router.get('/goodlist',function (req, res) {
 
 //获取乡友列表
 router.get('/homelist',function (req, res) {
-    friendMd.getHomeFriends(req.session.lastpage.schoolid, req.session.lastpage.provinceid, function (err, friends) {
+    friendMd.getHomeFriends(req.session.lastpage.media_id, req.session.lastpage.homeprovinceid, function (err, friends) {
         if(err) console.log(err);
         if(friends)
             res.json({state:1,homefriends:friends});

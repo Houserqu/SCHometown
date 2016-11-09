@@ -90,7 +90,7 @@
 
                         <div class="weui_media_box weui_media_small_appmsg">
                             <div class="weui_cells weui_cells_access">
-                                <a class="weui_cell" href="/schometown?school=<%= hometown.schoolid%>&province=<%=hometown.homeprovinceid%>">
+                                <a class="weui_cell" href="/schometown?media_id=<%= hometown.media_id%>&province=<%=hometown.homeprovinceid%>">
                                     <div class="weui_cell_hd"><img src="/images/active.png" alt=""
                                                                    style="width:20px;margin-right:5px;display:block">
                                     </div>
@@ -99,17 +99,9 @@
                                     </div>
                                     <span class="weui_cell_ft"></span>
                                 </a>
-                                <!--<a class="weui_cell" href="javascript:;">-->
-                                    <!--<div class="weui_cell_hd"><img src="/images/weibo.png" alt=""-->
-                                                                   <!--style="width:20px;margin-right:5px;display:block">-->
-                                    <!--</div>-->
-                                    <!--<div class="weui_cell_bd weui_cell_primary">-->
-                                        <!--<p>热门动态</p>-->
-                                    <!--</div>-->
-                                    <!--<span class="weui_cell_ft"></span>-->
-                                <!--</a>-->
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <% for(var i = 0; i < list.length; i++){ %>
@@ -132,6 +124,7 @@
                                 <div style="clear: both"></div>
                                 <ul class="weui_media_info">
                                     <li class="weui_media_info_meta"><%= new Date(list[i].origintime).reverseTime() %></li>
+                                    <li class="weui_media_info_meta weui_media_info_meta_extra"><%= list[i].provincename %>老乡</li>
                                 </ul>
                             </div>
                         </div>
@@ -155,6 +148,7 @@
                                     <li class="weui_media_info_meta weui_media_info_meta_extra"><%= new Date(list[i].starttime).Format('MM-dd') %> 至</li>
                                     <li class="weui_media_info_meta"><%= new Date(list[i].endtime).Format('MM-dd') %></li>
                                     <li class="weui_media_info_meta weui_media_info_meta_extra"><%= list[i].address %></li>
+                                    <li class="weui_media_info_meta weui_media_info_meta_extra"><%= list[i].provincename %>老乡</li>
                                 </ul>
                             </div>
                         </div>
