@@ -38,7 +38,7 @@ router.get("/login", function (req, res, next) {
                     nickname: result[0].nickname,
                     headimgurl: result[0].headimgurl,
                     schoolid: result[0].schoolid,
-                    provinceid: result[0].homeprovinceid,
+                    homeprovinceid: result[0].homeprovinceid,
                     media_id:result[0].media_id
                 };
 

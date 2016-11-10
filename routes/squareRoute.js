@@ -20,10 +20,8 @@ router.get('/', function (req, res, next) {
         function (err, activitys) {
             //获取老乡会信息
             hometownMd.getHometown(req.session.lastpage.media_id, req.session.lastpage.homeprovinceid, function (err, hometown) {
-                console.log("session"+req.session.lastpage);
                 //获取动态信息
                 weiboMd.getMediaWeibolist(req.session.lastpage.media_id, function (err, hometownWeibo) {
-                    if (err) console.log(err);
                     var list = hometownWeibo.concat(activitys);
 
                     list.sort(function (a, b) {
