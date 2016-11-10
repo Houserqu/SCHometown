@@ -36,7 +36,6 @@ router.get('/', function (req, res, next) {
                         squareFun: squareFun
                     });
                 });
-
             });
         });
 });
