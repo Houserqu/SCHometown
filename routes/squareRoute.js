@@ -11,6 +11,7 @@ var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    console.log(req.session.lastpage);
     activityMd.getMediaActivitys(        //获取活动列表
         ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl', 'origintime','provincename'],
         req.session.lastpage.media_id,
