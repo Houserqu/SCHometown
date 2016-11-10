@@ -68,8 +68,8 @@ router.post('/confirmbasicinfo', function (req, res, next) {
                             userid: userinfo[0].userid,
                             nickname: userinfo[0].nickname,
                             headimgurl: userinfo[0].headimgurl,
-                            schoolid: userinfo[0].schoolid,
-                            provinceid: userinfo[0].homeprovinceid
+                            homeprovinceid: userinfo[0].homeprovinceid,
+                            media_id: media_id
                         };
                         res.send({state: 1})
                     });

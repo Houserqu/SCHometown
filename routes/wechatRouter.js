@@ -39,7 +39,7 @@ router.get("/login", function (req, res, next) {
                     headimgurl: result[0].headimgurl,
                     schoolid: result[0].schoolid,
                     provinceid: result[0].homeprovinceid,
-                    media_id:result[0].media_id,
+                    media_id:result[0].media_id
                 };
 
                 res.redirect("/");
