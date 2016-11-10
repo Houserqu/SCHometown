@@ -28,7 +28,8 @@ router.get("/login", function (req, res, next) {
     //获取accesstoken
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
         console.log("accesstoken:"+accesstoken);
-        userExist(accesstoken.openid, function (err, result) {  //判断用户是否存在
+        userExist(accesstoken.openid, req.session.media_id, function (err, result) {  //判断用户是否存在
+            console.dir(result);
             //存在,写入session
             if (result.length > 0) {
                 req.session.lastpage = {
@@ -280,10 +281,10 @@ var addUserinfo = function (value, cb) {
     });
 };
 
-var userExist = function (openid, cb) {
+var userExist = function (openid, media_id, cb) {
     pool.getConnection(function (err, conn) {
         if (err) throw err;
-        conn.query('select * from user_view where openid = ?', openid, function (err, result) {
+        conn.query('select * from user_view where openid = ? and media_id', [openid, media_id], function (err, result) {
             conn.release();
             if (err) throw err;
             console.log(result);
