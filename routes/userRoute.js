@@ -28,7 +28,6 @@ router.post('/updateuserinfo', function (req, res, next) {
 
 //添加学校,家乡省市信息页面
 router.get('/basicinfo', function (req, res, next) {
-    console.log(req.session.lastpage);
     userMd.getUserinfo(req.session.lastpage.userid, function (err, userinfo) {
         if (userinfo[0].basicmodify == 0) {
             res.redirect("/");

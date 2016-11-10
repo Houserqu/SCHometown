@@ -7,7 +7,7 @@ var hometownMd = function () {
 hometownMd.getHometown = function (media_id, homeprovinceid, cb) {
     pool.getConnection(function (err, conn) {
         conn.query("select * from media where media_id = ? ", media_id, function (err, mediaresult) {
-
+            console.log(mediaresult);
             conn.query("select * from province_info where idprovince = ? ", homeprovinceid, function (err, provinceresult) {
                 conn.release();
                 cb(err, {
