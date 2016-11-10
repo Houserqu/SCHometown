@@ -71,6 +71,12 @@
     <div class="weui_cells">
         <div class="weui_cell" id="wechatnumber">
             <div class="weui_cell_bd weui_cell_primary">
+                <p>公众号</p>
+            </div>
+            <div class="weui_cell_ft"><%= user.media_name %></div>
+        </div>
+        <div class="weui_cell" id="wechatnumber">
+            <div class="weui_cell_bd weui_cell_primary">
                 <p>学校</p>
             </div>
             <div class="weui_cell_ft"><%= user.schoolname %></div>
@@ -79,7 +85,7 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <p>家乡</p>
             </div>
-            <div class="weui_cell_ft"><%= user.homeprovince %> <%= user.homecityname %></div>
+            <div class="weui_cell_ft"><%= user.homeprovincename %> <%= user.homecityname %></div>
         </div>
     </div>
 </article>
