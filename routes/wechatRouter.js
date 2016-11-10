@@ -284,7 +284,7 @@ var addUserinfo = function (value, cb) {
 var userExist = function (openid, media_id, cb) {
     pool.getConnection(function (err, conn) {
         if (err) throw err;
-        conn.query('select * from user_view where openid = ? and media_id', [openid, media_id], function (err, result) {
+        conn.query('select * from user_view where openid = ? and media_id = ?', [openid, media_id], function (err, result) {
             conn.release();
             if (err) throw err;
             console.log(result);
