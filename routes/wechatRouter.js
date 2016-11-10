@@ -59,6 +59,7 @@ router.get("/login", function (req, res, next) {
                                 res.send("登录失败");
 
                             } else {
+                                console.log(req.session.lastpage);
                                 addUserinfo({userid: isadd.insertId}, function (err, userinfo) {  //添加新userinfo
 
                                     if (userinfo.affectedRows > 0) {
