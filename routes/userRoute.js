@@ -69,7 +69,7 @@ router.post('/confirmbasicinfo', function (req, res, next) {
                             nickname: userinfo[0].nickname,
                             headimgurl: userinfo[0].headimgurl,
                             homeprovinceid: userinfo[0].homeprovinceid,
-                            media_id: media_id
+                            media_id: userinfo[0].media_id
                         };
                         res.send({state: 1})
                     });
