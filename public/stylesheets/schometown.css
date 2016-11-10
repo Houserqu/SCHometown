@@ -14,4 +14,12 @@ h1 > span {
   font-size: 0.75em;
   font-style: italic; }
 
+#mediaabout h1 {
+  font-size: 2em;
+  color: #09BB07;
+  text-align: center; }
+
+#mediaabout p {
+  text-align: center; }
+
 /*# sourceMappingURL=schometown.css.map */

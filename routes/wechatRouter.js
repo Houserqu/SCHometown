@@ -27,9 +27,7 @@ router.get("/login", function (req, res, next) {
 
     //获取accesstoken
     getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
-        console.log("accesstoken:"+accesstoken);
         userExist(accesstoken.openid, req.session.media_id, function (err, result) {  //判断用户是否存在
-            console.dir(result);
             //存在,写入session
             if (result.length > 0) {
                 req.session.lastpage = {
@@ -44,10 +42,8 @@ router.get("/login", function (req, res, next) {
 
                 res.redirect("/");
             } else {
-                console.log("不存在,拉取用户信息");
                 //拉取用户信息
                 getUserinfo(accesstoken.access_token, accesstoken.openid, function (err, getuserinfo) {
-                    console.log(getuserinfo);
                     if (getuserinfo.hasOwnProperty("errcode")) {
                         res.send("登录失败")
                     } else {
@@ -60,7 +56,6 @@ router.get("/login", function (req, res, next) {
                                 res.send("登录失败");
 
                             } else {
-                                console.log(req.session.media_id);
                                 addUserinfo({userid: isadd.insertId, media_id: req.session.media_id}, function (err, userinfo) {  //添加新userinfo
 
                                     if (userinfo.affectedRows > 0) {
@@ -139,7 +134,6 @@ function weixiaoopen(postdata, req, res) {
 
         //保存公众信息
         getmedia(jsondata, function (err, mediainfo) {
-            console.log(mediainfo);
 
             if (!mediainfo.hasOwnProperty("errcode")) {
 

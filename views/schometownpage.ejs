@@ -11,7 +11,7 @@
 <body>
 <article id="container" class="container">
     <header class="weui-row">
-        <h1><%= schometown.schoolname%> <%= schometown.homeprovince%> 老乡会<br/><span><%= schometown.media_name%></span></h1>
+        <h1><%= schometown.schoolname%> <%= schometown.homeprovince%> 老乡会<br/><span id="media">©<%= schometown.media_name%> <img src="/images/2code.png"></span></h1>
     </header>
     <div class="weui_grids">
         <a href="javascript:;" class="weui_grid js_grid" data-id="button">
@@ -39,19 +39,35 @@
             </p>
         </a>
     </div>
-    <!--<section class="weui-row">-->
-            <!--<div class="weui-col-33">-->
-                <!--<%= schometown.activitynumber%>-->
-                <!--活动数-->
-            <!--</div>-->
-            <!--<div class="weui-col-33">-->
-                <!--动态数=<%= schometown.weibonumber%>-->
-            <!--</div>-->
-            <!--<div class="weui-col-33">-->
-                <!--friends=<%= schometown.homefriendsnumber%>-->
-            <!--</div>-->
-    <!--</section>-->
+
 </article>
+<div id="mediaabout" class="weui-popup-container">
+    <div class="weui-popup-overlay"></div>
+    <div class="weui-popup-modal">
+
+    <article class="weui_article">
+        <h1><%= schometown.media_name%></h1>
+        <section>
+            <img style="user-select: none; cursor: zoom-in;" src="http://open.weixin.qq.com/qr/code/?username=<%= schometown.media_id%>" width="375" height="375">
+        </section>
+        <section>
+            <p>长按二维码 关注公众号</p>
+        </section>
+        <section>
+            <a href="javascript:;" class="weui_btn weui_btn_plain_primary close-popup">关闭</a>
+            <iframe id="tmp_downloadhelper_iframe" style="display: none;"></iframe>
+        </section>
+    </article>
+    </div>
+</div>
 </body>
 <script src="/javascripts/jquery.min.js"></script>
 <script src="/javascripts/jquery-weui.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#media").on('click',function () {
+            $("#mediaabout").popup();
+        });
+    })
+</script>

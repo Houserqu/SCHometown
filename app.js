@@ -32,7 +32,23 @@ app.use(express.static(path.join(__dirname, 'upload')));
 
 //模拟登陆
 // app.use(function (req, res, next) {
-//     req.session.lastpage = {openid:'333',userid:3,media_id:'1',homeprovinceid:2,nickname:'Houser2',headimgurl:'/headimg/default.jpg', introduction:"技术与艺术"};
+//     req.session.lastpage = {
+//         media_id: 'gh_fe88fc5cdb42',
+//         homeprovinceid: 13,
+//         homecityid: '112',
+//         userid: 21,
+//         openid: 'o5spBwKz0CTyGMnD46DvRmgWuNIQ',
+//         nickname: 'Houser',
+//         headimgurl: 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4JOiah0vwJq6PmwvzYg4ZfSl1nI37F5HvlpPSJhaQB1BnLmpApSem1OhNuMYLHDYLwx6wg9nem7xic5ah6jaiaxCzBPFXtEvTFt8/0',
+//         school_code: 946943942,
+//         school_name: '北京大学',
+//         introduction: null,
+//         homeprovincename: '湖北',
+//         homecityname: '黄冈市',
+//         media_name: '程序缘',
+//         phone: null,
+//         wechatnumber: null,
+//         sex: 1 };
 //     next();
 // });
 

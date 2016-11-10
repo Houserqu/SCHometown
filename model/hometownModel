@@ -1,4 +1,5 @@
 var pool = require("../config/mysql");
+var request = require("request");
 
 var hometownMd = function () {
 };
