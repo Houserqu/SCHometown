@@ -214,7 +214,7 @@ function weixiaotrigger(postdata, req, res) {
     if(req.query.media_id == null || req.query.media_id == '')
         res.send("无法获取公众号信息");
     else{
-        req.session.lastpage.media_id = req.query.media_id;
+        req.session.lastpage = {media_id : req.query.media_id};
         console.log(req.query.media_id);
         console.log("trigger");
         res.redirect(url);
