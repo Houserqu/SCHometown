@@ -59,15 +59,16 @@ router.get("/login", function (req, res, next) {
                                 res.send("登录失败");
 
                             } else {
-                                console.log(req.session.lastpage);
-                                addUserinfo({userid: isadd.insertId}, function (err, userinfo) {  //添加新userinfo
+                                console.log(req.session.media_id);
+                                addUserinfo({userid: isadd.insertId, media_id: req.session.media_id}, function (err, userinfo) {  //添加新userinfo
 
                                     if (userinfo.affectedRows > 0) {
                                         req.session.lastpage = {
                                             openid: getuserinfo.openid,
                                             userid: isadd.insertId,
                                             nickname: getuserinfo.nickname,
-                                            headimgurl: getuserinfo.headimgurl
+                                            headimgurl: getuserinfo.headimgurl,
+                                            media_id: req.session.media_id
                                         };
 
                                         res.redirect("/user/basicinfo");
@@ -215,7 +216,7 @@ function weixiaotrigger(postdata, req, res) {
     if(req.query.media_id == null || req.query.media_id == '')
         res.send("无法获取公众号信息");
     else{
-        req.session.lastpage = {media_id : req.query.media_id};
+        req.session.media_id = req.query.media_id;
         console.log(req.query.media_id);
         console.log("trigger");
         res.redirect(url);
