@@ -56,8 +56,6 @@ $(document).ready(function () {
         var content = $("textarea[name='datacontent']").val();
         var budget = $("input[name='databudget']").val();
 
-        console.log(starttime);
-
         if (title != '' && starttime != '' && content != '') {
             $.ajax({
                 type: 'post',

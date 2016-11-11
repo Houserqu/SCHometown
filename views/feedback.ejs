@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>意见反馈</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+
+    <link rel="stylesheet" href="/stylesheets/weui.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
+</head>
+<body>
+<article class="container">
+    <div class="weui_panel">
+        <div class="weui_panel_hd">非常感谢您宝贵的意见</div>
+        <div class="weui_panel_bd">
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea id="content" class="weui_textarea" placeholder="请输入内容" rows="8"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui_panel">
+        <div class="weui_panel_bd">
+            <div class="weui_media_box weui_media_text">
+                <a id="submit" class="weui_btn weui_btn_primary">提交</a>
+            </div>
+        </div>
+    </div>
+</article>
+
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery-weui.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#submit").on("click",function () {
+            var content = $("#content").val();
+
+            $.ajax({
+                type:"post",
+                url:"/submitfeedback",
+                data:{content:content},
+                datatype:"json",
+                success:function (redata) {
+                    if(redata.code){
+                        $.toast("提交成功",function () {
+                            window.location.href="/";
+                        });
+                    }else {
+                        $.alert("提价失败,建议请复制内容到剪切板后再试!", "错误");
+                    }
+                },
+                error:function () {
+
+                        $.alert("提价失败,建议请复制内容到剪切板后再试!", "错误");
+                }
+            })
+        });
+    })
+</script>
+</html>

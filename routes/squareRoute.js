@@ -4,6 +4,7 @@ var router = express.Router();
 var activityMd = require('../model/activityModel');
 var weiboMd = require('../model/weiboModel');
 var hometownMd = require('../model/hometownModel');
+var systemMd = require('../model/systemModel');
 var formidable = require("formidable");
 var path = require('path');
 var fs = require('fs');
@@ -316,23 +317,22 @@ router.post('/addweibocomment', function (req, res) {
         });
 });
 
-
-/* 登录 */
-router.get('/login', function (req, res, next) {
-    req.body = {
-        'openid': 'awasdwgzqwetyt12312qsed',
-        'userid': '1',
-        'schooldid': '0001',
-        'provinceid': '0002',
-        'realname': '杨过'
-    };
-    req.session.lastpage = req.body;//写入至session
-    res.redirect('/');
+//反馈页面
+router.get('/feedback',function (req, res) {
+    res.render("feedback");
 });
 
-/*登录页 接入微信登录后删除*/
-router.get('/loginpage', function (req, res, next) {
-    res.render('loginpage');
+//提交反馈
+router.post('/submitfeedback',function (req, res) {
+    console.log(req.body.content);
+    systemMd.submitfeedback(req.session.lastpage.userid, req.body.content,function (err, result) {
+        if(result.affectedRows > 0 ){
+            res.send({code:200});
+        }else{
+            res.send({code:0});
+        }
+    });
+
 });
 
 // 对Date的扩展，将 Date 转化为指定格式的String
