@@ -20,67 +20,70 @@ router.get('/responMsg', function (req, res, next) {
 router.get("/login", function (req, res, next) {
     var code = req.query.code;
     console.log("code:"+code);
+
     //判断是否是微信服务器发送的请求
-    // if(!code){
-    //     res.render("error",{error:"错误",message:"直接访问或者微信服务器错误,"});
-    // }
+    if(!code){
+        res.render("error",{message:"非法访问或者微信服务器错误,",error:""});
+    }else{
+        //获取accesstoken
+        getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
+            userExist(accesstoken.openid, req.session.media_id, function (err, result) {  //判断用户是否存在
+                //存在,写入session
+                if (result.length > 0) {
+                    req.session.lastpage = {
+                        openid: result[0].openid,
+                        userid: result[0].userid,
+                        nickname: result[0].nickname,
+                        headimgurl: result[0].headimgurl,
+                        schoolid: result[0].schoolid,
+                        homeprovinceid: result[0].homeprovinceid,
+                        media_id:result[0].media_id
+                    };
 
-    //获取accesstoken
-    getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
-        userExist(accesstoken.openid, req.session.media_id, function (err, result) {  //判断用户是否存在
-            //存在,写入session
-            if (result.length > 0) {
-                req.session.lastpage = {
-                    openid: result[0].openid,
-                    userid: result[0].userid,
-                    nickname: result[0].nickname,
-                    headimgurl: result[0].headimgurl,
-                    schoolid: result[0].schoolid,
-                    homeprovinceid: result[0].homeprovinceid,
-                    media_id:result[0].media_id
-                };
+                    res.redirect("/");
+                } else {
+                    //拉取用户信息
+                    getUserinfo(accesstoken.access_token, accesstoken.openid, function (err, getuserinfo) {
+                        if (getuserinfo.hasOwnProperty("errcode")) {
+                            res.send("登录失败")
+                        } else {
 
-                res.redirect("/");
-            } else {
-                //拉取用户信息
-                getUserinfo(accesstoken.access_token, accesstoken.openid, function (err, getuserinfo) {
-                    if (getuserinfo.hasOwnProperty("errcode")) {
-                        res.send("登录失败")
-                    } else {
+                            getuserinfo.privilege = getuserinfo.privilege.toString();
+                            addUser(getuserinfo, function (err, isadd) {   //添加新用户
+                                console.log(isadd);
+                                if (err) {
+                                    console.log(err);
+                                    res.send("登录失败");
 
-                        getuserinfo.privilege = getuserinfo.privilege.toString();
-                        addUser(getuserinfo, function (err, isadd) {   //添加新用户
-                            console.log(isadd);
-                            if (err) {
-                                console.log(err);
-                                res.send("登录失败");
+                                } else {
+                                    addUserinfo({userid: isadd.insertId, media_id: req.session.media_id}, function (err, userinfo) {  //添加新userinfo
 
-                            } else {
-                                addUserinfo({userid: isadd.insertId, media_id: req.session.media_id}, function (err, userinfo) {  //添加新userinfo
+                                        if (userinfo.affectedRows > 0) {
+                                            req.session.lastpage = {
+                                                openid: getuserinfo.openid,
+                                                userid: isadd.insertId,
+                                                nickname: getuserinfo.nickname,
+                                                headimgurl: getuserinfo.headimgurl,
+                                                media_id: req.session.media_id
+                                            };
 
-                                    if (userinfo.affectedRows > 0) {
-                                        req.session.lastpage = {
-                                            openid: getuserinfo.openid,
-                                            userid: isadd.insertId,
-                                            nickname: getuserinfo.nickname,
-                                            headimgurl: getuserinfo.headimgurl,
-                                            media_id: req.session.media_id
-                                        };
+                                            res.redirect("/user/basicinfo");
+                                        }
+                                        else
+                                            res.send("error");
+                                    });
 
-                                        res.redirect("/user/basicinfo");
-                                    }
-                                    else
-                                        res.send("error");
-                                });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
 
-                            }
-                        });
-                    }
-                });
-            }
         });
+    }
 
-    });
+
 });
 
 //微校配置
@@ -128,7 +131,6 @@ function tojson(postdata) {
 function weixiaoopen(postdata, req, res) {
     if (postdata == null) {
         res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0});
-
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
 
@@ -209,11 +211,9 @@ function weixiaotrigger(postdata, req, res) {
     var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatconfig.appid + "&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
     if(req.query.media_id == null || req.query.media_id == '')
-        res.send("无法获取公众号信息");
+        res.render("error",{message:"无法获取公众号信息", error:""});
     else{
         req.session.media_id = req.query.media_id;
-        console.log(req.query.media_id);
-        console.log("trigger");
         res.redirect(url);
     }
 }

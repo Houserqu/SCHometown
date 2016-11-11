@@ -30,7 +30,7 @@
                     <div class="weui_cell_hd"><img id="headimg" src="<%= activitydetail[0].headimgurl %>"
                                                    alt="" style="width:40px;margin-right:5px;display:block"></div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <p id="nickname"><%= activitydetail[0].nickname %></p>
+                        <p><%= activitydetail[0].nickname %></p>
                     </div>
                     <div class="weui_cell_ft">查看主页</div>
                 </a>
@@ -259,6 +259,7 @@
 <script src="/javascripts/jquery-weui.min.js"></script>
 
 <script>
+    var nickname = '<%= user.nickname%>';
     $(document).ready(function () {
         //提交评论
         $('#subcomment').click(function () {
@@ -273,7 +274,6 @@
                     success: function (redata) {
                         if (redata){
                             $.toast('评论成功',function () {
-                                var　nickname　=　$("#nickname").text();
                                 var time = new Date();
                                 var timestr = time.getMonth()+'-'+time.getDate()+' '+time.getHours()+':'+time.getMinutes();
                                 var　commenthtml　=　'<div class="weui_panel_bd"> <div class="weui_media_box weui_media_text"> <p class="weui_media_desc">'+comment+'</p> <ul class="weui_media_info"> <li class="weui_media_info_meta">'+nickname+'</li><li class="weui_media_info_meta weui_media_info_meta_extra">'+timestr+'</li></ul> </div> </div>';

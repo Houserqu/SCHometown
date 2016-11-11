@@ -80,7 +80,8 @@ router.get('/activitydetail/:id', function (req, res, next) {
                         activitydetail: activitydetail,
                         joiners: joiners,
                         follows: follows,
-                        comments: comments
+                        comments: comments,
+                        user:{nickname: req.session.lastpage.nickname, headimgurl: req.session.lastpage.headimgurl}
                     });
                 });
             });
@@ -254,9 +255,7 @@ router.get("/weibodetail/:wid", function (req, res) {
     weiboMd.getOneWeibo(wid, function (err, weibo) {
         weiboMd.getWeiboComment(wid, function (err, weibocomments) {
             if(err) console.log(err);
-            console.log(weibo);
-            console.log(weibocomments);
-            res.render("weibodetail", {weibo: weibo[0], weibocomments:weibocomments, squareFun: squareFun})
+            res.render("weibodetail", {weibo: weibo[0], weibocomments:weibocomments,user:{nickname: req.session.lastpage.nickname, headimgurl:req.session.lastpage.headimgurl}, squareFun: squareFun})
         });
     });
 });

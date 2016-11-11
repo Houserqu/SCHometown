@@ -15,9 +15,9 @@
 
     <div class="weui_panel weui_panel_access">
         <a class="weui_cell" id="pageurl" href="/friends/homefriendpage/<%= weibo.openid %>">
-            <div class="weui_cell_hd"><img id="headimg" src="<%= weibo.headimgurl %>" alt="" style="width:40px;margin-right:5px;display:block"></div>
+            <div class="weui_cell_hd"><img src="<%= weibo.headimgurl %>" alt="" style="width:40px;margin-right:5px;display:block"></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <p id="nickname" style="color: #000000"><%= weibo.nickname %></p>
+                <p style="color: #000000"><%= weibo.nickname %></p>
             </div>
             <div class="weui_cell_ft">查看主页</div>
         </a>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="weui_panel weui_panel_access">
-        <div class="weui_panel_hd" id="commentlist">评论列表</div>
+        <div class="weui_panel_hd" id="commentlist">评论列表<%= user.nickname%></div>
         <% weibocomments.forEach(function (value, index, arr) { %>
             <div class="weui_panel_bd">
                 <div class="weui_media_box weui_media_text">
@@ -69,7 +69,11 @@
 <script src="/javascripts/jquery-weui.min.js"></script>
 
 <script>
+    var nickname = '<%= user.nickname%>';
+    var headimgurl = '<%= user.headimgurl%>';
+
     $(document).ready(function () {
+
         $("#subcomment").on("click",function () {
             $.prompt({
                 title:"评论",
@@ -84,8 +88,6 @@
                         success: function (redata) {
                             if (redata){
                                 $.toast('评论成功',function () {
-                                    var nickname = $("#nickname").text();
-                                    var headimgurl = $("#headimg").attr("src");
                                     var pageurl = $("#pageurl").attr("href");
                                     var html = '<div class="weui_panel_bd"> <div class="weui_media_box weui_media_text"> <h4 class="weui_media_title"> <a href="'+pageurl+'"><img class="weui_media_appmsg_thumb" src="'+headimgurl+'" alt=""style="height: 35px;margin-right: 10px;"></a> <span>'+nickname+'</span> </h4> <p class="weui_media_desc">'+input+'</p> </div></div>'
                                     $("#commentlist").after(html);

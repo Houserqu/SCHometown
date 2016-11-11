@@ -2,14 +2,28 @@
 <html>
 <head>
     <title>Error</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+
     <link rel="stylesheet" href="/stylesheets/weui.css">
     <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
 </head>
 <body>
-<h1> Error </h1>
-<%= message %>
-<br/>
-<%= error %>
+<div class="weui_msg">
+    <div class="weui_icon_area"><i class="weui_icon_warn weui_icon_msg"></i></div>
+    <div class="weui_text_area">
+        <h2 class="weui_msg_title">错误</h2>
+        <p class="weui_msg_desc"><%= message %></p>
+        <p class="weui_msg_desc"><%= error %></p>
+    </div>
+    <div class="weui_opr_area">
+        <p class="weui_btn_area">
+            <a href="javascript:window.close();" class="weui_btn weui_btn_warn">关闭页面</a>
+        </p>
+    </div>
+    <div class="weui_extra_area">
+        <a href="">查看详情</a>
+    </div>
+</div>
 
 </body>
 <script src="/javascripts/jquery.min.js"></script>
