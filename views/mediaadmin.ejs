@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>管理后台</title>
+    <link rel="stylesheet" href="/stylesheets/mediaadmin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="wx-menu">
+            <ul id="menu">
+                <li><a>数据统计</a></li>
+                <li><a class="active">老乡会</a></li>
+                <li><a>用户管理</a></li>
+                <li><a>设置</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <section id="statistic" class="content-active">statistic</section>
+            <section id="hometown">
+                <table>
+                    <tr class="table-head">
+                        <th>名称</th>
+                        <th>会员数</th>
+                        <th>活动数</th>
+                        <th>动态数</th>
+                    </tr>
+                    <tr>
+                        <td>湖北</td>
+                        <td>32</td>
+                        <td>12</td>
+                        <td>78</td>
+                    </tr>
+                </table>
+            </section>
+            <section id="users">
+                <div>
+                    <select>
+                        <option value="1">湖北</option>
+                    </select>
+                </div>
+            </section>
+            <section id="setting">setting</section>
+        </div>
+    </div>
+</body>
+<script src="/javascripts/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#hometown").show();
+        $("#menu li").on("click",function () {
+            $("#menu li>a").each(function (index) {
+                $(this).removeClass('active');
+            })
+            $(this).find('a').addClass('active');
+            var index = $(this).index();
+            var sections = $(".content section");
+            sections.each(function (index) {
+                $(this).hide();
+            })
+            sections.eq(index).show();
+        });
+    });
+</script>
+</html>

@@ -198,7 +198,10 @@ function weixiaoclose(postdata, req, res) {
 
 //微校应用配置
 function weixiaoconfig(postdata, req, res) {
+    var mediaconfig = req.query;
+    console.log(mediaconfig);
 
+    res.render('mediaadmin');
 }
 
 //微校应用监控
