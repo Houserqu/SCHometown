@@ -200,7 +200,7 @@ function weixiaoclose(postdata, req, res) {
         var interval = Date.parse(new Date()) - postdata.timestamp * 1000;
         if (interval < 600000) {
             pool.getConnection(function (err, conn) {
-                coon.query('update media set state = 0 where media_id = ?', postdata.media_id, function (err, isupdate) {
+                conn.query('update media set state = 0 where media_id = ?', postdata.media_id, function (err, isupdate) {
                     if(err) console.log(err);
                     console.log(isupdate);
                     if(isupdate){
