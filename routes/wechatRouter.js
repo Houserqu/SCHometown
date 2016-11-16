@@ -191,6 +191,7 @@ function weixiaoopen(postdata, req, res) {
 
 //微校应用关闭
 function weixiaoclose(postdata, req, res) {
+    postdata = tojson(postdata);
     var sign = postdata.sign;
     delete postdata.sign;
 
