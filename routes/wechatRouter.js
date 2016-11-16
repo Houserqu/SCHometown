@@ -144,9 +144,9 @@ function weixiaoopen(postdata, req, res) {
 
                     if (err) console.log(err);
                     conn.query('select * from media where media_id = ?', mediainfo.media_id, function (err, result) {
-
+                        console.log(result);
                         if (err) throw(err);
-                        if (result.length < 1) {
+                        if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
                             pool.getConnection(function (err, addconn) {
                                 addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
                                     console.log(isadd);
@@ -158,6 +158,10 @@ function weixiaoopen(postdata, req, res) {
                                         });
                                     }
                                 });
+                            });
+                        }else{  //存在该公众号, 更新state为 1
+                            conn.query('update media set state = 1  where media_id = ?', mediainfo.media_id,function (err, isopen) {
+                                if(err) console.log(err);
                             });
                         }
                     });
@@ -190,12 +194,22 @@ function weixiaoclose(postdata, req, res) {
     var sign = postdata.sign;
     delete postdata.sign;
 
-    var calsign = calSign(postdata)
+    var calsign = calSign(postdata);
 
     if (sign == calsign) {
         var interval = Date.parse(new Date()) - postdata.timestamp * 1000;
         if (interval < 600000) {
-            res.send({"errcode": 0, "errmsg": "OK"});
+            pool.getConnection(function (err, conn) {
+                coon.query('update media set state = 0 where media_id = ?', postdata.media_id, function (err, isupdate) {
+                    if(isupdate){
+                        res.send({"errcode": 0, "errmsg": "OK"});
+                    }else{
+                        res.send({"errcode": 1, "errmsg": "系统错误"});
+                    }
+
+                });
+            });
+
         } else {
             res.send({"errcode": 1, "errmsg": "超时"});
         }
