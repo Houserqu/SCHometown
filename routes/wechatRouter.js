@@ -198,6 +198,7 @@ function weixiaoclose(postdata, req, res) {
 
     if (sign == calsign) {
         var interval = Date.parse(new Date()) - postdata.timestamp * 1000;
+
         if (interval < 600000) {
             pool.getConnection(function (err, conn) {
                 conn.query('update media set state = 0 where media_id = ?', postdata.media_id, function (err, isupdate) {
