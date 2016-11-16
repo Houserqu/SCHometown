@@ -130,7 +130,7 @@ function tojson(postdata) {
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
     if (postdata == null) {
-        res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0});
+        res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 1});
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
 
@@ -165,12 +165,12 @@ function weixiaoopen(postdata, req, res) {
         if (sign == calsign) {
             var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
             if (interval < 600000) {
-                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
+                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
             } else {
-                res.send({"errcode": 1, "errmsg": "超时", "is_config": 0});
+                res.send({"errcode": 1, "errmsg": "超时", "is_config": 1});
             }
         } else {
-            res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0});
+            res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 1});
         }
     }
 
@@ -201,7 +201,7 @@ function weixiaoconfig(postdata, req, res) {
     var mediaconfig = req.query;
     console.log(mediaconfig);
 
-    res.send({error:0});
+    res.render('mediaadmin');
 }
 
 //微校应用监控
