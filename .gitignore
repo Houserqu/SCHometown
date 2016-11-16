@@ -1,0 +1,6 @@
+mysql.js
+imgtmp/
+weiboimg/
+node_modules/
+*.map
+*.scss
