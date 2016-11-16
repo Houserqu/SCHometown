@@ -9,6 +9,9 @@ var formidable = require("formidable");
 var path = require('path');
 var fs = require('fs');
 
+router.get('/index',function (req,res) {
+    console.log(req.query);
+});
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
