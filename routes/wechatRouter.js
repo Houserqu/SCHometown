@@ -201,7 +201,7 @@ function weixiaoconfig(postdata, req, res) {
     var mediaconfig = req.query;
     console.log(mediaconfig);
 
-    res.render('mediaadmin');
+    res.send({error:0});
 }
 
 //微校应用监控
