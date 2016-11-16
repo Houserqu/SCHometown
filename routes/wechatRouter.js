@@ -1,5 +1,6 @@
 var express = require('express');
 var request = require("request");
+var cookieParser = require('cookie-parser');
 var md5 = require("md5");
 var pool = require("../config/mysql");
 
@@ -201,7 +202,21 @@ function weixiaoconfig(postdata, req, res) {
     var mediaconfig = req.query;
     console.log(mediaconfig);
 
-    res.render('mediaadmin');
+    var sign = mediaconfig.sign;
+    delete mediaconfig.sign;
+    delete mediaconfig.type;
+
+    console.log(mediaconfig);
+
+    if(sign == calSign(mediaconfig)){
+        res.cookie('media_id', mediaconfig.media_id);
+        console.log(req.cookies);
+
+        res.render('mediaadmin');
+    }else{
+        res.send({'errcode' : 5004,'errmsg' : '签名错误'});
+    }
+
 }
 
 //微校应用监控
