@@ -149,8 +149,11 @@ function weixiaoopen(postdata, req, res) {
                         if (result.length < 1) {
                             pool.getConnection(function (err, addconn) {
                                 addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
+                                    console.log(isadd);
+
                                     for(var i=1; i<36; i++){
-                                        addconn.query('insert into media_hometown set ?', {media_id:mediainfo.media_id, homeprovinceid: i}, function (err, result) {
+                                        addconn.query('insert into media_hometown set ?', {media_id:mediainfo.media_id, homeprovinceid: i}, function (err, isaddhometown) {
+                                            console.log(isaddhometown);
                                             if (err) console.log(err);
                                         });
                                     }
@@ -381,7 +384,4 @@ function refreshJSSDK() {
     });
 }
 */
-
-
-
 module.exports = router;
