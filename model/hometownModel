@@ -68,4 +68,5 @@ hometownMd.getHomeFriendsNumber = function (media_id, homeprovinceid, cb) {
         });
     });
 };
+
 module.exports = hometownMd;

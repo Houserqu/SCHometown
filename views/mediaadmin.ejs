@@ -23,6 +23,7 @@
             <section id="hometown">
                 <table>
                     <tr class="table-head">
+                        <th>#</th>
                         <th>名称</th>
                         <th>会员数</th>
                         <th>活动数</th>
@@ -41,6 +42,29 @@
                     <select>
                         <option value="1">湖北</option>
                     </select>
+                    <table id="users-table">
+                        <tr class="table-head">
+                            <th>#</th>
+                            <th>头像</th>
+                            <th>昵称</th>
+                            <th>性别</th>
+                            <th>家乡省</th>
+                            <th>家乡市</th>
+                            <th>微信号</th>
+                        </tr>
+                        <% users.forEach(function (user,index) { %>
+                        <tr class="td-<%= index%2 %>">
+                            <td><%= index+1%></td>
+                            <td><img src="<%= user.headimgurl%>"></td>
+                            <td><%= user.nickname%></td>
+                            <td><%= user.sex%></td>
+                            <td><%= user.homeprovincename%></td>
+                            <td><%= user.homecityname%></td>
+                            <td><%= user.wechatnumber%></td>
+                        </tr>
+                        <%})%>
+
+                    </table>
                 </div>
             </section>
             <section id="setting">setting</section>

@@ -5,13 +5,10 @@ var activityMd = require('../model/activityModel');
 var weiboMd = require('../model/weiboModel');
 var hometownMd = require('../model/hometownModel');
 var systemMd = require('../model/systemModel');
+var mediaMd = require('../model/mediaModel');
 var formidable = require("formidable");
 var path = require('path');
 var fs = require('fs');
-
-router.get('/index',function (req,res) {
-    console.log(req.query);
-});
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -340,7 +337,11 @@ router.post('/submitfeedback',function (req, res) {
 
 //公众号管理后台
 router.get('/mediaadmin',function (req, res) {
-    res.render("mediaadmin");
+
+    mediaMd.getAllUsers(req.session.lastpage.media_id,function (err,users) {
+        console.log(users);
+        res.render("mediaadmin", {users:users});
+    });
 });
 
 // 对Date的扩展，将 Date 转化为指定格式的String

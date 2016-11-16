@@ -149,9 +149,13 @@ function weixiaoopen(postdata, req, res) {
                         if (result.length < 1) {
                             pool.getConnection(function (err, addconn) {
                                 addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
-                                    if (err) console.log(err);
+                                    for(var i=1; i<36; i++){
+                                        addconn.query('insert into media_hometown set ?', {media_id:mediainfo.media_id, homeprovinceid: i}, function (err, result) {
+                                            if (err) console.log(err);
+                                        });
+                                    }
                                 });
-                            })
+                            });
                         }
                     });
                 });
@@ -200,17 +204,15 @@ function weixiaoclose(postdata, req, res) {
 //微校应用配置
 function weixiaoconfig(postdata, req, res) {
     var mediaconfig = req.query;
-    console.log(mediaconfig);
 
     var sign = mediaconfig.sign;
     delete mediaconfig.sign;
     delete mediaconfig.type;
 
-    console.log(mediaconfig);
 
     if(sign == calSign(mediaconfig)){
         res.cookie('media_id', mediaconfig.media_id);
-        console.log(req.cookies);
+
 
         res.render('mediaadmin');
     }else{
@@ -379,4 +381,7 @@ function refreshJSSDK() {
     });
 }
 */
+
+
+
 module.exports = router;

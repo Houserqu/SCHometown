@@ -40,7 +40,7 @@ ul{
 }
 
 .content{
-  height: 600px;
+  height: 800px;
 }
 .content > section{
   margin-left: 20px;
@@ -48,7 +48,7 @@ ul{
 }
 
 table{
-  width: 100%;
+  width: 96%;
 }
 tr{
   height: 40px;
@@ -57,7 +57,15 @@ tr{
 td,th{
   border: none;
 }
+.td-0{
+  background-color: #f0f8ff;
+}
 .table-head{
   color: #ffffff;
   background-color: #35b36a;
+}
+
+#users-table img{
+  height: 40px;
+  width: 40px;
 }

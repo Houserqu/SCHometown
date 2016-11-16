@@ -12,7 +12,6 @@ var friends = require('./routes/friendsRoute');
 var user = require('./routes/userRoute');
 var findHometown = require('./routes/findHometownRouter');
 var wechat = require('./routes/wechatRouter');
-var media = require('./routes/mediaRoute');
 
 var app = express();
 
@@ -78,7 +77,6 @@ app.use('/find', find);
 app.use('/friends', friends);
 app.use('/user', user);
 app.use('/wechat', wechat);
-app.use('/media', media);
 app.use('/find/hometown', findHometown);  //发现-校乡汇模块
 
 // catch 404 and forward to error handler
