@@ -49,6 +49,7 @@ ul{
 
 table{
   width: 96%;
+  table-layout : fixed;
 }
 tr{
   height: 40px;
@@ -68,4 +69,20 @@ td,th{
 #users-table img{
   height: 40px;
   width: 40px;
+}
+
+select{
+  width: 240px;
+  height: 34px;
+  font-size: 16px;
+  overflow: hidden;
+  color: #fff;
+  border:solid 2px #35b36a;
+  background-color: #35b36a;
+
+  margin-bottom: 10px;
+}
+
+.hint-title{
+  color: #ff5f12;
 }

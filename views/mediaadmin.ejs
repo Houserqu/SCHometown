@@ -9,73 +9,121 @@
     <link rel="stylesheet" href="/stylesheets/mediaadmin.css">
 </head>
 <body>
-    <div class="container">
-        <div class="wx-menu">
-            <ul id="menu">
-                <li><a>数据统计</a></li>
-                <li><a class="active">老乡会</a></li>
-                <li><a>用户管理</a></li>
-                <li><a>设置</a></li>
-            </ul>
-        </div>
-        <div class="content">
-            <section id="statistic" class="content-active">statistic</section>
-            <section id="hometown">
-                <table>
+<div class="container">
+    <div class="wx-menu">
+        <ul id="menu">
+            <li><a class="active">数据统计</a></li>
+            <li><a>老乡会</a></li>
+            <li><a>会员管理</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <section id="statistic" class="content-active">
+            <div id="chart-sex" style="width: 600px;height:400px;"></div>
+        </section>
+        <section id="hometown">
+            <div class="hint">
+                <p><span class="hint-title">提示 </span>: 每天 00:00 更新数据</p>
+            </div>
+            <table>
+                <tr class="table-head">
+                    <th>#</th>
+                    <th>名称</th>
+                    <th>会员数</th>
+                    <th>活动数</th>
+                    <th>动态数</th>
+                </tr>
+                <% hometowns.forEach(function (hometown, index) { %>
+                <tr class="td-<%= index % 2 %>">
+                    <td><%= index + 1 %></td>
+                    <td><%= hometown.homeprovincename %></td>
+                    <td><%= hometown.useramount %></td>
+                    <td><%= hometown.activityamount %></td>
+                    <td><%= hometown.weiboamount %></td>
+                </tr>
+                <% }) %>
+            </table>
+        </section>
+        <section id="users">
+            <div>
+                <select id="province-select">
+                    <option value="-1">所有会员</option>
+                    <option value="1">北京</option>
+                    <option value="2">上海</option>
+                    <option value="3">天津</option>
+                    <option value="4">重庆</option>
+                    <option value="5">黑龙江</option>
+                    <option value="6">吉林</option>
+                    <option value="7">辽宁</option>
+                    <option value="8">山东</option>
+                    <option value="9">山西</option>
+                    <option value="10">陕西</option>
+                    <option value="11">河北</option>
+                    <option value="12">河南</option>
+                    <option value="13">湖北</option>
+                    <option value="14">湖南</option>
+                    <option value="15">海南</option>
+                    <option value="16">江苏</option>
+                    <option value="17">江西</option>
+                    <option value="18">广东</option>
+                    <option value="19">广西</option>
+                    <option value="20">云南</option>
+                    <option value="21">贵州</option>
+                    <option value="22">四川</option>
+                    <option value="23">内蒙古</option>
+                    <option value="24">宁夏</option>
+                    <option value="25">甘肃</option>
+                    <option value="26">青海</option>
+                    <option value="27">西藏</option>
+                    <option value="28">新疆</option>
+                    <option value="29">安徽</option>
+                    <option value="30">浙江</option>
+                    s
+                    <option value="31">福建</option>
+                    <option value="32">香港</option>
+                    <option value="33">澳门</option>
+                    <option value="34">台湾</option>
+                    <option value="35">海外</option>
+                </select>
+                <table id="users-table">
                     <tr class="table-head">
                         <th>#</th>
-                        <th>名称</th>
-                        <th>会员数</th>
-                        <th>活动数</th>
-                        <th>动态数</th>
+                        <th>头像</th>
+                        <th>昵称</th>
+                        <th>性别</th>
+                        <th>家乡省</th>
+                        <th>家乡市</th>
+                        <th>微信号</th>
                     </tr>
-                    <tr>
-                        <td>湖北</td>
-                        <td>32</td>
-                        <td>12</td>
-                        <td>78</td>
+                    <% users.forEach(function (user, index) { %>
+                    <tr class="td-<%= index % 2 %>">
+                        <td><%= index + 1 %></td>
+                        <td><img src="<%= user.headimgurl %>"></td>
+                        <td><%= user.nickname %></td>
+                        <td><%= user.sex == 1 ? '男' : '女' %></td>
+                        <td><%= user.homeprovincename %></td>
+                        <td><%= user.homecityname %></td>
+                        <td><%= user.wechatnumber %></td>
                     </tr>
-                </table>
-            </section>
-            <section id="users">
-                <div>
-                    <select>
-                        <option value="1">湖北</option>
-                    </select>
-                    <table id="users-table">
-                        <tr class="table-head">
-                            <th>#</th>
-                            <th>头像</th>
-                            <th>昵称</th>
-                            <th>性别</th>
-                            <th>家乡省</th>
-                            <th>家乡市</th>
-                            <th>微信号</th>
-                        </tr>
-                        <% users.forEach(function (user,index) { %>
-                        <tr class="td-<%= index%2 %>">
-                            <td><%= index+1%></td>
-                            <td><img src="<%= user.headimgurl%>"></td>
-                            <td><%= user.nickname%></td>
-                            <td><%= user.sex%></td>
-                            <td><%= user.homeprovincename%></td>
-                            <td><%= user.homecityname%></td>
-                            <td><%= user.wechatnumber%></td>
-                        </tr>
-                        <%})%>
+                    <% }) %>
 
-                    </table>
-                </div>
-            </section>
-            <section id="setting">setting</section>
-        </div>
+                </table>
+            </div>
+        </section>
     </div>
+</div>
 </body>
 <script src="/javascripts/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/echarts/3.3.1/echarts.common.js"></script>
 <script>
     $(document).ready(function () {
-        $("#hometown").show();
-        $("#menu li").on("click",function () {
+        var userstr = '<%- JSON.stringify(users) %>';
+        var users = JSON.parse(userstr);
+
+        $("#statistic").show();
+
+        //切换选项卡
+        $("#menu li").on("click", function () {
             $("#menu li>a").each(function (index) {
                 $(this).removeClass('active');
             })
@@ -87,6 +135,78 @@
             })
             sections.eq(index).show();
         });
+
+        $('#province-select').on('change', function () {
+            var provinceid = this.value;
+            var html = '<tr class="table-head"> <th>#</th> <th>头像</th> <th>昵称</th> <th>性别</th> <th>家乡省</th> <th>家乡市</th> <th>微信号</th></tr>';
+            var key = 0;
+            var resultuser = [];
+
+            if (provinceid == -1) {
+                users.forEach(function (user) {
+                    resultuser.push(user);
+                    console.log(user);
+                    user.sex == 1 ? user.sex = '男' : user.sex = '女';
+                    key++;
+                    html += '<tr><td>' + key + '</td><td><img src="' + user.headimgurl + '"></td><td>' + user.nickname + '</td><td>' + user.sex + '</td><td>' + user.homeprovincename + '</td><td>' + user.homecityname + '</td><td>' + user.wechatnumber + '</td></tr>';
+                });
+            } else {
+                users.forEach(function (user) {
+                    if (user.homeprovinceid == provinceid) {
+                        resultuser.push(user);
+                        user.sex == 1 ? user.sex = '男' : user.sex = '女';
+                        key++;
+                        html += '<tr><td>' + key + '</td><td><img src="' + user.headimgurl + '"></td><td>' + user.nickname + '</td><td>' + user.sex + '</td><td>' + user.homeprovincename + '</td><td>' + user.homecityname + '</td><td>' + user.wechatnumber + '</td></tr>';
+                    }
+                });
+            }
+            $('#users-table').html(html);
+
+
+        });
+
+        var sexdata = [{value:0, name:'男'},{value:0, name:'女'}];
+
+        var male = 0;
+        var female = 0;
+        users.forEach(function (user) {
+            user.sex == 1 ? male++ : female++ ;
+        });
+
+        sexdata[0].value = male;
+        sexdata[1].value = female;
+
+        console.log(sexdata);
+
+        var sexChart = echarts.init(document.getElementById('chart-sex'));
+
+        var sexChartOption = {
+            title: {
+                text: '男女比例',
+                x: 'center'
+            },
+            tooltip: {},
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['男','女']
+            },
+            series: [{
+                name: '性别比例',
+                type: 'pie',
+                center: ['50%', '60%'],
+                data: sexdata,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }]
+        };
+
+        sexChart.setOption(sexChartOption);
     });
 </script>
 </html>

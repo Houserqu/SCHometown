@@ -339,8 +339,11 @@ router.post('/submitfeedback',function (req, res) {
 router.get('/mediaadmin',function (req, res) {
 
     mediaMd.getAllUsers(req.session.lastpage.media_id,function (err,users) {
-        console.log(users);
-        res.render("mediaadmin", {users:users});
+        mediaMd.getMediaHometown(req.session.lastpage.media_id,function (err,hometowns){
+            var userstr = JSON.stringify(users);
+            console.log(userstr);
+            res.render("mediaadmin", {users:users, hometowns: hometowns});
+        });
     });
 });
 

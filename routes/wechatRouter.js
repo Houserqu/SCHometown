@@ -134,50 +134,40 @@ function weixiaoopen(postdata, req, res) {
         res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 1});
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
-
-        //保存公众信息
-        getmedia(jsondata, function (err, mediainfo) {
-
-            if (!mediainfo.hasOwnProperty("errcode")) {
-
-                pool.getConnection(function (err, conn) {
-
-                    if (err) console.log(err);
-                    conn.query('select * from media where media_id = ?', mediainfo.media_id, function (err, result) {
-                        console.log(result);
-                        if (err) throw(err);
-                        if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
-                            pool.getConnection(function (err, addconn) {
-                                addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
-                                    console.log(isadd);
-
-                                    for(var i=1; i<36; i++){
-                                        addconn.query('insert into media_hometown set ?', {media_id:mediainfo.media_id, homeprovinceid: i}, function (err, isaddhometown) {
-                                            console.log(isaddhometown);
-                                            if (err) console.log(err);
-                                        });
-                                    }
-                                });
-                            });
-                        }else{  //存在该公众号, 更新state为 1
-                            conn.query('update media set state = 1  where media_id = ?', mediainfo.media_id,function (err, isopen) {
-                                if(err) console.log(err);
-                            });
-                        }
-                    });
-                });
-            }
-        });
-
         var sign = jsondata.sign;
         delete jsondata.sign;
 
         var calsign = calSign(jsondata);
 
-        if (sign == calsign) {
+        if (sign == calsign) {  //判断签名
             var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
-            if (interval < 600000) {
-                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+
+            if (interval < 600000) {    //判断时间差
+                pool.getConnection(function (err, conn) {
+                    conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
+
+                        if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
+                            getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
+                                conn.query('insert into media set ?', mediainfo, function (err, isadd) {
+
+                                    for (var i = 1; i < 36; i++) {
+                                        conn.query('insert into media_hometown set ?', {
+                                            media_id: mediainfo.media_id,
+                                            homeprovinceid: i
+                                        }, function (err, isaddhometown) {
+                                            if (err) console.log(err);
+                                        });
+                                    }
+                                    conn.release();
+                                    res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+                                });
+                            });
+                        } else {  //存在该公众号, 更新state为 1
+                            conn.release();
+                            res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+                        }
+                    });
+                });
             } else {
                 res.send({"errcode": 1, "errmsg": "超时", "is_config": 1});
             }
@@ -185,8 +175,6 @@ function weixiaoopen(postdata, req, res) {
             res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 1});
         }
     }
-
-
 }
 
 //微校应用关闭
@@ -195,25 +183,11 @@ function weixiaoclose(postdata, req, res) {
     var sign = postdata.sign;
     delete postdata.sign;
 
-    var calsign = calSign(postdata);
-
     if (sign == calsign) {
         var interval = Date.parse(new Date()) - postdata.timestamp * 1000;
 
         if (interval < 600000) {
-            pool.getConnection(function (err, conn) {
-                conn.query('update media set state = 0 where media_id = ?', postdata.media_id, function (err, isupdate) {
-                    if(err) console.log(err);
-                    console.log(isupdate);
-                    if(isupdate){
-                        res.send({"errcode": 0, "errmsg": "OK"});
-                    }else{
-                        res.send({"errcode": 1, "errmsg": "系统错误"});
-                    }
-
-                });
-            });
-
+            res.send({"errcode": 0, "errmsg": "OK"});
         } else {
             res.send({"errcode": 1, "errmsg": "超时"});
         }
@@ -239,7 +213,6 @@ function weixiaoconfig(postdata, req, res) {
     }else{
         res.send({'errcode' : 5004,'errmsg' : '签名错误'});
     }
-
 }
 
 //微校应用监控
