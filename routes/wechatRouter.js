@@ -169,17 +169,20 @@ function weixiaoopen(postdata, req, res) {
 
                                             console.log("added:"+isadd);
                                             //创建公众号老乡会
-                                            for (var i = 1; i < 36; i++) {
-                                                conn.query('insert into media_hometown set ?', {
-                                                    media_id: mediainfo.media_id,
-                                                    homeprovinceid: i
-                                                }, function (err, isaddhometown) {
-                                                    if (err) console.log(err);
-                                                });
-                                            }
-                                            conn.release();
+                                            (function (addhometown) {
+                                                for (var i = 1; i < 36; i++) {
+                                                    conn.query('insert into media_hometown set ?', {
+                                                        media_id: mediainfo.media_id,
+                                                        homeprovinceid: i
+                                                    }, function (err, isaddhometown) {
+                                                        if (err) console.log(err);
+                                                    });
+                                                }
+                                                addhometown();  //释放链接
+                                            })(function () {
+                                                conn.release();
+                                            });
                                         });
-
                                     }
                                 });
                             }
