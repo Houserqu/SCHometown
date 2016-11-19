@@ -133,6 +133,7 @@ function weixiaoopen(postdata, req, res) {
     if (postdata == null) {
         res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0});
     } else {
+        var jsondata = tojson(postdata);
         var sign = jsondata.sign;
         delete jsondata.sign;
 
@@ -144,6 +145,8 @@ function weixiaoopen(postdata, req, res) {
 
                 res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
 
+                jsondata['sign'] = sign;
+                console.log(jsondata);
                 //保存公众信息
                 getmedia(jsondata, function (err, mediainfo) {
                     console.log(mediainfo);
