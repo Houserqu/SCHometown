@@ -147,7 +147,10 @@ function weixiaoopen(postdata, req, res) {
             var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
             if (interval < 600000) {
 
-                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1}, function () {
+                (function (add) {
+                    res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});     //开启成功
+                    add();
+                })(function () {
                     pool.getConnection(function (err, conn) {   //写入公众号信息
                         if (err) console.log(err);
 
@@ -182,10 +185,7 @@ function weixiaoopen(postdata, req, res) {
                             }
                         });
                     });
-                });     //开启成功
-
-
-
+                });
             } else {
                 res.send({"errcode": 1, "errmsg": "超时", "is_config": 0});
             }
