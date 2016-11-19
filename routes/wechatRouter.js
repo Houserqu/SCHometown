@@ -245,6 +245,9 @@ function getmedia(postdata, cb) {
     var poststr = JSON.stringify(postdata);
 
     request.post({url: url, form: poststr}, function (error, response, body) {
+        console.log(error);
+        console.log(response);
+
         if (!error && response.statusCode == 200) {
             var mediainfo = JSON.parse(body);
             cb(error, mediainfo);
