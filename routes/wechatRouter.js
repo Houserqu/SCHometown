@@ -135,21 +135,16 @@ function weixiaoopen(postdata, req, res) {
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
 
+        //拉取公众号信息
+        getmedia(jsondata, function (err, mediainfo) {
+            if (!mediainfo.hasOwnProperty("errcode")) {
+                var sign = jsondata.sign;
+                delete jsondata.sign;
 
-        var sign = jsondata.sign;
-        delete jsondata.sign;
-
-        var calsign = calSign(jsondata);
-
-        if (sign == calsign) {
-            var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
-            if (interval < 600000) {
-                //保存公众信息
-                jsondata["sign"] = sign;
-                getmedia(jsondata, function (err, mediainfo) {
-                    console.log(mediainfo);
-
-                    if (!mediainfo.hasOwnProperty("errcode")) {
+                var calsign = calSign(jsondata);
+                if (sign == calsign) {
+                    var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
+                    if (interval < 600000) {
 
                         pool.getConnection(function (err, conn) {
 
@@ -161,22 +156,23 @@ function weixiaoopen(postdata, req, res) {
                                     pool.getConnection(function (err, addconn) {
                                         addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
                                             if (err) console.log(err);
-
                                             res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
                                         });
                                     })
                                 }
                             });
                         });
+                    } else {
+                        res.send({"errcode": 1, "errmsg": "超时", "is_config": 0});
                     }
-                });
+                } else {
+                    res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0});
+                }
 
-            } else {
-                res.send({"errcode": 1, "errmsg": "超时", "is_config": 0});
+
             }
-        } else {
-            res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0});
-        }
+        });
+
     }
 
 
