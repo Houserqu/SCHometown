@@ -20,12 +20,12 @@ router.get('/responMsg', function (req, res, next) {
 
 router.get("/login", function (req, res, next) {
     var code = req.query.code;
-    console.log("code:"+code);
+    console.log("code:" + code);
 
     //判断是否是微信服务器发送的请求
-    if(!code){
-        res.render("error",{message:"非法访问或者微信服务器错误,",error:""});
-    }else{
+    if (!code) {
+        res.render("error", {message: "非法访问或者微信服务器错误,", error: ""});
+    } else {
         //获取accesstoken
         getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
             userExist(accesstoken.openid, req.session.media_id, function (err, result) {  //判断用户是否存在
@@ -38,7 +38,7 @@ router.get("/login", function (req, res, next) {
                         headimgurl: result[0].headimgurl,
                         schoolid: result[0].schoolid,
                         homeprovinceid: result[0].homeprovinceid,
-                        media_id:result[0].media_id
+                        media_id: result[0].media_id
                     };
 
                     res.redirect("/");
@@ -57,7 +57,10 @@ router.get("/login", function (req, res, next) {
                                     res.send("登录失败");
 
                                 } else {
-                                    addUserinfo({userid: isadd.insertId, media_id: req.session.media_id}, function (err, userinfo) {  //添加新userinfo
+                                    addUserinfo({
+                                        userid: isadd.insertId,
+                                        media_id: req.session.media_id
+                                    }, function (err, userinfo) {  //添加新userinfo
 
                                         if (userinfo.affectedRows > 0) {
                                             req.session.lastpage = {
@@ -143,32 +146,40 @@ function weixiaoopen(postdata, req, res) {
             var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
             if (interval < 600000) {
 
-                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
+                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});     //开启成功
 
-                jsondata['sign'] = sign;
-                console.log(jsondata);
-                //保存公众信息
-                getmedia(jsondata, function (err, mediainfo) {
-                    console.log(mediainfo);
-                    if (!mediainfo.hasOwnProperty("errcode")) {
+                pool.getConnection(function (err, conn) {   //写入公众号信息
+                    if (err) console.log(err);
 
-                        pool.getConnection(function (err, conn) {
+                    conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
 
-                            if (err) console.log(err);
-                            conn.query('select * from media where media_id = ?', mediainfo.media_id, function (err, result) {
+                        if (err) throw(err);
+                        if (result.length < 1) {    //不存在该公众号,拉取公众号信息
 
-                                if (err) throw(err);
-                                if (result.length < 1) {
-                                    pool.getConnection(function (err, addconn) {
-                                        addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
-                                            if (err) console.log(err);
-                                        });
-                                    })
+                            getmedia(jsondata, function (err, mediainfo) {
+                                console.log(mediainfo);
+                                if (!mediainfo.hasOwnProperty("errcode")) {
+
+                                    conn.query('insert into media set ?', mediainfo, function (err, isadd) {
+                                        if (err) console.log(err);
+                                        //创建公众号老乡会
+                                        for (var i = 1; i < 36; i++) {
+                                            conn.query('insert into media_hometown set ?', {
+                                                media_id: mediainfo.media_id,
+                                                homeprovinceid: i
+                                            }, function (err, isaddhometown) {
+                                                if (err) console.log(err);
+                                            });
+                                        }
+                                        conn.release();
+                                    });
+
                                 }
                             });
-                        });
-                    }
+                        }
+                    });
                 });
+
             } else {
                 res.send({"errcode": 1, "errmsg": "超时", "is_config": 0});
             }
@@ -178,20 +189,20 @@ function weixiaoopen(postdata, req, res) {
     }
 
 
-            // conn.query('insert into media set ?', mediainfo, function (err, isadd) {
-            //     if(err) console.log(err);
-            //
-            //     for (var i = 1; i < 36; i++) {
-            //         conn.query('insert into media_hometown set ?', {
-            //             media_id: mediainfo.media_id,
-            //             homeprovinceid: i
-            //         }, function (err, isaddhometown) {
-            //             if (err) console.log(err);
-            //         });
-            //     }
-            //     conn.release();
-            //     res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
-            // });
+    // conn.query('insert into media set ?', mediainfo, function (err, isadd) {
+    //     if(err) console.log(err);
+    //
+    //     for (var i = 1; i < 36; i++) {
+    //         conn.query('insert into media_hometown set ?', {
+    //             media_id: mediainfo.media_id,
+    //             homeprovinceid: i
+    //         }, function (err, isaddhometown) {
+    //             if (err) console.log(err);
+    //         });
+    //     }
+    //     conn.release();
+    //     res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+    // });
 }
 
 //微校应用关闭
@@ -223,13 +234,13 @@ function weixiaoconfig(postdata, req, res) {
     delete mediaconfig.type;
 
 
-    if(sign == calSign(mediaconfig)){
+    if (sign == calSign(mediaconfig)) {
         res.cookie('media_id', mediaconfig.media_id);
 
 
         res.render('mediaadmin');
-    }else{
-        res.send({'errcode' : 5004,'errmsg' : '签名错误'});
+    } else {
+        res.send({'errcode': 5004, 'errmsg': '签名错误'});
     }
 }
 
@@ -242,9 +253,9 @@ function weixiaomonitor(postdata, req, res) {
 function weixiaotrigger(postdata, req, res) {
     var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatconfig.appid + "&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
-    if(req.query.media_id == null || req.query.media_id == '')
-        res.render("error",{message:"无法获取公众号信息", error:""});
-    else{
+    if (req.query.media_id == null || req.query.media_id == '')
+        res.render("error", {message: "无法获取公众号信息", error: ""});
+    else {
         req.session.media_id = req.query.media_id;
         res.redirect(url);
     }
@@ -364,33 +375,33 @@ function getJstoken(err, cd) {
 }
 
 /*
-//刷新jssdk的配置,并保存到全局变量中
-function refreshJSSDK() {
-    var tokenurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx43e92e841f4bfcc1&secret=c966f8621441ba80261bfaf8aad0849d";
-    request.get({url: tokenurl, form: {}}, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var jstoken = JSON.parse(body);
-            console.log(jstoken);
+ //刷新jssdk的配置,并保存到全局变量中
+ function refreshJSSDK() {
+ var tokenurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx43e92e841f4bfcc1&secret=c966f8621441ba80261bfaf8aad0849d";
+ request.get({url: tokenurl, form: {}}, function (error, response, body) {
+ if (!error && response.statusCode == 200) {
+ var jstoken = JSON.parse(body);
+ console.log(jstoken);
 
-            var jsapiurl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + jstoken.access_token + "&type=jsapi"
-            request.get({url: jsapiurl, form: {}}, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    var js_ticket = JSON.parse(body);
+ var jsapiurl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + jstoken.access_token + "&type=jsapi"
+ request.get({url: jsapiurl, form: {}}, function (error, response, body) {
+ if (!error && response.statusCode == 200) {
+ var js_ticket = JSON.parse(body);
 
-                    var sha1str = "jsapi_ticket=" + js_ticket.ticket + "&noncestr=58FCEE6C341A454DCCC4BA4D44726888&timestamp=1478225876&url=http://wechat.itwang.wang/addweibo";
-                    var signature = sha1(sha1str);
-                    global.jssdkconfig = {
-                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                        appId: 'wx43e92e841f4bfcc1', // 必填，公众号的唯一标识
-                        timestamp: 1478225876, // 必填，生成签名的时间戳
-                        nonceStr: '58FCEE6C341A454DCCC4BA4D44726888', // 必填，生成签名的随机串
-                        signature: signature,// 必填，签名，见附录1
-                        jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage'] // 必填，需要使用的JS接口列表
-                    };
-                }
-            });
-        }
-    });
-}
-*/
+ var sha1str = "jsapi_ticket=" + js_ticket.ticket + "&noncestr=58FCEE6C341A454DCCC4BA4D44726888&timestamp=1478225876&url=http://wechat.itwang.wang/addweibo";
+ var signature = sha1(sha1str);
+ global.jssdkconfig = {
+ debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+ appId: 'wx43e92e841f4bfcc1', // 必填，公众号的唯一标识
+ timestamp: 1478225876, // 必填，生成签名的时间戳
+ nonceStr: '58FCEE6C341A454DCCC4BA4D44726888', // 必填，生成签名的随机串
+ signature: signature,// 必填，签名，见附录1
+ jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage'] // 必填，需要使用的JS接口列表
+ };
+ }
+ });
+ }
+ });
+ }
+ */
 module.exports = router;
