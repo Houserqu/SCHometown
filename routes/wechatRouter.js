@@ -131,7 +131,7 @@ function tojson(postdata) {
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
     if (postdata == null) {
-        res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 1});
+        res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0});
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
 
@@ -160,10 +160,10 @@ function weixiaoopen(postdata, req, res) {
 
                             if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
 
-                                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+                                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
                             } else {  //存在该公众号
                                 conn.release();
-                                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+                                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
                             }
                         });
                     });
@@ -190,11 +190,6 @@ function weixiaoopen(postdata, req, res) {
             //     res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
             // });
         });
-
-
-
-
-
     }
 }
 
