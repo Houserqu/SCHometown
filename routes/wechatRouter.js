@@ -134,60 +134,67 @@ function weixiaoopen(postdata, req, res) {
         res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 1});
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
-        var sign = jsondata.sign;
-        delete jsondata.sign;
 
-        console.log(jsondata);
+        getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
+            console.log(mediainfo);
 
-        var calsign = calSign(jsondata);
+            var sign = jsondata.sign;
+            delete jsondata.sign;
 
-        if (sign == calsign) {  //判断签名
-            var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
-
-            if (interval < 600000) {    //判断时间差
+            console.log(jsondata);
 
 
-                pool.getConnection(function (err, conn) {
+            var calsign = calSign(jsondata);
 
-                    conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
-                        if(err) console.log(err);
-                        console.log("判断是否存在media:"+result);
+            if (sign == calsign) {  //判断签名
+                var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
 
-                        if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
-                            console.log("开始获取公众号信息");
-                            jsondata["sign"] = sign;
-                            console.log(jsondata);
+                if (interval < 600000) {    //判断时间差
 
-                            getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
-                                console.log(mediainfo);
 
-                                conn.query('insert into media set ?', mediainfo, function (err, isadd) {
-                                    if(err) console.log(err);
+                    pool.getConnection(function (err, conn) {
 
-                                    // for (var i = 1; i < 36; i++) {
-                                    //     conn.query('insert into media_hometown set ?', {
-                                    //         media_id: mediainfo.media_id,
-                                    //         homeprovinceid: i
-                                    //     }, function (err, isaddhometown) {
-                                    //         if (err) console.log(err);
-                                    //     });
-                                    // }
-                                    conn.release();
-                                    res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
-                                });
-                            });
-                        } else {  //存在该公众号
-                            conn.release();
-                            res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
-                        }
+                        conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
+                            if(err) console.log(err);
+                            console.log("判断是否存在media:"+result);
+
+                            if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
+
+                                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+                            } else {  //存在该公众号
+                                conn.release();
+                                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+                            }
+                        });
                     });
-                });
+                } else {
+                    res.send({"errcode": 1, "errmsg": "超时", "is_config": 1});
+                }
             } else {
-                res.send({"errcode": 1, "errmsg": "超时", "is_config": 1});
+                res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 1});
             }
-        } else {
-            res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 1});
-        }
+
+
+            // conn.query('insert into media set ?', mediainfo, function (err, isadd) {
+            //     if(err) console.log(err);
+            //
+            //     for (var i = 1; i < 36; i++) {
+            //         conn.query('insert into media_hometown set ?', {
+            //             media_id: mediainfo.media_id,
+            //             homeprovinceid: i
+            //         }, function (err, isaddhometown) {
+            //             if (err) console.log(err);
+            //         });
+            //     }
+            //     conn.release();
+            //     res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
+            // });
+        });
+
+
+
+
+
     }
 }
 
