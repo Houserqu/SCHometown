@@ -134,7 +134,8 @@ function weixiaoopen(postdata, req, res) {
         res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 1});
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
-        var sign = jsondata.sign;
+        var postdata = tojson(postdata);
+
         delete jsondata.sign;
 
         var calsign = calSign(jsondata);
@@ -143,7 +144,7 @@ function weixiaoopen(postdata, req, res) {
             var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
 
             if (interval < 600000) {    //判断时间差
-                console.log("开始获取公众号信息");
+
 
                 pool.getConnection(function (err, conn) {
 
@@ -152,11 +153,12 @@ function weixiaoopen(postdata, req, res) {
                         console.log("判断是否存在media:"+result);
 
                         if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
-                            jsondata.sign = sign;
-                            console.dir(jsondata);
+                            console.log("开始获取公众号信息");
+                            console.log(postdata);
 
-                            getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
+                            getmedia(postdata, function (err, mediainfo) {  //拉取公众号信息
                                 console.log(mediainfo);
+
                                 conn.query('insert into media set ?', mediainfo, function (err, isadd) {
                                     if(err) console.log(err);
 
@@ -172,7 +174,7 @@ function weixiaoopen(postdata, req, res) {
                                     res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
                                 });
                             });
-                        } else {  //存在该公众号, 更新state为 1
+                        } else {  //存在该公众号
                             conn.release();
                             res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
                         }
