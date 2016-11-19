@@ -143,14 +143,18 @@ function weixiaoopen(postdata, req, res) {
             var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
 
             if (interval < 600000) {    //判断时间差
+                console.log("开始获取公众号信息");
+
                 pool.getConnection(function (err, conn) {
                     conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
+                        if(err) console.log(err);
 
                         if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
                             jsondata.sign = sign;
                             console.dir(jsondata);
                             getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
                                 conn.query('insert into media set ?', mediainfo, function (err, isadd) {
+                                    if(err) console.log(err);
 
                                     // for (var i = 1; i < 36; i++) {
                                     //     conn.query('insert into media_hometown set ?', {
