@@ -157,6 +157,7 @@ function weixiaoopen(postdata, req, res) {
                         if (err) throw(err);
                         if (result.length < 1) {    //不存在该公众号,拉取公众号信息
 
+                            jsondata['sign'] = sign;
                             getmedia(jsondata, function (err, mediainfo) {
                                 console.log(mediainfo);
                                 if (!mediainfo.hasOwnProperty("errcode")) {
@@ -241,8 +242,6 @@ function weixiaoconfig(postdata, req, res) {
 
         mediaMd.getAllUsers(mediaconfig.media_id,function (err,users) {
             mediaMd.getMediaHometown(mediaconfig.media_id,function (err,hometowns){
-                var userstr = JSON.stringify(users);
-                console.log(userstr);
                 res.render("mediaadmin", {users:users, hometowns: hometowns});
             });
         });
