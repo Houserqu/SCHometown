@@ -198,7 +198,11 @@ function weixiaoclose(postdata, req, res) {
         var interval = Date.parse(new Date()) - postdata.timestamp * 1000;
 
         if (interval < 600000) {
+            postdata.sign = sign;
+            console.log(postdata);
+
             getmedia(postdata, function (err, mediainfo) {  //拉取公众号信息
+
                 console.log(mediainfo);
                 res.send({"errcode": 0, "errmsg": "OK"});
             });
