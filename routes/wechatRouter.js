@@ -137,6 +137,8 @@ function weixiaoopen(postdata, req, res) {
         var caljson = jsondata;
         delete caljson.sign;
 
+        console.log(jsondata);
+
         var calsign = calSign(caljson);
 
         if (sign == calsign) {  //判断签名
