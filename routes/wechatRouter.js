@@ -3,6 +3,7 @@ var request = require("request");
 var cookieParser = require('cookie-parser');
 var md5 = require("md5");
 var pool = require("../config/mysql");
+var mediaMd = require("../model/mediaModel");
 
 var router = express.Router();
 
@@ -238,7 +239,13 @@ function weixiaoconfig(postdata, req, res) {
     if (sign == calSign(mediaconfig)) {
         res.cookie('media_id', mediaconfig.media_id);
 
-        res.render('mediaadmin');
+        mediaMd.getAllUsers(req.session.lastpage.media_id,function (err,users) {
+            mediaMd.getMediaHometown(req.session.lastpage.media_id,function (err,hometowns){
+                var userstr = JSON.stringify(users);
+                console.log(userstr);
+                res.render("mediaadmin", {users:users, hometowns: hometowns});
+            });
+        });
     } else {
         res.send({'errcode': 5004, 'errmsg': '签名错误'});
     }
