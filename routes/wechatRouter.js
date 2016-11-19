@@ -133,31 +133,6 @@ function weixiaoopen(postdata, req, res) {
     if (postdata == null) {
         res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0});
     } else {
-        var jsondata = tojson(postdata);    //处理获取的json
-
-        //保存公众信息
-        getmedia(jsondata, function (err, mediainfo) {
-            console.log(mediainfo);
-            if (!mediainfo.hasOwnProperty("errcode")) {
-
-                pool.getConnection(function (err, conn) {
-
-                    if (err) console.log(err);
-                    conn.query('select * from media where media_id = ?', mediainfo.media_id, function (err, result) {
-
-                        if (err) throw(err);
-                        if (result.length < 1) {
-                            pool.getConnection(function (err, addconn) {
-                                addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
-                                    if (err) console.log(err);
-                                });
-                            })
-                        }
-                    });
-                });
-            }
-        });
-
         var sign = jsondata.sign;
         delete jsondata.sign;
 
@@ -166,7 +141,31 @@ function weixiaoopen(postdata, req, res) {
         if (sign == calsign) {
             var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
             if (interval < 600000) {
+
                 res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
+
+                //保存公众信息
+                getmedia(jsondata, function (err, mediainfo) {
+                    console.log(mediainfo);
+                    if (!mediainfo.hasOwnProperty("errcode")) {
+
+                        pool.getConnection(function (err, conn) {
+
+                            if (err) console.log(err);
+                            conn.query('select * from media where media_id = ?', mediainfo.media_id, function (err, result) {
+
+                                if (err) throw(err);
+                                if (result.length < 1) {
+                                    pool.getConnection(function (err, addconn) {
+                                        addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
+                                            if (err) console.log(err);
+                                        });
+                                    })
+                                }
+                            });
+                        });
+                    }
+                });
             } else {
                 res.send({"errcode": 1, "errmsg": "超时", "is_config": 0});
             }
