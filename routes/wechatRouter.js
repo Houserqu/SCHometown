@@ -239,8 +239,8 @@ function weixiaoconfig(postdata, req, res) {
     if (sign == calSign(mediaconfig)) {
         res.cookie('media_id', mediaconfig.media_id);
 
-        mediaMd.getAllUsers(req.session.lastpage.media_id,function (err,users) {
-            mediaMd.getMediaHometown(req.session.lastpage.media_id,function (err,hometowns){
+        mediaMd.getAllUsers(mediaconfig.media_id,function (err,users) {
+            mediaMd.getMediaHometown(mediaconfig.media_id,function (err,hometowns){
                 var userstr = JSON.stringify(users);
                 console.log(userstr);
                 res.render("mediaadmin", {users:users, hometowns: hometowns});
