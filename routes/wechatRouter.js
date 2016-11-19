@@ -134,12 +134,12 @@ function weixiaoopen(postdata, req, res) {
         res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 1});
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
-        var caljson = jsondata;
-        delete caljson.sign;
+        var sign = jsondata.sign;
+        delete jsondata.sign;
 
         console.log(jsondata);
 
-        var calsign = calSign(caljson);
+        var calsign = calSign(jsondata);
 
         if (sign == calsign) {  //判断签名
             var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
@@ -155,6 +155,7 @@ function weixiaoopen(postdata, req, res) {
 
                         if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
                             console.log("开始获取公众号信息");
+                            jsondata["sign"] = sign;
                             console.log(jsondata);
 
                             getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
