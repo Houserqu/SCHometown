@@ -148,10 +148,12 @@ function weixiaoopen(postdata, req, res) {
                 pool.getConnection(function (err, conn) {
                     conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
                         if(err) console.log(err);
+                        console.log("判断是否存在media:"+result);
 
                         if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
                             jsondata.sign = sign;
                             console.dir(jsondata);
+
                             getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
                                 conn.query('insert into media set ?', mediainfo, function (err, isadd) {
                                     if(err) console.log(err);
