@@ -146,6 +146,7 @@ function weixiaoopen(postdata, req, res) {
                 console.log("开始获取公众号信息");
 
                 pool.getConnection(function (err, conn) {
+
                     conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
                         if(err) console.log(err);
                         console.log("判断是否存在media:"+result);
@@ -155,6 +156,7 @@ function weixiaoopen(postdata, req, res) {
                             console.dir(jsondata);
 
                             getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
+                                console.log(mediainfo);
                                 conn.query('insert into media set ?', mediainfo, function (err, isadd) {
                                     if(err) console.log(err);
 
@@ -247,9 +249,6 @@ function getmedia(postdata, cb) {
     var poststr = JSON.stringify(postdata);
 
     request.post({url: url, form: poststr}, function (error, response, body) {
-        console.log(error);
-        console.log(response);
-
         if (!error && response.statusCode == 200) {
             var mediainfo = JSON.parse(body);
             cb(error, mediainfo);
