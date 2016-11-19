@@ -135,44 +135,45 @@ function weixiaoopen(postdata, req, res) {
     } else {
         var jsondata = tojson(postdata);    //处理获取的json
 
-        getmedia(jsondata, function (err, mediainfo) {  //拉取公众号信息
-            console.log(mediainfo);
+        //保存公众信息
+        getmedia(jsondata, function (err, mediainfo) {
 
-            var sign = jsondata.sign;
-            delete jsondata.sign;
+            if (!mediainfo.hasOwnProperty("errcode")) {
 
-            console.log(jsondata);
+                pool.getConnection(function (err, conn) {
 
+                    if (err) console.log(err);
+                    conn.query('select * from media where media_id = ?', mediainfo.media_id, function (err, result) {
 
-            var calsign = calSign(jsondata);
-
-            if (sign == calsign) {  //判断签名
-                var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
-
-                if (interval < 600000) {    //判断时间差
-
-
-                    pool.getConnection(function (err, conn) {
-
-                        conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
-                            if(err) console.log(err);
-                            console.log("判断是否存在media:"+result);
-
-                            if (result.length < 1) {    //不存在该公众号, 新增记录,并循环创建老乡会
-
-                                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
-                            } else {  //存在该公众号
-                                conn.release();
-                                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
-                            }
-                        });
+                        if (err) throw(err);
+                        if (result.length < 1) {
+                            pool.getConnection(function (err, addconn) {
+                                addconn.query('insert into media set ?', mediainfo, function (err, isadd) {
+                                    if (err) console.log(err);
+                                });
+                            })
+                        }
                     });
-                } else {
-                    res.send({"errcode": 1, "errmsg": "超时", "is_config": 1});
-                }
-            } else {
-                res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 1});
+                });
             }
+        });
+
+        var sign = jsondata.sign;
+        delete jsondata.sign;
+
+        var calsign = calSign(jsondata);
+
+        if (sign == calsign) {
+            var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
+            if (interval < 600000) {
+                res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 0});
+            } else {
+                res.send({"errcode": 1, "errmsg": "超时", "is_config": 0});
+            }
+        } else {
+            res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0});
+        }
+    }
 
 
             // conn.query('insert into media set ?', mediainfo, function (err, isadd) {
@@ -189,8 +190,6 @@ function weixiaoopen(postdata, req, res) {
             //     conn.release();
             //     res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
             // });
-        });
-    }
 }
 
 //微校应用关闭
