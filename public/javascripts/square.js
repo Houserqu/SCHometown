@@ -134,41 +134,43 @@ $(document).ready(function () {
 
     //获取动态
     $('#tab-friends').click(function () {
-        $.ajax({
-            type: 'get',
-            url: '/friends/weibolist',
-            data: {},
-            dataType: 'json',
-            success: function (redata) {
-                if(redata.state){
-                    var html = '';
-                    for (var i = 0; i < redata.weibolist.length; i++) {
-                        var imghtml = "";
-                        var time = "";
-                        if(redata.weibolist[i].imgurl != "" && redata.weibolist[i].imgurl != null) {
-                            var imgs = redata.weibolist[i].imgurl.split("||");
-                            imgs.pop();
-                            imgs.forEach(function (img) {
-                                imghtml += "<img src='/weiboimg/" + img + "'>"
-                            });
+        if ($("#friends-weibo").attr('data-state') == 0) {
+            $.ajax({
+                type: 'get',
+                url: '/friends/weibolist',
+                data: {},
+                dataType: 'json',
+                success: function (redata) {
+                    if (redata.state) {
+                        var html = '';
+                        for (var i = 0; i < redata.weibolist.length; i++) {
+                            var imghtml = "";
+                            var time = "";
+                            if (redata.weibolist[i].imgurl != "" && redata.weibolist[i].imgurl != null) {
+                                var imgs = redata.weibolist[i].imgurl.split("||");
+                                imgs.pop();
+                                imgs.forEach(function (img) {
+                                    imghtml += "<img src='/weiboimg/" + img + "'>"
+                                });
+                            }
+
+                            time = reverseTime(redata.weibolist[i].origintime);
+
+                            html += '<div class="weui_panel weui_panel_access"><div class="weui_panel_hd">' + redata.weibolist[i].nickname + '发表动态</div><div class="weui_panel_bd"> <div class="weui_media_box weui_media_text weibocontent"> <p class="weui_media_desc">' + redata.weibolist[i].content + '</p> <div class="weibocontent_imgs">' + imghtml + '<div style="clear: both"></div> </div> <ul class="weui_media_info"> <li class="weui_media_info_meta">' + time + '</li></ul> </div> </div> </div>'
                         }
+                        $("#friends-weibo").append(html);
+                        $('#friends-weibo').attr('data-state', 1);
 
-                        time = reverseTime(redata.weibolist[i].origintime);
-
-                        html += '<div class="weui_panel weui_panel_access"><div class="weui_panel_hd">'+redata.weibolist[i].nickname+'发表动态</div><div class="weui_panel_bd"> <div class="weui_media_box weui_media_text weibocontent"> <p class="weui_media_desc">'+redata.weibolist[i].content+'</p> <div class="weibocontent_imgs">'+imghtml+'<div style="clear: both"></div> </div> <ul class="weui_media_info"> <li class="weui_media_info_meta">'+time+'</li></ul> </div> </div> </div>'
+                    } else {
+                        $.toast("网络异常", "forbidden");
                     }
-                    $("#friends-weibo").append(html);
 
-                }else{
-                    $.toast("网络异常","forbidden");
+                },
+                error: function () {
+                    $.toast('获取失败', 'forbidden');
                 }
-
-            },
-            error: function () {
-                $.toast('获取失败', 'forbidden');
-            }
-        });
-
+            });
+        }
     });
 
     //计算指定时间到今天0点的差值
@@ -176,29 +178,29 @@ $(document).ready(function () {
         var reversetime = "";
         var timeDifference = new Date(new Date().toLocaleDateString()).getTime() - new Date(inTime).getTime();
 
-        if(timeDifference > 0){   //如果为正  用天计算
+        if (timeDifference > 0) {   //如果为正  用天计算
             var weibotime = new Date(inTime).getHours();  //发布时间(小时)
-            var timeDays =  timeDifference/86400000;        //距当前天数
-            if(timeDays < 1){
-                reversetime = "昨天 "+weibotime+"点";
-            }else{
-                reversetime = Math.floor(timeDays)+"天前 "+weibotime+"点";
+            var timeDays = timeDifference / 86400000;        //距当前天数
+            if (timeDays < 1) {
+                reversetime = "昨天 " + weibotime + "点";
+            } else {
+                reversetime = Math.floor(timeDays) + "天前 " + weibotime + "点";
             }
-        }else{  //差值为负   用小时做单位
+        } else {  //差值为负   用小时做单位
 
             //计算指定时间到现在时间的小时差值
-            var timeHours =  (new Date().getTime() - new Date(inTime).getTime())/86400000*24;
-            if(timeHours < 1){
+            var timeHours = (new Date().getTime() - new Date(inTime).getTime()) / 86400000 * 24;
+            if (timeHours < 1) {
                 reversetime = "刚刚";
-            }else{
-                reversetime = Math.floor(timeHours)+"小时前";
+            } else {
+                reversetime = Math.floor(timeHours) + "小时前";
             }
         }
         return reversetime;
     }
 
     //查看动态图片
-    $('.weibocontent_imgs > img').on("click",function (e) {
+    $('.weibocontent_imgs > img').on("click", function (e) {
 
         var photoitem = new Array();
 
@@ -206,12 +208,12 @@ $(document).ready(function () {
 
         var imgs = $(this).parent().children('img');
         var imgslength = imgs.length;
-        for(var i=0; i<imgslength; i++){
+        for (var i = 0; i < imgslength; i++) {
             photoitem.push(imgs[i].src);
         }
         console.log(photoitem);
 
-        var pb = $.photoBrowser({items:photoitem, initIndex:index});
+        var pb = $.photoBrowser({items: photoitem, initIndex: index});
 
         pb.open();
 
@@ -219,23 +221,23 @@ $(document).ready(function () {
     });
 
     //分享弹出菜单
-    $("#sharebtn").on("click",function () {
+    $("#sharebtn").on("click", function () {
         var state = $(this).attr("data-state");
         console.log(state);
-        if(state == 0){
+        if (state == 0) {
             $("#share").popup();
-            $(this).attr("data-state",1);
-            $(this).find("img").attr("src",'/images/share_on.png');
-        }else{
+            $(this).attr("data-state", 1);
+            $(this).find("img").attr("src", '/images/share_on.png');
+        } else {
             console.log("close");
             $.closePopup();
-            $(this).attr("data-state",0);
-            $(this).find("img").attr("src",'/images/share.png');
+            $(this).attr("data-state", 0);
+            $(this).find("img").attr("src", '/images/share.png');
         }
     });
 
     //首页幻灯
-    var squareSwiper = new Swiper('.squareswiper',{
+    var squareSwiper = new Swiper('.squareswiper', {
         speed: 400,
         autoplay: 1500,
         spaceBetween: 100
