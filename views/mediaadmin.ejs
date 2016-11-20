@@ -33,10 +33,11 @@
                     <th>活动数</th>
                     <th>动态数</th>
                 </tr>
+                <% var provincename = ['北京','上海','天津','重庆','黑龙江','吉林','辽宁','山东','山西','陕西','河北','河南','湖北','湖南','海南','江苏','江西','广东','广西','云南','贵州','四川','内蒙古','宁夏','甘肃','青海','西藏','新疆','安徽','浙江','福建','香港','澳门','台湾','海外'] %>
                 <% hometowns.forEach(function (hometown, index) { %>
                 <tr class="td-<%= index % 2 %>">
                     <td><%= index + 1 %></td>
-                    <td><%= hometown.homeprovincename %></td>
+                    <td><%= provincename[hometown.homeprovinceid-1] %></td>
                     <td><%= hometown.useramount %></td>
                     <td><%= hometown.activityamount %></td>
                     <td><%= hometown.weiboamount %></td>
@@ -78,7 +79,6 @@
                     <option value="28">新疆</option>
                     <option value="29">安徽</option>
                     <option value="30">浙江</option>
-                    s
                     <option value="31">福建</option>
                     <option value="32">香港</option>
                     <option value="33">澳门</option>
@@ -94,9 +94,10 @@
                         <th>家乡省</th>
                         <th>家乡市</th>
                         <th>微信号</th>
+                        <th>家乡信息修改权限</th>
                     </tr>
                     <% users.forEach(function (user, index) { %>
-                    <tr class="td-<%= index % 2 %>">
+                    <tr class="td-<%= index%2+1 %>">
                         <td><%= index + 1 %></td>
                         <td><img src="<%= user.headimgurl %>"></td>
                         <td><%= user.nickname %></td>
@@ -104,6 +105,7 @@
                         <td><%= user.homeprovincename %></td>
                         <td><%= user.homecityname %></td>
                         <td><%= user.wechatnumber %></td>
+                        <td><%= user.basicmodify %></td>
                     </tr>
                     <% }) %>
 
@@ -146,17 +148,17 @@
                 users.forEach(function (user) {
                     resultuser.push(user);
                     console.log(user);
-                    user.sex == 1 ? user.sex = '男' : user.sex = '女';
+                    //user.sex == 1 ? user.sex = '男' : user.sex = '女';
                     key++;
-                    html += '<tr><td>' + key + '</td><td><img src="' + user.headimgurl + '"></td><td>' + user.nickname + '</td><td>' + user.sex + '</td><td>' + user.homeprovincename + '</td><td>' + user.homecityname + '</td><td>' + user.wechatnumber + '</td></tr>';
+                    html += '<tr class="td-'+ key%2 +'"><td>' + key + '</td><td><img src="' + user.headimgurl + '"></td><td>' + user.nickname + '</td><td>' + (user.sex == 1 ?  '男' :  '女') + '</td><td>' + user.homeprovincename + '</td><td>' + user.homecityname + '</td><td>' + user.wechatnumber + '</td></tr>';
                 });
             } else {
                 users.forEach(function (user) {
                     if (user.homeprovinceid == provinceid) {
                         resultuser.push(user);
-                        user.sex == 1 ? user.sex = '男' : user.sex = '女';
+                        //user.sex == 1 ? user.sex = '男' : user.sex = '女';
                         key++;
-                        html += '<tr><td>' + key + '</td><td><img src="' + user.headimgurl + '"></td><td>' + user.nickname + '</td><td>' + user.sex + '</td><td>' + user.homeprovincename + '</td><td>' + user.homecityname + '</td><td>' + user.wechatnumber + '</td></tr>';
+                        html += '<tr class="td-'+ key%2 +'"><td>' + key + '</td><td><img src="' + user.headimgurl + '"></td><td>' + user.nickname + '</td><td>' + (user.sex == 1 ?  '男' :  '女') + '</td><td>' + user.homeprovincename + '</td><td>' + user.homecityname + '</td><td>' + user.wechatnumber + '</td></tr>';
                     }
                 });
             }

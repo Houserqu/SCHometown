@@ -35,9 +35,6 @@ ul {
   color: #35b36a;
   border-bottom: #35b36a 2px solid; }
 
-.content {
-  height: 800px; }
-
 .content > section {
   margin-left: 20px;
   display: none; }
@@ -53,7 +50,7 @@ tr {
 td, th {
   border: none; }
 
-.td-0 {
+.td-1 {
   background-color: #f0f8ff; }
 
 .table-head {

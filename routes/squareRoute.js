@@ -337,13 +337,17 @@ router.post('/submitfeedback',function (req, res) {
 
 //公众号管理后台
 router.get('/mediaadmin',function (req, res) {
+    mediaMd.isExist(req.session.lastpage.media_id, function (err,isexist) {
+        if(isexist.length > 0){
+            mediaMd.getAllUsers(req.session.lastpage.media_id,function (err,users) {
+                mediaMd.getMediaHometown(req.session.lastpage.media_id,function (err,hometowns){
+                    res.render("mediaadmin", {users:users, hometowns: hometowns});
+                });
+            });
+        }else{
+            res.render("error", {message: '无公众号信息! 请重新开启应用',error:''});
+        }
 
-    mediaMd.getAllUsers(req.session.lastpage.media_id,function (err,users) {
-        mediaMd.getMediaHometown(req.session.lastpage.media_id,function (err,hometowns){
-            var userstr = JSON.stringify(users);
-            console.log(userstr);
-            res.render("mediaadmin", {users:users, hometowns: hometowns});
-        });
     });
 });
 

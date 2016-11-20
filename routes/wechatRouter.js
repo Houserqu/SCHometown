@@ -168,7 +168,7 @@ function weixiaoopen(postdata, req, res) {
                                             if (err) console.log(err);
 
                                             console.log("added:"+isadd);
-                                            //创建公众号老乡会
+                                            //循环创建公众号老乡会
                                             (function (addhometown) {
                                                 for (var i = 1; i < 36; i++) {
                                                     conn.query('insert into media_hometown set ?', {
@@ -196,22 +196,6 @@ function weixiaoopen(postdata, req, res) {
             res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0});
         }
     }
-
-
-    // conn.query('insert into media set ?', mediainfo, function (err, isadd) {
-    //     if(err) console.log(err);
-    //
-    //     for (var i = 1; i < 36; i++) {
-    //         conn.query('insert into media_hometown set ?', {
-    //             media_id: mediainfo.media_id,
-    //             homeprovinceid: i
-    //         }, function (err, isaddhometown) {
-    //             if (err) console.log(err);
-    //         });
-    //     }
-    //     conn.release();
-    //     res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});
-    // });
 }
 
 //微校应用关闭
@@ -243,13 +227,21 @@ function weixiaoconfig(postdata, req, res) {
     delete mediaconfig.type;
 
     if (sign == calSign(mediaconfig)) {
-        res.cookie('media_id', mediaconfig.media_id);
+        mediaMd.isExist(mediaconfig.media_id, function (err,isexist) {
+            if(isexist.length > 0){
+                res.cookie('media_id', mediaconfig.media_id);
 
-        mediaMd.getAllUsers(mediaconfig.media_id,function (err,users) {
-            mediaMd.getMediaHometown(mediaconfig.media_id,function (err,hometowns){
-                res.render("mediaadmin", {users:users, hometowns: hometowns});
-            });
-        });
+                mediaMd.getAllUsers(mediaconfig.media_id,function (err,users) {
+                    mediaMd.getMediaHometown(mediaconfig.media_id,function (err,hometowns){
+                        res.render("mediaadmin", {users:users, hometowns: hometowns});
+                    });
+                });
+            }else{
+                res.render("error", {message: '无公众号信息! 请重新开启应用',error:''});
+            }
+
+        })
+
     } else {
         res.send({'errcode': 5004, 'errmsg': '签名错误'});
     }
