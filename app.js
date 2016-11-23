@@ -52,13 +52,13 @@ app.use(function (req, res, next) {
     // };
     // res.cookie('logindata',logindata);
     // req.session.lastpage = logindata;
-    console.log(req.cookies.logindata);
-
-    if(req.cookies.logindata && req.cookies.logindata.hasOwnProperty('openid')){
-        req.session.lastpage = req.cookies.logindata;
-    }
-
-    next();
+    // console.log(req.cookies.logindata);
+    //
+    // if(req.cookies.logindata && req.cookies.logindata.hasOwnProperty('openid')){
+    //     req.session.lastpage = req.cookies.logindata;
+    // }
+    //
+    // next();
 });
 
 
