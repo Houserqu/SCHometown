@@ -68,15 +68,13 @@ router.get("/login", function (req, res, next) {
                                     }, function (err, userinfo) {  //添加新userinfo
 
                                         if (userinfo.affectedRows > 0) {
-                                            var logindata = {
+                                            req.session.lastpage = {
                                                 openid: getuserinfo.openid,
                                                 userid: isadd.insertId,
                                                 nickname: getuserinfo.nickname,
                                                 headimgurl: getuserinfo.headimgurl,
                                                 media_id: req.session.media_id
                                             };
-                                            req.session.lastpage = logindata;   //写入session
-                                            res.cookie('logindata', logindata, {maxAge : 2592000}); //设置cookie
                                             res.redirect("/user/basicinfo");
                                         }
                                         else
@@ -135,7 +133,7 @@ function tojson(postdata) {
         jsonstr = key;
     }
     return JSON.parse(jsonstr);
-};
+}
 
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
@@ -272,14 +270,26 @@ function weixiaotrigger(postdata, req, res) {
 
             res.redirect('/');
         } else {
-            if (req.cookies.logindata && req.cookies.logindata.hasOwnProperty('openid') && req.cookies.logindata.media_id == req.query.media_id) {
-                req.session.lastpage = req.cookies.logindata;
-                res.redirect('/');
-            } else {
-                res.redirect(url);
-            }
+            userExist(req.cookies.logindata.openid, function (err, result) {    //判断cookie保存的用户是否存在
+                if(err) throw err;
+                if(result.length == 1 && result[0].media_id == req.query.media_id){
+                    var logindata = {
+                        openid: result[0].openid,
+                        userid: result[0].userid,
+                        nickname: result[0].nickname,
+                        headimgurl: result[0].headimgurl,
+                        schoolid: result[0].schoolid,
+                        homeprovinceid: result[0].homeprovinceid,
+                        media_id: result[0].media_id
+                    };
+                    req.session.lastpage = logindata;   //存在,写入session
+                    res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
 
-
+                }else{
+                    res.clearCookie('logindata');   //不存在,删除cookie
+                    res.redirect(url);  //登录
+                }
+            });
         }
     }
 }

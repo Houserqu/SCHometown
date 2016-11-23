@@ -32,7 +32,7 @@ router.get('/basicinfo', function (req, res, next) {
         if (userinfo[0].basicmodify == 0) {
             res.redirect("/");
         } else {
-            hometown.getMedia(req.session.lastpage.media_id,function (err, result) {
+            hometown.getMedia(req.session.lastpage.media_id, function (err, result) {
                 console.log(result);
                 res.render('basicinfo',{media:result[0]});
             });
@@ -61,8 +61,8 @@ router.post('/confirmbasicinfo', function (req, res, next) {
                 } else {
                     userMd.getUserView(req.session.lastpage.userid, function (err, userinfo) {
                         if (err) console.log(err);
-                        console.log(userinfo[0])
-                        req.session.lastpage = {
+                        console.log(userinfo[0]);
+                        logindata = {
                             openid: userinfo[0].openid,
                             userid: userinfo[0].userid,
                             nickname: userinfo[0].nickname,
@@ -70,7 +70,9 @@ router.post('/confirmbasicinfo', function (req, res, next) {
                             homeprovinceid: userinfo[0].homeprovinceid,
                             media_id: userinfo[0].media_id
                         };
-                        res.send({state: 1})
+                        req.session.lastpage = logindata;
+                        res.cookie('logindata', logindata, {maxAge : 2592000}); //设置cookie
+                        res.send({state: 1});
                     });
                 }
             });
