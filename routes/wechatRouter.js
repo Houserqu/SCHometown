@@ -33,7 +33,7 @@ router.get("/login", function (req, res, next) {
             console.log(mopenid);
             userExist(mopenid, function (err, result) {  //判断用户是否存在
 
-                if (result.length = 1) {
+                if (result.length == 1) {
                     var logindata = {
                         openid: result[0].openid,
                         userid: result[0].userid,
