@@ -30,6 +30,7 @@ router.get("/login", function (req, res, next) {
         //获取accesstoken
         getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
             var mopenid = req.session.media_id+'&'+accesstoken.openid;
+            console.log(mopenid);
             userExist(mopenid, function (err, result) {  //判断用户是否存在
 
                 if (result.length = 1) {
@@ -261,6 +262,7 @@ function weixiaotrigger(postdata, req, res) {
 
     var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatconfig.appid + "&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
+    console.log(req.query.media_id);
     if (req.query.media_id == null || req.query.media_id == '')
         res.render("error", {message: "无法获取公众号信息", error: ""}); //判断是否获取得到公会号信息
     else {
@@ -281,6 +283,7 @@ function weixiaotrigger(postdata, req, res) {
         }
     }
 }
+
 //获取公众号信息
 function getmedia(postdata, cb) {
     var url = "http://weixiao.qq.com/common/get_media_info";
