@@ -6,15 +6,23 @@ var weiboMd = require('../model/weiboModel');
 var hometownMd = require('../model/hometownModel');
 var systemMd = require('../model/systemModel');
 var mediaMd = require('../model/mediaModel');
+var request = require('request');
+var hmacsha1 = require('hmacsha1');
+var base64 = require('base-64');
 var formidable = require("formidable");
 var path = require('path');
 var fs = require('fs');
 
+var COS = {
+    APPID: '10047182',
+    secretID: 'AKIDq0CuBSdJueyQgMaSiKbRmtJTHQBGgqwZ',
+    secretKey: '4gq1JOzp8kujrUK6CZhEwWazsT89aeXQ'
+};
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    console.log(req.session.lastpage);
     activityMd.getMediaActivitys(        //获取活动列表
-        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl', 'origintime','provincename'],
+        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl', 'origintime', 'provincename'],
         req.session.lastpage.media_id,
         0,
         5,
@@ -28,11 +36,10 @@ router.get('/', function (req, res, next) {
                     list.sort(function (a, b) {
                         return new Date(a.origintime).getTime() < new Date(b.origintime).getTime() ? 1 : -1;
                     });
-                    console.log(list);
                     res.render('square', {
                         list: list,
                         user: req.session.lastpage,
-                        hometown:hometown,
+                        hometown: hometown,
                         squareFun: squareFun
                     });
                 });
@@ -43,7 +50,7 @@ router.get('/', function (req, res, next) {
 //所有活动列表
 router.get('/activitys', function (req, res, next) {
     activityMd.getMediaActivitys(
-        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity','provincename'],
+        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'provincename'],
         req.session.lastpage.media_id,
         0,
         30,
@@ -82,7 +89,7 @@ router.get('/activitydetail/:id', function (req, res, next) {
                         joiners: joiners,
                         follows: follows,
                         comments: comments,
-                        user:{nickname: req.session.lastpage.nickname, headimgurl: req.session.lastpage.headimgurl}
+                        user: {nickname: req.session.lastpage.nickname, headimgurl: req.session.lastpage.headimgurl}
                     });
                 });
             });
@@ -255,8 +262,13 @@ router.get("/weibodetail/:wid", function (req, res) {
     var wid = req.params.wid;
     weiboMd.getOneWeibo(wid, function (err, weibo) {
         weiboMd.getWeiboComment(wid, function (err, weibocomments) {
-            if(err) console.log(err);
-            res.render("weibodetail", {weibo: weibo[0], weibocomments:weibocomments,user:{nickname: req.session.lastpage.nickname, headimgurl:req.session.lastpage.headimgurl}, squareFun: squareFun})
+            if (err) console.log(err);
+            res.render("weibodetail", {
+                weibo: weibo[0],
+                weibocomments: weibocomments,
+                user: {nickname: req.session.lastpage.nickname, headimgurl: req.session.lastpage.headimgurl},
+                squareFun: squareFun
+            })
         });
     });
 });
@@ -286,6 +298,49 @@ router.post("/upweiboimg", function (req, res) {
                 //以当前时间戳对上传文件进行重命名
                 var fileName = new Date().getTime() + fileExt;
                 var targetFile = path.join(targetDir, fileName);
+
+                // var t = Date.parse(new Date()) / 1000;
+                // var e = t + 7776000;
+                //
+                // var Original = "a=" + COS.APPID + "&b=hometownimg&k=" + COS.secretID + "&e=" + e + "&t=" + t + "&r=382027881&f=";
+                // var SignTmp = hmacsha1(COS.secretKey, Original);
+                // var Sign = base64.encode(SignTmp + Original);
+                //
+                // console.log(Sign);
+                //
+                // var options = {
+                //     url: 'http://web.file.myqcloud.com/files/v1/' + COS.APPID + '/hometownimg/' + fileName,
+                //     method: 'post',
+                //     //'Content-Type' : 'multipart/form-data',
+                //     headers: {
+                //         'User-Agent': 'request',
+                //         'content-type': 'multipart/form-data',
+                //         Authorization: Sign
+                //     },
+                //     form: {
+                //         filecontent: fs.createReadStream('/Users/Houser/Documents/Web/WebStormProject/Hometown/upload/boardcast/swiper1.jpg'),
+                //         op: 'upload'
+                //     }
+                // };
+                //
+                // request(options, function (err, httpResponse, body) {
+                //     console.log(httpResponse);
+                //     console.log(body);
+                // });
+
+                // request.post({
+                //         url: 'http://web.file.myqcloud.com/files/v1/' + COS.APPID + '/hometownimg/' + fileName,
+                //         Authorization: Sign,
+                //         formData: {
+                //             op: 'upload',
+                //             filecontent: fs.createReadStream('/Users/Houser/Documents/Web/WebStormProject/Hometown/upload/boardcast/swiper1.jpg')
+                //         }
+                //     },
+                //     function optionalCallback(err, httpResponse, body) {
+                //         console.log(httpResponse);
+                //         console.log(body);
+                //     });
+
                 //移动文件
                 fs.renameSync(filePath, targetFile);
                 // 文件的Url（相对路径）
@@ -318,34 +373,34 @@ router.post('/addweibocomment', function (req, res) {
 });
 
 //反馈页面
-router.get('/feedback',function (req, res) {
+router.get('/feedback', function (req, res) {
     res.render("feedback");
 });
 
 //提交反馈
-router.post('/submitfeedback',function (req, res) {
+router.post('/submitfeedback', function (req, res) {
     console.log(req.body.content);
-    systemMd.submitfeedback(req.session.lastpage.userid, req.body.content,function (err, result) {
-        if(result.affectedRows > 0 ){
-            res.send({code:200});
-        }else{
-            res.send({code:0});
+    systemMd.submitfeedback(req.session.lastpage.userid, req.body.content, function (err, result) {
+        if (result.affectedRows > 0) {
+            res.send({code: 200});
+        } else {
+            res.send({code: 0});
         }
     });
 
 });
 
 //公众号管理后台
-router.get('/mediaadmin',function (req, res) {
-    mediaMd.isExist(req.session.lastpage.media_id, function (err,isexist) {
-        if(isexist.length > 0){
-            mediaMd.getAllUsers(req.session.lastpage.media_id,function (err,users) {
-                mediaMd.getMediaHometown(req.session.lastpage.media_id,function (err,hometowns){
-                    res.render("mediaadmin", {users:users, hometowns: hometowns});
+router.get('/mediaadmin', function (req, res) {
+    mediaMd.isExist(req.session.lastpage.media_id, function (err, isexist) {
+        if (isexist.length > 0) {
+            mediaMd.getAllUsers(req.session.lastpage.media_id, function (err, users) {
+                mediaMd.getMediaHometown(req.session.lastpage.media_id, function (err, hometowns) {
+                    res.render("mediaadmin", {users: users, hometowns: hometowns});
                 });
             });
-        }else{
-            res.render("error", {message: '无公众号信息! 请重新开启应用',error:''});
+        } else {
+            res.render("error", {message: '无公众号信息! 请重新开启应用', error: ''});
         }
 
     });

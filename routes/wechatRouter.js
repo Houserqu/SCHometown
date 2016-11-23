@@ -29,10 +29,10 @@ router.get("/login", function (req, res, next) {
     } else {
         //获取accesstoken
         getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
-            userExist(accesstoken.openid, req.session.media_id, function (err, result) {  //判断用户是否存在
-                //存在,写入session
-                if (result.length > 0) {
-                    req.session.lastpage = {
+            userExist(req.session.media_id+'&'+accesstoken.openid, function (err, result) {  //判断用户是否存在
+
+                if (result.length = 1) {
+                    var logindata = {
                         openid: result[0].openid,
                         userid: result[0].userid,
                         nickname: result[0].nickname,
@@ -41,7 +41,8 @@ router.get("/login", function (req, res, next) {
                         homeprovinceid: result[0].homeprovinceid,
                         media_id: result[0].media_id
                     };
-
+                    req.session.lastpage = logindata;   //存在,写入session
+                    res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
                     res.redirect("/");
                 } else {
                     //拉取用户信息
@@ -51,6 +52,7 @@ router.get("/login", function (req, res, next) {
                         } else {
 
                             getuserinfo.privilege = getuserinfo.privilege.toString();
+                            getuserinfo.openid = req.session.media_id+'&'+getuserinfo.openid;
                             addUser(getuserinfo, function (err, isadd) {   //添加新用户
                                 console.log(isadd);
                                 if (err) {
@@ -64,14 +66,15 @@ router.get("/login", function (req, res, next) {
                                     }, function (err, userinfo) {  //添加新userinfo
 
                                         if (userinfo.affectedRows > 0) {
-                                            req.session.lastpage = {
+                                            var logindata = {
                                                 openid: getuserinfo.openid,
                                                 userid: isadd.insertId,
                                                 nickname: getuserinfo.nickname,
                                                 headimgurl: getuserinfo.headimgurl,
                                                 media_id: req.session.media_id
                                             };
-
+                                            req.session.lastpage = logindata;   //写入session
+                                            res.cookie('logindata', logindata, {maxAge : 2592000}); //设置cookie
                                             res.redirect("/user/basicinfo");
                                         }
                                         else
@@ -167,7 +170,7 @@ function weixiaoopen(postdata, req, res) {
                                         conn.query('insert into media set ?', mediainfo, function (err, isadd) {
                                             if (err) console.log(err);
 
-                                            console.log("added:"+isadd);
+                                            console.log("added:" + isadd);
                                             //循环创建公众号老乡会
                                             (function (addhometown) {
                                                 for (var i = 1; i < 36; i++) {
@@ -227,17 +230,17 @@ function weixiaoconfig(postdata, req, res) {
     delete mediaconfig.type;
 
     if (sign == calSign(mediaconfig)) {
-        mediaMd.isExist(mediaconfig.media_id, function (err,isexist) {
-            if(isexist.length > 0){
+        mediaMd.isExist(mediaconfig.media_id, function (err, isexist) {
+            if (isexist.length > 0) {
                 res.cookie('media_id', mediaconfig.media_id);
 
-                mediaMd.getAllUsers(mediaconfig.media_id,function (err,users) {
-                    mediaMd.getMediaHometown(mediaconfig.media_id,function (err,hometowns){
-                        res.render("mediaadmin", {users:users, hometowns: hometowns});
+                mediaMd.getAllUsers(mediaconfig.media_id, function (err, users) {
+                    mediaMd.getMediaHometown(mediaconfig.media_id, function (err, hometowns) {
+                        res.render("mediaadmin", {users: users, hometowns: hometowns});
                     });
                 });
-            }else{
-                res.render("error", {message: '无公众号信息! 请重新开启应用',error:''});
+            } else {
+                res.render("error", {message: '无公众号信息! 请重新开启应用', error: ''});
             }
 
         })
@@ -254,16 +257,29 @@ function weixiaomonitor(postdata, req, res) {
 
 //微校应用触发
 function weixiaotrigger(postdata, req, res) {
+
     var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatconfig.appid + "&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
     if (req.query.media_id == null || req.query.media_id == '')
-        res.render("error", {message: "无法获取公众号信息", error: ""});
+        res.render("error", {message: "无法获取公众号信息", error: ""}); //判断是否获取得到公会号信息
     else {
         req.session.media_id = req.query.media_id;
-        res.redirect(url);
+
+        if (req.session.lastpage && req.session.lastpage.media_id == req.query.media_id) {     //判断session
+
+            res.redirect('/');
+        } else {
+            if (req.cookies.logindata && req.cookies.logindata.hasOwnProperty('openid') && req.cookies.logindata.media_id == req.query.media_id) {
+                req.session.lastpage = req.cookies.logindata;
+                res.redirect('/');
+            } else {
+                res.redirect(url);
+            }
+
+
+        }
     }
 }
-
 //获取公众号信息
 function getmedia(postdata, cb) {
     var url = "http://weixiao.qq.com/common/get_media_info";
@@ -321,10 +337,10 @@ var addUserinfo = function (value, cb) {
     });
 };
 
-var userExist = function (openid, media_id, cb) {
+var userExist = function (openid, cb) {
     pool.getConnection(function (err, conn) {
         if (err) throw err;
-        conn.query('select * from user_view where openid = ? and media_id = ?', [openid, media_id], function (err, result) {
+        conn.query('select * from user_view where openid = ?', openid, function (err, result) {
             conn.release();
             if (err) throw err;
             console.log(result);

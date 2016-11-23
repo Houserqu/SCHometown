@@ -50,37 +50,34 @@
         </div>
 
         <div class="weui_panel weui_panel_access">
+            <div class="weui_panel_hd">当前所登录公众号信息</div>
             <div class="weui_panel_bd">
-                <div class="weui_media_box weui_media_text">
-                    <h4 class="weui_media_title">提示</h4>
-                    <p class="weui_media_desc">所属学校由当前登录的公众号决定,用户请选择自己的家乡省市,提交后无法修改</p>
-                </div>
+                <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
+                    <div class="weui_media_hd">
+                        <img class="weui_media_appmsg_thumb" src="<%= media.avatar_image %>" alt="">
+                    </div>
+                    <div class="weui_media_bd">
+                        <h4 class="weui_media_title"><%= media.name %></h4>
+                        <p class="weui_media_desc"><%= media.school_name %></p>
+                    </div>
+                </a>
             </div>
         </div>
 
-        <div class="weui_cells">
-            <div class="weui_cell">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>公众号</p>
-                </div>
-                <div class="weui_cell_ft" id="media"><%= media.name%></div>
-            </div>
+        <div class="weui_panel weui_panel_access">
+            <div class="weui_panel_hd">请选择家乡</div>
+            <div class="weui_panel_bd">
 
-            <div class="weui_cell">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>学校</p>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">家乡所在地</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" id="user-hometown" type="text"/>
+                    </div>
                 </div>
-                <div class="weui_cell_ft" id="userschool"><%= media.school_name%></div>
+
             </div>
         </div>
         <div class="weui_cells">
-
-            <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label">家乡所在地</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" id="user-hometown" type="text"/>
-                </div>
-            </div>
 
             <div class="weui_cell">
 
@@ -170,7 +167,7 @@
 
             $.confirm({
                 title: '确认提交?',
-                text: "学校 :" + school + '<br/>' + "家乡:" + hometown +'<br/>' + "公众号:" + media,
+                text: "学校 :" + school + '<br/>' + "家乡:" + hometown + '<br/>' + "公众号:" + media,
                 onOK: function () {
                     $.ajax({
                         type: "post",

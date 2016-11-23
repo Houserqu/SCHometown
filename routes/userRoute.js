@@ -45,7 +45,6 @@ router.get('/basicinfo', function (req, res, next) {
 router.post('/updateuserhometown', function (req, res, next) {
     userMd.updateUserHometown(req.session.lastpage.userid, req.body.pid, req.body.city, function (err, result) {
         if (err) console.log(err);
-
         res.json({state: result.affectedRows});
     });
 });
