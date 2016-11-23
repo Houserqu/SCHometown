@@ -157,17 +157,15 @@
 
     //确认提交信息
     $("#subbasicinfo").on("click", function () {
-        var school = $("#userschool").text();
-        var media = $("#media").text();
         var hometown = $("#user-hometown").val();
 
         console.log(school);
 
-        if ((school.length != 0) && (hometown.length != 0)) {
+        if (hometown.length != 0 ) {
 
             $.confirm({
                 title: '确认提交?',
-                text: "学校 :" + school + '<br/>' + "家乡:" + hometown + '<br/>' + "公众号:" + media,
+                text: "家乡:" + hometown,
                 onOK: function () {
                     $.ajax({
                         type: "post",
