@@ -270,26 +270,30 @@ function weixiaotrigger(postdata, req, res) {
 
             res.redirect('/');
         } else {
-            userExist(req.cookies.logindata.openid, function (err, result) {    //判断cookie保存的用户是否存在
-                if(err) throw err;
-                if(result.length == 1 && result[0].media_id == req.query.media_id){
-                    var logindata = {
-                        openid: result[0].openid,
-                        userid: result[0].userid,
-                        nickname: result[0].nickname,
-                        headimgurl: result[0].headimgurl,
-                        schoolid: result[0].schoolid,
-                        homeprovinceid: result[0].homeprovinceid,
-                        media_id: result[0].media_id
-                    };
-                    req.session.lastpage = logindata;   //存在,写入session
-                    res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
+            if(req.cookies.logindata){
+                userExist(req.cookies.logindata.openid, function (err, result) {    //判断cookie保存的用户是否存在
+                    if(err) throw err;
+                    if(result.length == 1 && result[0].media_id == req.query.media_id){
+                        var logindata = {
+                            openid: result[0].openid,
+                            userid: result[0].userid,
+                            nickname: result[0].nickname,
+                            headimgurl: result[0].headimgurl,
+                            schoolid: result[0].schoolid,
+                            homeprovinceid: result[0].homeprovinceid,
+                            media_id: result[0].media_id
+                        };
+                        req.session.lastpage = logindata;   //存在,写入session
+                        res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
 
-                }else{
-                    res.clearCookie('logindata');   //不存在,删除cookie
-                    res.redirect(url);  //登录
-                }
-            });
+                    }else{
+                        res.clearCookie('logindata');   //不存在,删除cookie
+                        res.redirect(url);  //登录
+                    }
+                });
+            }else {
+                res.redirect(url);  //登录
+            }
         }
     }
 }
