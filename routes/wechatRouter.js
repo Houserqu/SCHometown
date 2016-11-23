@@ -29,7 +29,8 @@ router.get("/login", function (req, res, next) {
     } else {
         //获取accesstoken
         getAccessToken(wechatconfig.appid, wechatconfig.appsecret, code, function (err, accesstoken) {
-            userExist(req.session.media_id+'&'+accesstoken.openid, function (err, result) {  //判断用户是否存在
+            var mopenid = req.session.media_id+'&'+accesstoken.openid;
+            userExist(mopenid, function (err, result) {  //判断用户是否存在
 
                 if (result.length = 1) {
                     var logindata = {
