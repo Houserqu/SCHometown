@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'upload')));
 
 //模拟登陆
-app.use(function (req, res, next) {
+//app.use(function (req, res, next) {
     // var logindata = {
     //     media_id: 'gh_fe88fc5cdb42',
     //     homeprovinceid: 13,
@@ -59,7 +59,7 @@ app.use(function (req, res, next) {
     // }
     //
     // next();
-});
+//});
 
 
 //登录拦截
