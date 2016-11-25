@@ -234,11 +234,20 @@ function weixiaoconfig(postdata, req, res) {
             if (isexist.length > 0) {
                 res.cookie('media_id', mediaconfig.media_id);
 
-                mediaMd.getAllUsers(mediaconfig.media_id, function (err, users) {
-                    mediaMd.getMediaHometown(mediaconfig.media_id, function (err, hometowns) {
-                        res.render("mediaadmin", {users: users, hometowns: hometowns});
-                    });
+                mediaMd.getAllUsers(req.session.lastpage.media_id, function (err, users) {
+
+                    mediaMd.getMediaAllActivitys(req.session.lastpage.media_id, function (err, acticitys) {
+
+                        mediaMd.getMediaAllWeibos(req.session.lastpage.media_id, function (err, weibos) {
+
+                            var activitynumber = acticitys.length;
+                            var weibonumber = weibos.length;
+
+                            res.render("mediaadmin", {users: users, activitynumber:activitynumber, weibonumber:weibonumber});
+                        });
+                    })
                 });
+
             } else {
                 res.render("error", {message: '无公众号信息! 请重新开启应用', error: ''});
             }
