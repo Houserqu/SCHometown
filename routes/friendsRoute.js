@@ -27,9 +27,6 @@ router.get('/homefriendpage/:openid', function(req, res, next) {
         userMd.getUserWeibos(req.params.openid, function (err, weibolist) {
             friendMd.isGoodFriend(req.session.lastpage.userid, req.params.openid, function (err, isresult) {
                 if(err) console.log(err);
-
-                console.log("isfriend"+isresult);
-
                 res.render('homefriendpage',{user:user[0],weibolist:weibolist,isfriend:isresult});
 
             });
