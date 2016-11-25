@@ -260,9 +260,9 @@ function weixiaotrigger(postdata, req, res) {
 
     var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatconfig.appid + "&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
-    console.log(req.query.media_id);
-    console.log(req.session.lastpage);
-    console.log(req.cookies.logindata);
+    console.log('media:'+ req.query.media_id);
+    console.log('session:'+ req.session.lastpage);
+    console.log('cookie:'+ req.cookies.logindata);
 
     if (req.query.media_id == null || req.query.media_id == '')
         res.render("error", {message: "无法获取公众号信息", error: ""}); //判断是否获取得到公会号信息
