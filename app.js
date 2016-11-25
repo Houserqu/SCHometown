@@ -52,7 +52,7 @@ app.use(express.static(path.join(__dirname, 'upload')));
 //     };
 //     req.session.lastpage = logindata;
 //
-//     next();
+//     next();K
 // });
 
 

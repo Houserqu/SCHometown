@@ -7,16 +7,15 @@ var hometownMd = require('../model/hometownModel');
 var systemMd = require('../model/systemModel');
 var mediaMd = require('../model/mediaModel');
 var request = require('request');
-var hmacsha1 = require('hmacsha1');
-var base64 = require('base-64');
 var formidable = require("formidable");
 var path = require('path');
 var fs = require('fs');
+var crypto = require('crypto');
 
 var COS = {
-    APPID: '10047182',
-    secretID: 'AKIDq0CuBSdJueyQgMaSiKbRmtJTHQBGgqwZ',
-    secretKey: '4gq1JOzp8kujrUK6CZhEwWazsT89aeXQ'
+    APPID: '200001',
+    secretID: 'AKIDUfLUEUigQiXqm7CVSspKJnuaiIKtxqAv',
+    secretKey: 'bLcPnl88WU30VY57ipRhSePfPdOfSruK'
 };
 
 /* GET home page. */
@@ -301,14 +300,23 @@ router.post("/upweiboimg", function (req, res) {
                 //以当前时间戳对上传文件进行重命名
                 var fileName = new Date().getTime() + fileExt;
                 var targetFile = path.join(targetDir, fileName);
-
+                //
                 // var t = Date.parse(new Date()) / 1000;
                 // var e = t + 7776000;
+
+                //var Original = "a=" + COS.APPID + "&b=newbucket&k=" + COS.secretID + "&e=" + e + "&t=" + t + "&r=382027881&f=";
+                //var Original = 'a=200001&b=newbucket&k=AKIDUfLUEUigQiXqm7CVSspKJnuaiIKtxqAv&e=1437995704&t=1437995644&r=2081660421&f=';
+
+                // var shasum = crypto.createHash('sha1');
+                // shasum.update(Original);
+                // var Signtmp = shasum.digest(COS.secretKey);
                 //
-                // var Original = "a=" + COS.APPID + "&b=hometownimg&k=" + COS.secretID + "&e=" + e + "&t=" + t + "&r=382027881&f=";
-                // var SignTmp = hmacsha1(COS.secretKey, Original);
-                // var Sign = base64.encode(SignTmp + Original);
+                // var baee = crypto.createHash('base64');
+                // var Sign = baee.update(Signtmp+Original);
                 //
+                // console.log(Sign);
+
+                // var Sign = crypto.createHmac('sha1', COS.secretKey).update(Original).digest().toString('base64');
                 // console.log(Sign);
                 //
                 // var options = {
@@ -320,6 +328,7 @@ router.post("/upweiboimg", function (req, res) {
                 //         'content-type': 'multipart/form-data',
                 //         Authorization: Sign
                 //     },
+                //     Authorization: Sign,
                 //     form: {
                 //         filecontent: fs.createReadStream('/Users/Houser/Documents/Web/WebStormProject/Hometown/upload/boardcast/swiper1.jpg'),
                 //         op: 'upload'
@@ -327,7 +336,7 @@ router.post("/upweiboimg", function (req, res) {
                 // };
                 //
                 // request(options, function (err, httpResponse, body) {
-                //     console.log(httpResponse);
+                //     //console.log(httpResponse);
                 //     console.log(body);
                 // });
 
