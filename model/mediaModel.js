@@ -37,4 +37,26 @@ mediaMd.getMediaHometown = function (media_id,cb) {
     });
 };
 
+//获取公众号下所有活动
+mediaMd.getMediaAllActivitys = function (media_id,cb) {
+    pool.getConnection(function (err, conn) {
+        conn.query("select * from activity where media_id = ? ", media_id, function (err, results) {
+            if(err) console.log(err);
+            conn.release();
+            cb(err, results)
+        });
+    });
+};
+
+//获取公众号下所有动态
+mediaMd.getMediaAllWeibos = function (media_id,cb) {
+    pool.getConnection(function (err, conn) {
+        conn.query("select * from weibo_view where media_id = ? ", media_id, function (err, results) {
+            if(err) console.log(err);
+            conn.release();
+            cb(err, results)
+        });
+    });
+};
+
 module.exports = mediaMd;

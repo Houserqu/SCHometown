@@ -74,4 +74,25 @@ select {
 .hint-title {
   color: #ff5f12; }
 
+.category {
+  margin: 0;
+  height: 40px; }
+
+li {
+  list-style: none; }
+
+.category li {
+  height: 40px;
+  color: #ff5f12;
+  float: left;
+  margin-right: 30px; }
+
+.category-title {
+  color: #35b36a; }
+
+.charts li {
+  width: 300px;
+  height: 300px;
+  float: left; }
+
 /*# sourceMappingURL=mediaadmin.css.map */
