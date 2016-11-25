@@ -288,6 +288,8 @@ router.post("/upweiboimg", function (req, res) {
         var redata = "";
         var targetDir = path.join(__dirname, "../upload/weiboimg");
 
+        console.log(targetDir);
+
         if (err) throw err;
         var filesUrl = "";
         var keys = Object.keys(files);
@@ -300,6 +302,8 @@ router.post("/upweiboimg", function (req, res) {
                 //以当前时间戳对上传文件进行重命名
                 var fileName = new Date().getTime() + fileExt;
                 var targetFile = path.join(targetDir, fileName);
+
+                console.log(targetFile);
                 //
                 // var t = Date.parse(new Date()) / 1000;
                 // var e = t + 7776000;
