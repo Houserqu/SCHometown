@@ -29,6 +29,8 @@ router.post('/updateuserinfo', function (req, res, next) {
 //添加学校,家乡省市信息页面
 router.get('/basicinfo', function (req, res, next) {
     userMd.getUserinfo(req.session.lastpage.userid, function (err, userinfo) {
+        console.log("basicinfo");
+        console.log(userinfo);
         if (userinfo[0].basicmodify == 1 || userinfo[0].homeprovinceid == 0 || userinfo[0].homecityid == 0) {
             hometown.getMedia(req.session.lastpage.media_id, function (err, result) {
                 res.render('basicinfo',{media:result[0]});
