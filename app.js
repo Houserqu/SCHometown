@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'upload')));
 //模拟登陆
 app.use(function (req, res, next) {
     var logindata = {
-        media_id: 'gh_fe88fc5cdb42',
+        media_id: '2',
         homeprovinceid: 13,
         homecityid: '112',
         userid: 1,

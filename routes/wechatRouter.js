@@ -296,7 +296,7 @@ function weixiaotrigger(postdata, req, res) {
                 }
             });
         } else {
-            if(req.cookies.logindata){
+            if(req.cookies.logindata && req.cookies.logindata.media_id == req.query.media_id){
                 userExist(req.cookies.logindata.openid, function (err, result) {    //判断cookie保存的用户是否存在
                     if(err) throw err;
                     if(result.length == 1 && result[0].media_id == req.query.media_id){
