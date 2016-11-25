@@ -234,11 +234,11 @@ function weixiaoconfig(postdata, req, res) {
             if (isexist.length > 0) {
                 res.cookie('media_id', mediaconfig.media_id);
 
-                mediaMd.getAllUsers(req.session.lastpage.media_id, function (err, users) {
+                mediaMd.getAllUsers(mediaconfig.media_id, function (err, users) {
 
-                    mediaMd.getMediaAllActivitys(req.session.lastpage.media_id, function (err, acticitys) {
+                    mediaMd.getMediaAllActivitys(mediaconfig.media_id, function (err, acticitys) {
 
-                        mediaMd.getMediaAllWeibos(req.session.lastpage.media_id, function (err, weibos) {
+                        mediaMd.getMediaAllWeibos(mediaconfig.media_id, function (err, weibos) {
 
                             var activitynumber = acticitys.length;
                             var weibonumber = weibos.length;
