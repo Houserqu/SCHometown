@@ -21,6 +21,7 @@ var COS = {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    console.log(req.session.lastpage);
     if(req.session.lastpage.homeprovinceid == 0  || req.session.lastpage.homecityid == 0){
         res.redirect("/user/basicinfo");
     }else{
