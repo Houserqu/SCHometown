@@ -3,3 +3,4 @@ weiboimg/
 node_modules/
 *.map
 *.scss
+app.js
