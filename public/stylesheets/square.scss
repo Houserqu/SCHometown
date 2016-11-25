@@ -66,3 +66,33 @@ $red:#F13838;
   height: 120px;
   width: 100%;
 }
+
+/* 顶部导航栏 */
+ .redirect-nav{
+   background: #393A3F;
+   height: 40px;
+ }
+.redirect-nav li{
+  list-style: none;
+  height: 40px;
+  margin: auto 3px;
+}
+.redirect-nav a{
+  text-decoration: none;
+  color: #ffffff;
+  line-height: 40px;
+}
+
+.redirect-nav-subleft{
+  float: left;
+}
+.redirect-nav-subright{
+  float: right;
+  height: 40px;
+}
+.backimg{
+  height: 28px;
+  width: 28px;
+  margin-top: 6px;
+}
+/* 顶部导航栏  end */

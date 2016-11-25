@@ -7,9 +7,48 @@
     <link rel="stylesheet" href="/stylesheets/weui.css">
     <link rel="stylesheet" href="/stylesheets/jquery-weui.min.css">
     <link rel="stylesheet" href="/stylesheets/schometown.css">
+
+    <style>
+        .redirect-nav{
+            background: #393A3F;
+            height: 40px;
+        }
+        .redirect-nav li{
+            list-style: none;
+            height: 40px;
+            margin: auto 3px;
+        }
+        .redirect-nav a{
+            text-decoration: none;
+            color: #ffffff;
+            line-height: 40px;
+        }
+
+        .redirect-nav-subleft{
+            float: left;
+        }
+        .redirect-nav-subright{
+            float: right;
+            height: 40px;
+        }
+        .backimg{
+            height: 28px;
+            width: 28px;
+            margin-top: 6px;
+        }
+
+    </style>
 </head>
 <body>
 <article id="container" class="container">
+    <div class="redirect-nav">
+        <ul>
+            <li class="redirect-nav-subleft"><img class="backimg" src="/images/back.png" alt=""></li>
+            <li class="redirect-nav-subleft"><a href="/">返回</a></li>
+        </ul>
+
+    </div>
+
     <header class="weui-row">
         <h1><%= schometown.schoolname%> <%= schometown.homeprovince%> 老乡会<br/><span id="media">©<%= schometown.media_name%> <img src="/images/2code.png"></span></h1>
     </header>
