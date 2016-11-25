@@ -61,7 +61,7 @@ userMd.updateUserinfo = function (userid, column, value, cb) {
 userMd.updateUserHometown = function (userid, pid, city, cb) {
     pool.getConnection(function (err,conn) {
         if(err) throw err;
-        conn.query("update userinfo set homeprovinceid = ? ,homecityid = ?  where userid = ? " , [pid, city, userid], function (err,result) {
+        conn.query("update userinfo set basicmodify = 0, homeprovinceid = ? ,homecityid = ?  where userid = ? " , [pid, city, userid], function (err,result) {
             conn.release();
             if(err) console.log(err);
             cb(err,result);

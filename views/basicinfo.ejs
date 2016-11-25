@@ -64,19 +64,40 @@
             </div>
         </div>
 
+
         <div class="weui_panel weui_panel_access">
             <div class="weui_panel_hd">请选择家乡</div>
             <div class="weui_panel_bd">
 
+                <!--<div class="weui_cell">-->
+                <!--<div class="weui_cell_hd"><label class="weui_label">家乡省份</label></div>-->
+                <!--<div class="weui_cell_bd weui_cell_primary">-->
+                <!--<input class="weui_input" id="hometown-province" type="text"/>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="weui_cell">-->
+                <!--<div class="weui_cell_hd"><label class="weui_label">家乡城市</label></div>-->
+                <!--<div class="weui_cell_bd weui_cell_primary">-->
+                <!--<input class="weui_input" id="hometown-city" type="text"/>-->
+                <!--</div>-->
+                <!--</div>-->
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label">家乡所在地</label></div>
+                    <div class="weui_cell_hd"><label for="name" class="weui_label">家乡省份</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input" id="user-hometown" type="text"/>
+                        <input class="weui_input" id="hometown-province" type="text" value="" readonly="">
+                    </div>
+                </div>
+
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label for="name" class="weui_label">家乡城市</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" id="hometown-city" type="text" value="" readonly="">
                     </div>
                 </div>
 
             </div>
         </div>
+
         <div class="weui_cells">
 
             <div class="weui_cell">
@@ -86,8 +107,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </article>
 </body>
@@ -97,53 +116,462 @@
 
 <script>
 
-    var citys = ['北京市', '上海市', '天津市', '重庆市', '大庆市', '大兴安岭地区', '哈尔滨市', '鹤岗市', '黑河市', '鸡西市', '佳木斯市', '牡丹江市', '七台河市', '齐齐哈尔市', '双鸭山市', '绥化市', '伊春市', '白城市', '白山市', '吉林市', '辽源市', '四平市', '松原市', '通化市', '延吉市', '长春市', '鞍山市', '本溪市', '朝阳市', '大连市', '丹东市', '抚顺市', '阜新市', '葫芦岛市', '锦州市', '辽阳市', '盘锦市', '沈阳市', '铁岭市', '营口市', '滨州市', '德州市', '东营市', '菏泽市', '济南市', '济宁市', '莱芜市', '聊城市', '临沂市', '青岛市', '日照市', '泰安市', '威海市', '潍坊市', '烟台市', '枣庄市', '淄博市', '大同市', '晋城市', '晋中市', '临汾市', '吕梁市', '朔州市', '太原市', '忻州市', '阳泉市', '运城市', '长治市', '安康市', '宝鸡市', '汉中市', '商洛市', '铜川市', '渭南市', '西安市', '咸阳市', '延安市', '榆林市', '保定市', '沧州市', '承德市', '邯郸市', '衡水市', '廊坊市', '秦皇岛市', '三河市', '石家庄市', '唐山市', '', '邢台市', '张家口市', '安阳市', '鹤壁市', '济源市', '焦作市', '开封市', '洛阳市', '漯河市', '南阳市', '平顶山市', '濮阳市', '三门峡市', '商丘市', '新乡市', '信阳市', '许昌市', '郑州市', '周口市', '驻马店市', '鄂州市', '恩施市', '黄冈市', '黄石市', '荆门市', '荆州市', '潜江市', '十堰市', '随州市', '天门市', '武汉市', '仙桃市', '咸宁市', '襄阳市', '孝感市', '宜昌市', '常德市', '郴州市', '衡阳市', '怀化市', '吉首市', '娄底市', '邵阳市', '湘潭市', '益阳市', '永州市', '岳阳市', '张家界市', '长沙市', '株洲市', '海口市', '琼海市', '三亚市', '文昌市', '五指山市', '常州市', '淮安市', '连云港市', '南京市', '南通市', '苏州市', '泰州市', '无锡市', '宿迁市', '徐州市', '盐城市', '扬州市', '镇江市', '抚州市', '赣州市', '吉安市', '景德镇市', '九江市', '南昌市', '萍乡市', '上饶市', '新余市', '宜春市', '鹰潭市', '潮州市', '东莞市', '佛山市', '广州市', '河源市', '惠州市', '江门市', '揭阳市', '茂名市', '梅州市', '清远市', '汕头市', '汕尾市', '韶关市', '深圳市', '阳江市', '云浮市', '湛江市', '肇庆市', '中山市', '珠海市', '百色市', '北海市', '崇左市', '贵港市', '桂林市', '河池市', '贺州市', '柳州市', '南宁市', '钦州市', '梧州市', '玉林市', '保山市', '楚雄市', '大理市', '德宏州', '个旧市', '景洪市', '昆明市', '丽江市', '临沧市', '蒙自市', '普洱市', '曲靖市', '文山州', '玉溪市', '昭通市', '安顺市', '毕节市', '都匀市', '贵阳市', '凯里市', '六盘水市', '黔南州', '铜仁市', '兴义市', '遵义市', '巴中市', '成都市', '达州市', '德阳市', '甘孜州', '广安市', '广汉市', '广元市', '乐山市', '泸州市', '眉山市', '绵阳市', '南充市', '内江市', '攀枝花市', '遂宁市', '汶川县', '西昌市', '雅安市', '宜宾市', '资阳市', '自贡市', '阿拉善盟', '巴彦淖尔市', '包头市', '赤峰市', '鄂尔多斯市', '呼和浩特市', '呼伦贝尔市', '通辽市', '乌海市', '乌兰察布市', '锡林郭勒盟', '兴安盟', '固原市', '石嘴山市', '吴忠市', '银川市', '白银市', '定西市', '甘南州', '嘉峪关市', '金昌市', '酒泉市', '兰州市', '陇南市', '平凉市', '庆阳市', '天水市', '武威市', '张掖市', '西宁市', '拉萨市', '咸阳市', '阿克苏市', '阿拉尔市', '昌吉市', '和田市', '喀什地区', '克拉玛依市', '库尔勒市', '奎屯市', '石河子市', '乌鲁木齐市', '伊犁州', '伊宁市', '安庆市', '蚌埠市', '亳州市', '池州市', '滁州市', '阜阳市', '合肥市', '淮北市', '淮南市', '黄山市', '六安市', '马鞍山市', '铜陵市', '芜湖市', '宿州市', '宣城市', '杭州市', '湖州市', '嘉兴市', '金华市', '丽水市', '宁波市', '衢州市', '绍兴市', '台州市', '温州市', '舟山市', '福州市', '龙岩市', '南平市', '宁德市', '莆田市', '泉州市', '三明市', '厦门市', '漳州市']
+    var citys = [{title: '北京市', value: 1, pid: 1},
+        {title: '上海市', value: 2, pid: 2},
+        {title: '天津市', value: 3, pid: 3},
+        {title: '重庆市', value: 4, pid: 4},
+        {title: '大庆市', value: 5, pid: 5},
+        {title: '大兴安岭地区', value: 6, pid: 5},
+        {title: '哈尔滨市', value: 7, pid: 5},
+        {title: '鹤岗市', value: 8, pid: 5},
+        {title: '黑河市', value: 9, pid: 5},
+        {title: '鸡西市', value: 10, pid: 5},
+        {title: '佳木斯市', value: 11, pid: 5},
+        {title: '牡丹江市', value: 12, pid: 5},
+        {title: '七台河市', value: 13, pid: 5},
+        {title: '齐齐哈尔市', value: 14, pid: 5},
+        {title: '双鸭山市', value: 15, pid: 5},
+        {title: '绥化市', value: 16, pid: 5},
+        {title: '伊春市', value: 17, pid: 5},
+        {title: '白城市', value: 18, pid: 6},
+        {title: '白山市', value: 19, pid: 6},
+        {title: '吉林市', value: 20, pid: 6},
+        {title: '辽源市', value: 21, pid: 6},
+        {title: '四平市', value: 22, pid: 6},
+        {title: '松原市', value: 23, pid: 6},
+        {title: '通化市', value: 24, pid: 6},
+        {title: '延吉市', value: 25, pid: 6},
+        {title: '长春市', value: 26, pid: 6},
+        {title: '鞍山市', value: 27, pid: 7},
+        {title: '本溪市', value: 28, pid: 7},
+        {title: '朝阳市', value: 29, pid: 7},
+        {title: '大连市', value: 30, pid: 7},
+        {title: '丹东市', value: 31, pid: 7},
+        {title: '抚顺市', value: 32, pid: 7},
+        {title: '阜新市', value: 33, pid: 7},
+        {title: '葫芦岛市', value: 34, pid: 7},
+        {title: '锦州市', value: 35, pid: 7},
+        {title: '辽阳市', value: 36, pid: 7},
+        {title: '盘锦市', value: 37, pid: 7},
+        {title: '沈阳市', value: 38, pid: 7},
+        {title: '铁岭市', value: 39, pid: 7},
+        {title: '营口市', value: 40, pid: 7},
+        {title: '滨州市', value: 41, pid: 8},
+        {title: '德州市', value: 42, pid: 8},
+        {title: '东营市', value: 43, pid: 8},
+        {title: '菏泽市', value: 44, pid: 8},
+        {title: '济南市', value: 45, pid: 8},
+        {title: '济宁市', value: 46, pid: 8},
+        {title: '莱芜市', value: 47, pid: 8},
+        {title: '聊城市', value: 48, pid: 8},
+        {title: '临沂市', value: 49, pid: 8},
+        {title: '青岛市', value: 50, pid: 8},
+        {title: '日照市', value: 51, pid: 8},
+        {title: '泰安市', value: 52, pid: 8},
+        {title: '威海市', value: 53, pid: 8},
+        {title: '潍坊市', value: 54, pid: 8},
+        {title: '烟台市', value: 55, pid: 8},
+        {title: '枣庄市', value: 56, pid: 8},
+        {title: '淄博市', value: 57, pid: 8},
+        {title: '大同市', value: 58, pid: 9},
+        {title: '晋城市', value: 59, pid: 9},
+        {title: '晋中市', value: 60, pid: 9},
+        {title: '临汾市', value: 61, pid: 9},
+        {title: '吕梁市', value: 62, pid: 9},
+        {title: '朔州市', value: 63, pid: 9},
+        {title: '太原市', value: 64, pid: 9},
+        {title: '忻州市', value: 65, pid: 9},
+        {title: '阳泉市', value: 66, pid: 9},
+        {title: '运城市', value: 67, pid: 9},
+        {title: '长治市', value: 68, pid: 9},
+        {title: '安康市', value: 69, pid: 10},
+        {title: '宝鸡市', value: 70, pid: 10},
+        {title: '汉中市', value: 71, pid: 10},
+        {title: '商洛市', value: 72, pid: 10},
+        {title: '铜川市', value: 73, pid: 10},
+        {title: '渭南市', value: 74, pid: 10},
+        {title: '西安市', value: 75, pid: 10},
+        {title: '咸阳市', value: 76, pid: 10},
+        {title: '延安市', value: 77, pid: 10},
+        {title: '榆林市', value: 78, pid: 10},
+        {title: '保定市', value: 79, pid: 11},
+        {title: '沧州市', value: 80, pid: 11},
+        {title: '承德市', value: 81, pid: 11},
+        {title: '邯郸市', value: 82, pid: 11},
+        {title: '衡水市', value: 83, pid: 11},
+        {title: '廊坊市', value: 84, pid: 11},
+        {title: '秦皇岛市', value: 85, pid: 11},
+        {title: '三河市', value: 86, pid: 11},
+        {title: '石家庄市', value: 87, pid: 11},
+        {title: '唐山市', value: 88, pid: 11},
+        {title: '邢台市', value: 90, pid: 11},
+        {title: '张家口市', value: 91, pid: 11},
+        {title: '安阳市', value: 92, pid: 12},
+        {title: '鹤壁市', value: 93, pid: 12},
+        {title: '济源市', value: 94, pid: 12},
+        {title: '焦作市', value: 95, pid: 12},
+        {title: '开封市', value: 96, pid: 12},
+        {title: '洛阳市', value: 97, pid: 12},
+        {title: '漯河市', value: 98, pid: 12},
+        {title: '南阳市', value: 99, pid: 12},
+        {title: '平顶山市', value: 100, pid: 12},
+        {title: '濮阳市', value: 101, pid: 12},
+        {title: '三门峡市', value: 102, pid: 12},
+        {title: '商丘市', value: 103, pid: 12},
+        {title: '新乡市', value: 104, pid: 12},
+        {title: '信阳市', value: 105, pid: 12},
+        {title: '许昌市', value: 106, pid: 12},
+        {title: '郑州市', value: 107, pid: 12},
+        {title: '周口市', value: 108, pid: 12},
+        {title: '驻马店市', value: 109, pid: 12},
+        {title: '鄂州市', value: 110, pid: 13},
+        {title: '恩施市', value: 111, pid: 13},
+        {title: '黄冈市', value: 112, pid: 13},
+        {title: '黄石市', value: 113, pid: 13},
+        {title: '荆门市', value: 114, pid: 13},
+        {title: '荆州市', value: 115, pid: 13},
+        {title: '潜江市', value: 116, pid: 13},
+        {title: '十堰市', value: 117, pid: 13},
+        {title: '随州市', value: 118, pid: 13},
+        {title: '天门市', value: 119, pid: 13},
+        {title: '武汉市', value: 120, pid: 13},
+        {title: '仙桃市', value: 121, pid: 13},
+        {title: '咸宁市', value: 122, pid: 13},
+        {title: '襄阳市', value: 123, pid: 13},
+        {title: '孝感市', value: 124, pid: 13},
+        {title: '宜昌市', value: 125, pid: 13},
+        {title: '常德市', value: 126, pid: 14},
+        {title: '郴州市', value: 127, pid: 14},
+        {title: '衡阳市', value: 128, pid: 14},
+        {title: '怀化市', value: 129, pid: 14},
+        {title: '吉首市', value: 130, pid: 14},
+        {title: '娄底市', value: 131, pid: 14},
+        {title: '邵阳市', value: 132, pid: 14},
+        {title: '湘潭市', value: 133, pid: 14},
+        {title: '益阳市', value: 134, pid: 14},
+        {title: '永州市', value: 135, pid: 14},
+        {title: '岳阳市', value: 136, pid: 14},
+        {title: '张家界市', value: 137, pid: 14},
+        {title: '长沙市', value: 138, pid: 14},
+        {title: '株洲市', value: 139, pid: 14},
+        {title: '海口市', value: 140, pid: 15},
+        {title: '琼海市', value: 141, pid: 15},
+        {title: '三亚市', value: 142, pid: 15},
+        {title: '文昌市', value: 143, pid: 15},
+        {title: '五指山市', value: 144, pid: 15},
+        {title: '常州市', value: 145, pid: 16},
+        {title: '淮安市', value: 146, pid: 16},
+        {title: '连云港市', value: 147, pid: 16},
+        {title: '南京市', value: 148, pid: 16},
+        {title: '南通市', value: 149, pid: 16},
+        {title: '苏州市', value: 150, pid: 16},
+        {title: '泰州市', value: 151, pid: 16},
+        {title: '无锡市', value: 152, pid: 16},
+        {title: '宿迁市', value: 153, pid: 16},
+        {title: '徐州市', value: 154, pid: 16},
+        {title: '盐城市', value: 155, pid: 16},
+        {title: '扬州市', value: 156, pid: 16},
+        {title: '镇江市', value: 157, pid: 16},
+        {title: '抚州市', value: 158, pid: 17},
+        {title: '赣州市', value: 159, pid: 17},
+        {title: '吉安市', value: 160, pid: 17},
+        {title: '景德镇市', value: 161, pid: 17},
+        {title: '九江市', value: 162, pid: 17},
+        {title: '南昌市', value: 163, pid: 17},
+        {title: '萍乡市', value: 164, pid: 17},
+        {title: '上饶市', value: 165, pid: 17},
+        {title: '新余市', value: 166, pid: 17},
+        {title: '宜春市', value: 167, pid: 17},
+        {title: '鹰潭市', value: 168, pid: 17},
+        {title: '潮州市', value: 169, pid: 18},
+        {title: '东莞市', value: 170, pid: 18},
+        {title: '佛山市', value: 171, pid: 18},
+        {title: '广州市', value: 172, pid: 18},
+        {title: '河源市', value: 173, pid: 18},
+        {title: '惠州市', value: 174, pid: 18},
+        {title: '江门市', value: 175, pid: 18},
+        {title: '揭阳市', value: 176, pid: 18},
+        {title: '茂名市', value: 177, pid: 18},
+        {title: '梅州市', value: 178, pid: 18},
+        {title: '清远市', value: 179, pid: 18},
+        {title: '汕头市', value: 180, pid: 18},
+        {title: '汕尾市', value: 181, pid: 18},
+        {title: '韶关市', value: 182, pid: 18},
+        {title: '深圳市', value: 183, pid: 18},
+        {title: '阳江市', value: 184, pid: 18},
+        {title: '云浮市', value: 185, pid: 18},
+        {title: '湛江市', value: 186, pid: 18},
+        {title: '肇庆市', value: 187, pid: 18},
+        {title: '中山市', value: 188, pid: 18},
+        {title: '珠海市', value: 189, pid: 18},
+        {title: '百色市', value: 190, pid: 19},
+        {title: '北海市', value: 191, pid: 19},
+        {title: '崇左市', value: 192, pid: 19},
+        {title: '贵港市', value: 193, pid: 19},
+        {title: '桂林市', value: 194, pid: 19},
+        {title: '河池市', value: 195, pid: 19},
+        {title: '贺州市', value: 196, pid: 19},
+        {title: '柳州市', value: 197, pid: 19},
+        {title: '南宁市', value: 198, pid: 19},
+        {title: '钦州市', value: 199, pid: 19},
+        {title: '梧州市', value: 200, pid: 19},
+        {title: '玉林市', value: 201, pid: 19},
+        {title: '保山市', value: 202, pid: 20},
+        {title: '楚雄市', value: 203, pid: 20},
+        {title: '大理市', value: 204, pid: 20},
+        {title: '德宏州', value: 205, pid: 20},
+        {title: '个旧市', value: 206, pid: 20},
+        {title: '景洪市', value: 207, pid: 20},
+        {title: '昆明市', value: 208, pid: 20},
+        {title: '丽江市', value: 209, pid: 20},
+        {title: '临沧市', value: 210, pid: 20},
+        {title: '蒙自市', value: 211, pid: 20},
+        {title: '普洱市', value: 212, pid: 20},
+        {title: '曲靖市', value: 213, pid: 20},
+        {title: '文山州', value: 214, pid: 20},
+        {title: '玉溪市', value: 215, pid: 20},
+        {title: '昭通市', value: 216, pid: 20},
+        {title: '安顺市', value: 217, pid: 21},
+        {title: '毕节市', value: 218, pid: 21},
+        {title: '都匀市', value: 219, pid: 21},
+        {title: '贵阳市', value: 220, pid: 21},
+        {title: '凯里市', value: 221, pid: 21},
+        {title: '六盘水市', value: 222, pid: 21},
+        {title: '黔南州', value: 223, pid: 21},
+        {title: '铜仁市', value: 224, pid: 21},
+        {title: '兴义市', value: 225, pid: 21},
+        {title: '遵义市', value: 226, pid: 21},
+        {title: '巴中市', value: 227, pid: 22},
+        {title: '成都市', value: 228, pid: 22},
+        {title: '达州市', value: 229, pid: 22},
+        {title: '德阳市', value: 230, pid: 22},
+        {title: '甘孜州', value: 231, pid: 22},
+        {title: '广安市', value: 232, pid: 22},
+        {title: '广汉市', value: 233, pid: 22},
+        {title: '广元市', value: 234, pid: 22},
+        {title: '乐山市', value: 235, pid: 22},
+        {title: '泸州市', value: 236, pid: 22},
+        {title: '眉山市', value: 237, pid: 22},
+        {title: '绵阳市', value: 238, pid: 22},
+        {title: '南充市', value: 239, pid: 22},
+        {title: '内江市', value: 240, pid: 22},
+        {title: '攀枝花市', value: 241, pid: 22},
+        {title: '遂宁市', value: 242, pid: 22},
+        {title: '汶川县', value: 243, pid: 22},
+        {title: '西昌市', value: 244, pid: 22},
+        {title: '雅安市', value: 245, pid: 22},
+        {title: '宜宾市', value: 246, pid: 22},
+        {title: '资阳市', value: 247, pid: 22},
+        {title: '自贡市', value: 248, pid: 22},
+        {title: '阿拉善盟', value: 249, pid: 23},
+        {title: '巴彦淖尔市', value: 250, pid: 23},
+        {title: '包头市', value: 251, pid: 23},
+        {title: '赤峰市', value: 252, pid: 23},
+        {title: '鄂尔多斯市', value: 253, pid: 23},
+        {title: '呼和浩特市', value: 254, pid: 23},
+        {title: '呼伦贝尔市', value: 255, pid: 23},
+        {title: '通辽市', value: 256, pid: 23},
+        {title: '乌海市', value: 257, pid: 23},
+        {title: '乌兰察布市', value: 258, pid: 23},
+        {title: '锡林郭勒盟', value: 259, pid: 23},
+        {title: '兴安盟', value: 260, pid: 23},
+        {title: '固原市', value: 261, pid: 24},
+        {title: '石嘴山市', value: 262, pid: 24},
+        {title: '吴忠市', value: 263, pid: 24},
+        {title: '银川市', value: 264, pid: 24},
+        {title: '白银市', value: 265, pid: 25},
+        {title: '定西市', value: 266, pid: 25},
+        {title: '甘南州', value: 267, pid: 25},
+        {title: '嘉峪关市', value: 268, pid: 25},
+        {title: '金昌市', value: 269, pid: 25},
+        {title: '酒泉市', value: 270, pid: 25},
+        {title: '兰州市', value: 271, pid: 25},
+        {title: '陇南市', value: 272, pid: 25},
+        {title: '平凉市', value: 273, pid: 25},
+        {title: '庆阳市', value: 274, pid: 25},
+        {title: '天水市', value: 275, pid: 25},
+        {title: '武威市', value: 276, pid: 25},
+        {title: '张掖市', value: 277, pid: 25},
+        {title: '西宁市', value: 278, pid: 26},
+        {title: '拉萨市', value: 279, pid: 27},
+        {title: '咸阳市', value: 280, pid: 27},
+        {title: '阿克苏市', value: 281, pid: 28},
+        {title: '阿拉尔市', value: 282, pid: 28},
+        {title: '昌吉市', value: 283, pid: 28},
+        {title: '和田市', value: 284, pid: 28},
+        {title: '喀什地区', value: 285, pid: 28},
+        {title: '克拉玛依市', value: 286, pid: 28},
+        {title: '库尔勒市', value: 287, pid: 28},
+        {title: '奎屯市', value: 288, pid: 28},
+        {title: '石河子市', value: 289, pid: 28},
+        {title: '乌鲁木齐市', value: 290, pid: 28},
+        {title: '伊犁州', value: 291, pid: 28},
+        {title: '伊宁市', value: 292, pid: 28},
+        {title: '安庆市', value: 293, pid: 29},
+        {title: '蚌埠市', value: 294, pid: 29},
+        {title: '亳州市', value: 295, pid: 29},
+        {title: '池州市', value: 296, pid: 29},
+        {title: '滁州市', value: 297, pid: 29},
+        {title: '阜阳市', value: 298, pid: 29},
+        {title: '合肥市', value: 299, pid: 29},
+        {title: '淮北市', value: 300, pid: 29},
+        {title: '淮南市', value: 301, pid: 29},
+        {title: '黄山市', value: 302, pid: 29},
+        {title: '六安市', value: 303, pid: 29},
+        {title: '马鞍山市', value: 304, pid: 29},
+        {title: '铜陵市', value: 305, pid: 29},
+        {title: '芜湖市', value: 306, pid: 29},
+        {title: '宿州市', value: 307, pid: 29},
+        {title: '宣城市', value: 308, pid: 29},
+        {title: '杭州市', value: 309, pid: 30},
+        {title: '湖州市', value: 310, pid: 30},
+        {title: '嘉兴市', value: 311, pid: 30},
+        {title: '金华市', value: 312, pid: 30},
+        {title: '丽水市', value: 313, pid: 30},
+        {title: '宁波市', value: 314, pid: 30},
+        {title: '衢州市', value: 315, pid: 30},
+        {title: '绍兴市', value: 316, pid: 30},
+        {title: '台州市', value: 317, pid: 30},
+        {title: '温州市', value: 318, pid: 30},
+        {title: '舟山市', value: 319, pid: 30},
+        {title: '福州市', value: 320, pid: 31},
+        {title: '龙岩市', value: 321, pid: 31},
+        {title: '南平市', value: 322, pid: 31},
+        {title: '宁德市', value: 323, pid: 31},
+        {title: '莆田市', value: 324, pid: 31},
+        {title: '泉州市', value: 325, pid: 31},
+        {title: '三明市', value: 326, pid: 31},
+        {title: '厦门市', value: 327, pid: 31},
+        {title: '漳州市', value: 328, pid: 31},
+    ];
 
-    var province = ['北京', '上海', '天津', "重庆", '黑龙江', '吉林', '辽宁', '山东', '山西', '陕西', '河北', '河南', '湖北', '湖南', '海南', '江苏', '江西', '广东', '广西', '云南', '贵州', '四川', '内蒙古', '宁夏', '甘肃', '青海', '西藏', '新疆', '安徽', '浙江', '福建', '香港', '澳门', '台湾', '海外'];
+    var provinces = [
+        {title: '北京', value: 1},
+        {title: '上海', value: 2},
+        {title: '天津', value: 3},
+        {title: '重庆', value: 4},
+        {title: '黑龙江', value: 5},
+        {title: '吉林', value: 6},
+        {title: '辽宁', value: 7},
+        {title: '山东', value: 8},
+        {title: '山西', value: 9},
+        {title: '陕西', value: 10},
+        {title: '河北', value: 11},
+        {title: '河南', value: 12},
+        {title: '湖北', value: 13},
+        {title: '湖南', value: 14},
+        {title: '海南', value: 15},
+        {title: '江苏', value: 16},
+        {title: '江西', value: 17},
+        {title: '广东', value: 18},
+        {title: '广西', value: 19},
+        {title: '云南', value: 20},
+        {title: '贵州', value: 21},
+        {title: '四川', value: 22},
+        {title: '内蒙古', value: 23},
+        {title: '宁夏', value: 24},
+        {title: '甘肃', value: 25},
+        {title: '青海', value: 26},
+        {title: '西藏', value: 27},
+        {title: '新疆', value: 28},
+        {title: '安徽', value: 29},
+        {title: '浙江', value: 30},
+        {title: '福建', value: 31},
+        {title: '香港', value: 32},
+        {title: '澳门', value: 33},
+        {title: '台湾', value: 34},
+        {title: '海外', value: 35}];
 
-    $("#user-hometown").cityPicker({
-        showDistrict: false,
-        cssClass: "hometowncss",
-        onClose: function (e) {
-            var pid = province.indexOf(e.value[0]) + 1;
-            var cid = citys.indexOf(e.value[1]) + 1;
-            var hometown = {pid: pid, city: cid}
+    //    $("#user-hometown").cityPicker({
+    //        showDistrict: false,
+    //        cssClass: "hometowncss",
+    //        onClose: function (e) {
+    //            var pid = province.indexOf(e.value[0]) + 1;
+    //            var cid = citys.indexOf(e.value[1]) + 1;
+    //            var hometown = {pid: pid, city: cid}
+    //
+    //            $.ajax({
+    //                type: "post",
+    //                url: "/user/updateuserhometown",
+    //                data: hometown,
+    //                dataType: "json",
+    //                success: function (redata) {
+    //                    if (!redata)
+    //                        $.toast("修改失败", "forbidden");
+    //                },
+    //                error: function () {
+    //                    alert("网络错误");
+    //                }
+    //            });
+    //        }
+    //    });
+    $("#hometown-city").select({
+        input: '先选择省份',
+        title: '家乡城市',
+        items: [{}],
+        closeText: 'close'
+    });
 
-            $.ajax({
-                type: "post",
-                url: "/user/updateuserhometown",
-                data: hometown,
-                dataType: "json",
-                success: function (redata) {
-                    if (!redata)
-                        $.toast("修改失败", "forbidden");
-                },
-                error: function () {
-                    alert("网络错误");
-                }
+    $("#hometown-province").select({
+        title: '家乡省份',
+        input: '请选择',
+        items: provinces,
+        closeText: 'close',
+        onClose: function (obj) {
+            $("#hometown-city").select('update', {input: '请选择'});
+            //更新city select items
+            (function (pid, cb) {
+                var currentCitys = [];
+                citys.forEach(function (city) {
+                    if (city.pid == pid) {
+                        currentCitys.push(city);
+                    }
+                })
+                cb(currentCitys);
+            })(obj.data.values, function (currentCitys) {
+                $("#hometown-city").select('update', {items: currentCitys});
             });
+
         }
     });
-</script>
 
-<script src="/javascripts/school-picker.js"></script>
-
-<script>
 
     //确认提交信息
     $("#subbasicinfo").on("click", function () {
-        var hometown = $("#user-hometown").val();
+        var province = $('#hometown-province').attr('data-values');
+        var provincename = $('#hometown-province').val();
+        var city = $('#hometown-city').attr('data-values');
+        var cityname = $('#hometown-city').val();
 
-        if (hometown.length != 0 ) {
+        if (city != undefined && province != undefined && city != '') {
+
 
             $.confirm({
                 title: '确认提交?',
-                text: "家乡:" + hometown,
+                text: "家乡:" + provincename + '-' + cityname,
                 onOK: function () {
+//                    $.ajax({
+//                        type: "post",
+//                        url: "/user/confirmbasicinfo",
+//                        data: {column: "basicmodify", value: 0},
+//                        dataType: "json",
+//                        success: function (redata) {
+//                            if (redata.state) {
+//                                $.toast("提交成功", function () {
+//                                    window.location.href = "/";
+//                                });
+//                            } else {
+//                                $.toast("提交失败", "forbidden");
+//                            }
+//                        },
+//                        error: function () {
+//                            alert("网络错误");
+//                        }
+//                    });
                     $.ajax({
                         type: "post",
-                        url: "/user/confirmbasicinfo",
-                        data: {column: "basicmodify", value: 0},
+                        url: "/user/updateuserhometown",
+                        data: {pid: province, city: city},
                         dataType: "json",
                         success: function (redata) {
                             if (redata.state) {
@@ -166,7 +594,6 @@
         } else {
             $.toast("请完整填写信息", "cancel");
         }
-
     });
 
 </script>

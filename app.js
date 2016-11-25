@@ -30,36 +30,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'upload')));
 
 //模拟登陆
-//app.use(function (req, res, next) {
-    // var logindata = {
-    //     media_id: 'gh_fe88fc5cdb42',
-    //     homeprovinceid: 13,
-    //     homecityid: '112',
-    //     userid: 1,
-    //     openid: 'olAdmuKBW_YPTnjjx1wf_bvkjLao',
-    //     nickname: 'Houser1',
-    //     headimgurl: 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4JOiah0vwJq6PmwvzYg4ZfSl1nI37F5HvlpPSJhaQB1BnLmpApSem1OhNuMYLHDYLwx6wg9nem7xic5ah6jaiaxCzBPFXtEvTFt8/0',
-    //     school_code: 946943942,
-    //     school_name: '北京大学',
-    //     introduction: null,
-    //     homeprovincename: '湖北',
-    //     homecityname: '黄冈市',
-    //     media_name: '程序缘',
-    //     phone: null,
-    //     wechatnumber: null,
-    //     //bacsicmodify: 1,
-    //     sex: 1
-    // };
-    // res.cookie('logindata',logindata);
-    // req.session.lastpage = logindata;
-    // console.log(req.cookies.logindata);
-    //
-    // if(req.cookies.logindata && req.cookies.logindata.hasOwnProperty('openid')){
-    //     req.session.lastpage = req.cookies.logindata;
-    // }
-    //
-    // next();
-//});
+// app.use(function (req, res, next) {
+//     var logindata = {
+//         media_id: 'gh_fe88fc5cdb42',
+//         homeprovinceid: 13,
+//         homecityid: '112',
+//         userid: 1,
+//         openid: 'olAdmuKBW_YPTnjjx1wf_bvkjLao',
+//         nickname: 'Houser1',
+//         headimgurl: 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4JOiah0vwJq6PmwvzYg4ZfSl1nI37F5HvlpPSJhaQB1BnLmpApSem1OhNuMYLHDYLwx6wg9nem7xic5ah6jaiaxCzBPFXtEvTFt8/0',
+//         school_code: 946943942,
+//         school_name: '北京大学',
+//         introduction: null,
+//         homeprovincename: '湖北',
+//         homecityname: '黄冈市',
+//         media_name: '程序缘',
+//         phone: null,
+//         wechatnumber: null,
+//         //bacsicmodify: 1,
+//         sex: 1
+//     };
+//     req.session.lastpage = logindata;
+//
+//     next();K
+// });
 
 
 //登录拦截

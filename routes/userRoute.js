@@ -35,7 +35,7 @@ router.get('/basicinfo', function (req, res, next) {
                 res.render('basicinfo',{media:result[0]});
             });
         } else {
-            redirect('/');
+            res.redirect('/');
         }
     });
 });
