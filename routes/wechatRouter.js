@@ -263,14 +263,18 @@ function weixiaotrigger(postdata, req, res) {
     console.log(req.query.media_id);
     console.log(req.session.lastpage);
     console.log(req.cookies.logindata);
+
     if (req.query.media_id == null || req.query.media_id == '')
         res.render("error", {message: "无法获取公众号信息", error: ""}); //判断是否获取得到公会号信息
     else {
         req.session.media_id = req.query.media_id;
 
         if (req.session.lastpage && req.session.lastpage.media_id == req.query.media_id) {     //判断session
-
-            res.redirect('/');
+            if(req.session.lastpage.homeprovinceid == 0){
+                res.redirect("/user/basicinfo");
+            }else {
+                res.redirect('/');
+            }
         } else {
             if(req.cookies.logindata){
                 userExist(req.cookies.logindata.openid, function (err, result) {    //判断cookie保存的用户是否存在
@@ -286,8 +290,13 @@ function weixiaotrigger(postdata, req, res) {
                             media_id: result[0].media_id
                         };
                         req.session.lastpage = logindata;   //存在,写入session
-                        res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
 
+                        if(result[0].homeprovinceid == 0){  //判断是否存在homeprovince 信息
+                            res.redirect('/user/basicinfo');
+                        }else{
+                            res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
+                            res.redirect('/');
+                        }
                     }else{
                         res.clearCookie('logindata');   //不存在,删除cookie
                         res.redirect(url);  //登录

@@ -22,34 +22,32 @@ var COS = {
 /* GET home page. */
 router.get('/', function (req, res, next) {
     console.log(req.session.lastpage);
-    if(req.session.lastpage.homeprovinceid == 0  || req.session.lastpage.homecityid == 0){
-        res.redirect("/user/basicinfo");
-    }else{
-        activityMd.getMediaActivitys(        //获取活动列表
-            ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl', 'origintime', 'provincename'],
-            req.session.lastpage.media_id,
-            0,
-            5,
-            function (err, activitys) {
-                //获取老乡会信息
-                hometownMd.getHometown(req.session.lastpage.media_id, req.session.lastpage.homeprovinceid, function (err, hometown) {
-                    //获取动态信息
-                    weiboMd.getMediaWeibolist(req.session.lastpage.media_id, function (err, hometownWeibo) {
-                        var list = hometownWeibo.concat(activitys);
 
-                        list.sort(function (a, b) {
-                            return new Date(a.origintime).getTime() < new Date(b.origintime).getTime() ? 1 : -1;
-                        });
-                        res.render('square', {
-                            list: list,
-                            user: req.session.lastpage,
-                            hometown: hometown,
-                            squareFun: squareFun
-                        });
+    activityMd.getMediaActivitys(        //获取活动列表
+        ['title', 'content', 'starttime', 'endtime', 'address', 'budget', 'content', 'userid', 'nickname', 'idactivity', 'headimgurl', 'origintime', 'provincename'],
+        req.session.lastpage.media_id,
+        0,
+        5,
+        function (err, activitys) {
+            //获取老乡会信息
+            hometownMd.getHometown(req.session.lastpage.media_id, req.session.lastpage.homeprovinceid, function (err, hometown) {
+                //获取动态信息
+                weiboMd.getMediaWeibolist(req.session.lastpage.media_id, function (err, hometownWeibo) {
+                    var list = hometownWeibo.concat(activitys);
+
+                    list.sort(function (a, b) {
+                        return new Date(a.origintime).getTime() < new Date(b.origintime).getTime() ? 1 : -1;
+                    });
+                    res.render('square', {
+                        list: list,
+                        user: req.session.lastpage,
+                        hometown: hometown,
+                        squareFun: squareFun
                     });
                 });
             });
-    }
+        });
+
 });
 
 //所有活动列表
