@@ -308,7 +308,7 @@ function weixiaotrigger(postdata, req, res) {
             if(req.session.lastpage.homeprovinceid == 0){
                 res.redirect("/user/basicinfo");
             }else {
-                res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
+                res.cookie('logindata', req.session.lastpage, {maxAge: 2592000}); //设置cookie
                 res.redirect('/');
             }
         } else {
