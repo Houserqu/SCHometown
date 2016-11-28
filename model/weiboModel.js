@@ -14,6 +14,7 @@ weiboMd.getHometownWeibolist = function ( media_id, homeprovinceid, cb) {
         });
     });
 };
+
 //获取公众号下所有老乡会动态
 weiboMd.getMediaWeibolist = function ( media_id, cb) {
     pool.getConnection(function (err, conn) {

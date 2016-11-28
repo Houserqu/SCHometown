@@ -279,31 +279,34 @@ function weixiaotrigger(postdata, req, res) {
         req.session.media_id = req.query.media_id;
 
         if (req.session.lastpage && req.session.lastpage.media_id == req.query.media_id) {     //判断session
-            userExist(req.session.lastpage.openid, function (err, result) {    //判断session保存的用户是否存在
-                if(err) throw err;
+            // userExist(req.session.lastpage.openid, function (err, result) {    //判断session保存的用户是否存在
+            //     if(err) throw err;
+            //
+            //     if(result.length == 1 && result[0].media_id == req.query.media_id) {
+            //         var logindata = {
+            //             openid: result[0].openid,
+            //             userid: result[0].userid,
+            //             nickname: result[0].nickname,
+            //             headimgurl: result[0].headimgurl,
+            //             schoolid: result[0].schoolid,
+            //             homeprovinceid: result[0].homeprovinceid,
+            //             media_id: result[0].media_id
+            //         };
+            //         req.session.lastpage = logindata;   //存在,写入session
+            //
+            //         if(result[0].homeprovinceid == 0){
+            //             res.redirect("/user/basicinfo");
+            //         }else {
+            //             res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
+            //             res.redirect('/');
+            //         }
+            //     }else{
+            //         res.redirect(url);
+            //     }
+            // });
 
-                if(result.length == 1 && result[0].media_id == req.query.media_id) {
-                    var logindata = {
-                        openid: result[0].openid,
-                        userid: result[0].userid,
-                        nickname: result[0].nickname,
-                        headimgurl: result[0].headimgurl,
-                        schoolid: result[0].schoolid,
-                        homeprovinceid: result[0].homeprovinceid,
-                        media_id: result[0].media_id
-                    };
-                    req.session.lastpage = logindata;   //存在,写入session
-
-                    if(result[0].homeprovinceid == 0){
-                        res.redirect("/user/basicinfo");
-                    }else {
-                        res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
-                        res.redirect('/');
-                    }
-                }else{
-                    res.redirect(url);
-                }
-            });
+            res.cookie('logindata', req.session.lastpage, {maxAge: 2592000}); //设置cookie
+            res.redirect('/');
         } else {
             if(req.cookies.logindata && req.cookies.logindata.media_id == req.query.media_id){
                 userExist(req.cookies.logindata.openid, function (err, result) {    //判断cookie保存的用户是否存在
@@ -323,7 +326,6 @@ function weixiaotrigger(postdata, req, res) {
                         if(result[0].homeprovinceid == 0){  //判断是否存在homeprovince 信息
                             res.redirect('/user/basicinfo');
                         }else{
-                            res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
                             res.redirect('/');
                         }
                     }else{
