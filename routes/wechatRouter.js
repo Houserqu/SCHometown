@@ -44,13 +44,19 @@ router.get("/login", function (req, res, next) {
                         media_id: result[0].media_id
                     };
                     req.session.lastpage = logindata;   //存在,写入session
-                    res.cookie('sch'+result[0].media_id, logindata, {maxAge: 2592000}); //设置cookie
-                    res.redirect("/");
+
+                    if(result[0].homeprovinceid == 0){
+                        res.redirect('/user/basicinfo');
+                    }else{
+                        res.cookie('sch'+result[0].media_id, logindata, {maxAge: 2592000}); //设置cookie
+                        res.redirect("/");
+                    }
+
                 } else {
                     //拉取用户信息
                     getUserinfo(accesstoken.access_token, accesstoken.openid, function (err, getuserinfo) {
                         if (getuserinfo.hasOwnProperty("errcode")) {
-                            res.send("登录失败")
+                            res.send("登录失败");
                         } else {
 
                             getuserinfo.privilege = getuserinfo.privilege.toString();
