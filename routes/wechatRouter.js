@@ -305,8 +305,12 @@ function weixiaotrigger(postdata, req, res) {
             //     }
             // });
 
-            res.cookie('logindata', req.session.lastpage, {maxAge: 2592000}); //设置cookie
-            res.redirect('/');
+            if(req.session.lastpage.homeprovinceid == 0){
+                res.redirect("/user/basicinfo");
+            }else {
+                res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
+                res.redirect('/');
+            }
         } else {
             if(req.cookies.logindata && req.cookies.logindata.media_id == req.query.media_id){
                 userExist(req.cookies.logindata.openid, function (err, result) {    //判断cookie保存的用户是否存在
