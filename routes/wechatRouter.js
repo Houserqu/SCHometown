@@ -79,7 +79,8 @@ router.get("/login", function (req, res, next) {
                                                 userid: isadd.insertId,
                                                 nickname: getuserinfo.nickname,
                                                 headimgurl: getuserinfo.headimgurl,
-                                                media_id: req.session.media_id
+                                                media_id: req.session.media_id,
+                                                homeprovinceid: 0
                                             };
                                             res.redirect("/user/basicinfo");
                                         }
