@@ -44,7 +44,7 @@ router.get("/login", function (req, res, next) {
                         media_id: result[0].media_id
                     };
                     req.session.lastpage = logindata;   //存在,写入session
-                    res.cookie('logindata', logindata, {maxAge: 2592000}); //设置cookie
+                    res.cookie('sch'+result[0].media_id, logindata, {maxAge: 2592000}); //设置cookie
                     res.redirect("/");
                 } else {
                     //拉取用户信息
@@ -270,8 +270,11 @@ function weixiaotrigger(postdata, req, res) {
     var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatconfig.appid + "&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"
 
     console.log('media:'+ req.query.media_id);
+
+    var cookiename = 'sch'+req.query.media_id;
+
     console.log('session:'+ req.session.lastpage);
-    console.log('cookie:'+ req.cookies.logindata);
+    console.log('cookie:'+ req.cookies[cookiename]);
 
     if (req.query.media_id == null || req.query.media_id == '')
         res.render("error", {message: "无法获取公众号信息", error: ""}); //判断是否获取得到公会号信息
@@ -308,12 +311,12 @@ function weixiaotrigger(postdata, req, res) {
             if(req.session.lastpage.homeprovinceid == 0){
                 res.redirect("/user/basicinfo");
             }else {
-                res.cookie('logindata', req.session.lastpage, {maxAge: 2592000}); //设置cookie
+                res.cookie('sch'+req.session.lastpage.media_id, req.session.lastpage, {maxAge: 2592000}); //设置cookie
                 res.redirect('/');
             }
         } else {
-            if(req.cookies.logindata && req.cookies.logindata.media_id == req.query.media_id){
-                userExist(req.cookies.logindata.openid, function (err, result) {    //判断cookie保存的用户是否存在
+            if(req.cookies[cookiename] && req.cookies[cookiename] == req.query.media_id){
+                userExist(req.cookies[cookiename].openid, function (err, result) {    //判断cookie保存的用户是否存在
                     if(err) throw err;
                     if(result.length == 1 && result[0].media_id == req.query.media_id){
                         var logindata = {
@@ -333,7 +336,7 @@ function weixiaotrigger(postdata, req, res) {
                             res.redirect('/');
                         }
                     }else{
-                        res.clearCookie('logindata');   //不存在,删除cookie
+                        res.clearCookie(cookiename);   //不存在,删除cookie
                         res.redirect(url);  //登录
                     }
                 });
