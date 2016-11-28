@@ -32,6 +32,8 @@ router.get('/', function (req, res, next) {
             hometownMd.getHometown(req.session.lastpage.media_id, req.session.lastpage.homeprovinceid, function (err, hometown) {
                 //获取动态信息
                 weiboMd.getMediaWeibolist(req.session.lastpage.media_id, function (err, hometownWeibo) {
+                    console.log(hometownWeibo);
+                    console.log(activitys);
                     var list = hometownWeibo.concat(activitys);
 
                     list.sort(function (a, b) {
