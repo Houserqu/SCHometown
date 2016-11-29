@@ -111,8 +111,8 @@ router.all("/weixiao", function (req, res, next) {
 
     switch (type) {
         case 'open' :
-            //weixiaoopen(postdata, req, res);
-            res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1, "token":wechatconfig.Token});     //开启成功
+            weixiaoopen(postdata, req, res);
+            //res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1, "token":wechatconfig.Token});     //开启成功
             break;
         case 'close' :
             weixiaoclose(postdata, req, res);
@@ -145,68 +145,69 @@ function tojson(postdata) {
 
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
-    if (postdata == null) {
-        res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0, "token":wechatconfig.Token});
-    } else {
-        var jsondata = tojson(postdata);
-        var sign = jsondata.sign;
-        delete jsondata.sign;
-
-        var calsign = calSign(jsondata);
-
-        if (sign == calsign) {
-            var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
-            if (interval < 600000) {
-
-                (function (add) {
-                    res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1, "token":wechatconfig.Token});     //开启成功
-                    add();
-                })(function () {
-                    pool.getConnection(function (err, conn) {   //写入公众号信息
-                        if (err) console.log(err);
-
-                        conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
-
-                            if (err) throw(err);
-                            if (result.length < 1) {    //不存在该公众号,拉取公众号信息
-
-                                jsondata['sign'] = sign;
-                                getmedia(jsondata, function (err, mediainfo) {
-                                    console.log(mediainfo);
-                                    if (!mediainfo.hasOwnProperty("errcode")) {
-
-                                        conn.query('insert into media set ?', mediainfo, function (err, isadd) {
-                                            if (err) console.log(err);
-
-                                            console.log("added:" + isadd);
-                                            //循环创建公众号老乡会
-                                            (function (addhometown) {
-                                                for (var i = 1; i < 36; i++) {
-                                                    conn.query('insert into media_hometown set ?', {
-                                                        media_id: mediainfo.media_id,
-                                                        homeprovinceid: i
-                                                    }, function (err, isaddhometown) {
-                                                        if (err) console.log(err);
-                                                    });
-                                                }
-                                                addhometown();  //释放链接
-                                            })(function () {
-                                                conn.release();
-                                            });
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    });
-                });
-            } else {
-                res.send({"errcode": 1, "errmsg": "超时", "is_config": 0, "token":wechatconfig.Token});
-            }
-        } else {
-            res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0, "token":wechatconfig.Token});
-        }
-    }
+    res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1, "token":wechatconfig.Token});     //开启成功
+    // if (postdata == null) {
+    //     res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0, "token":wechatconfig.Token});
+    // } else {
+    //     var jsondata = tojson(postdata);
+    //     var sign = jsondata.sign;
+    //     delete jsondata.sign;
+    //
+    //     var calsign = calSign(jsondata);
+    //
+    //     if (sign == calsign) {
+    //         var interval = Date.parse(new Date()) - jsondata.timestamp * 1000;
+    //         if (interval < 600000) {
+    //
+    //             (function (add) {
+    //                 res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1, "token":wechatconfig.Token});     //开启成功
+    //                 add();
+    //             })(function () {
+    //                 pool.getConnection(function (err, conn) {   //写入公众号信息
+    //                     if (err) console.log(err);
+    //
+    //                     conn.query('select * from media where media_id = ?', jsondata.media_id, function (err, result) {
+    //
+    //                         if (err) throw(err);
+    //                         if (result.length < 1) {    //不存在该公众号,拉取公众号信息
+    //
+    //                             jsondata['sign'] = sign;
+    //                             getmedia(jsondata, function (err, mediainfo) {
+    //                                 console.log(mediainfo);
+    //                                 if (!mediainfo.hasOwnProperty("errcode")) {
+    //
+    //                                     conn.query('insert into media set ?', mediainfo, function (err, isadd) {
+    //                                         if (err) console.log(err);
+    //
+    //                                         console.log("added:" + isadd);
+    //                                         //循环创建公众号老乡会
+    //                                         (function (addhometown) {
+    //                                             for (var i = 1; i < 36; i++) {
+    //                                                 conn.query('insert into media_hometown set ?', {
+    //                                                     media_id: mediainfo.media_id,
+    //                                                     homeprovinceid: i
+    //                                                 }, function (err, isaddhometown) {
+    //                                                     if (err) console.log(err);
+    //                                                 });
+    //                                             }
+    //                                             addhometown();  //释放链接
+    //                                         })(function () {
+    //                                             conn.release();
+    //                                         });
+    //                                     });
+    //                                 }
+    //                             });
+    //                         }
+    //                     });
+    //                 });
+    //             });
+    //         } else {
+    //             res.send({"errcode": 1, "errmsg": "超时", "is_config": 0, "token":wechatconfig.Token});
+    //         }
+    //     } else {
+    //         res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0, "token":wechatconfig.Token});
+    //     }
+    // }
 }
 
 //微校应用关闭
