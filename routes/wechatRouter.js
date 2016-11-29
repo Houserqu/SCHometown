@@ -111,7 +111,7 @@ router.all("/weixiao", function (req, res, next) {
 
     switch (type) {
         case 'open' :
-            weixiaoopen(postdata, req, res);
+            res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});     //开启成功
             break;
         case 'close' :
             weixiaoclose(postdata, req, res);
