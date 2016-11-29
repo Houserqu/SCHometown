@@ -144,8 +144,7 @@ function tojson(postdata) {
 
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
-    if (postdata.length == undefined ) {
-        console.log(postdata.length);
+    if (JSON.stringify(postdata) == '{}' ) {
         res.send({"errcode": 5004, "errmsg": "参数错误"});
     } else {
         var jsondata = tojson(postdata);
