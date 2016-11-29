@@ -144,7 +144,7 @@ function tojson(postdata) {
 
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
-    if (postdata == null) {
+    if (postdata.length == 0) {
         res.send({"errcode": 5006, "errmsg": "参数错误", "is_config": 0, "token":wechatconfig.Token});
     } else {
         var jsondata = tojson(postdata);
