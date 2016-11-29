@@ -147,7 +147,7 @@ function weixiaoopen(postdata, req, res) {
     console.log(postdata);
     console.log(postdata.length);
 
-    if (postdata == undefined || postdata.length == 0) {
+    if (postdata.length == undefined ) {
         console.log(postdata.length);
         res.send({"errcode": 5006, "errmsg": "参数错误", "is_config": 0, "token":wechatconfig.Token});
     } else {
