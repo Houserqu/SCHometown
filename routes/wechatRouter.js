@@ -146,7 +146,7 @@ function tojson(postdata) {
 function weixiaoopen(postdata, req, res) {
     if (postdata.length == undefined ) {
         console.log(postdata.length);
-        res.send({"errcode": 5004, "errmsg": "参数错误", "is_config": 0, "token":wechatconfig.Token});
+        res.send({"errcode": 5004, "errmsg": "参数错误"});
     } else {
         var jsondata = tojson(postdata);
         var sign = jsondata.sign;
