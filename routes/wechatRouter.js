@@ -111,7 +111,8 @@ router.all("/weixiao", function (req, res, next) {
 
     switch (type) {
         case 'open' :
-            res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});     //开启成功
+            //weixiaoopen(postdata, req, res);
+            res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1, "token":wechatconfig.Token});     //开启成功
             break;
         case 'close' :
             weixiaoclose(postdata, req, res);
@@ -145,7 +146,7 @@ function tojson(postdata) {
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
     if (postdata == null) {
-        res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0});
+        res.send({"errcode": 1, "errmsg": "参数错误", "is_config": 0, "token":wechatconfig.Token});
     } else {
         var jsondata = tojson(postdata);
         var sign = jsondata.sign;
@@ -158,7 +159,7 @@ function weixiaoopen(postdata, req, res) {
             if (interval < 600000) {
 
                 (function (add) {
-                    res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1});     //开启成功
+                    res.send({"errcode": 0, "errmsg": "开启成功", "is_config": 1, "token":wechatconfig.Token});     //开启成功
                     add();
                 })(function () {
                     pool.getConnection(function (err, conn) {   //写入公众号信息
@@ -200,10 +201,10 @@ function weixiaoopen(postdata, req, res) {
                     });
                 });
             } else {
-                res.send({"errcode": 1, "errmsg": "超时", "is_config": 0});
+                res.send({"errcode": 1, "errmsg": "超时", "is_config": 0, "token":wechatconfig.Token});
             }
         } else {
-            res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0});
+            res.send({"errcode": 1, "errmsg": "签名错误", "is_config": 0, "token":wechatconfig.Token});
         }
     }
 }
