@@ -144,12 +144,9 @@ function tojson(postdata) {
 
 //微校应用开启
 function weixiaoopen(postdata, req, res) {
-    console.log(postdata);
-    console.log(postdata.length);
-
     if (postdata.length == undefined ) {
         console.log(postdata.length);
-        res.send({"errcode": 5006, "errmsg": "参数错误", "is_config": 0, "token":wechatconfig.Token});
+        res.send({"errcode": 0, "errmsg": "参数错误", "is_config": 0, "token":wechatconfig.Token});
     } else {
         var jsondata = tojson(postdata);
         var sign = jsondata.sign;
