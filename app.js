@@ -30,51 +30,51 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'upload')));
 
 //模拟登陆
-// app.use(function (req, res, next) {
-//     var logindata = {
-//         media_id: '2',
-//         homeprovinceid: 13,
-//         homecityid: '112',
-//         userid: 1,
-//         openid: 'olAdmuKBW_YPTnjjx1wf_bvkjLao',
-//         nickname: 'Houser1',
-//         headimgurl: 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4JOiah0vwJq6PmwvzYg4ZfSl1nI37F5HvlpPSJhaQB1BnLmpApSem1OhNuMYLHDYLwx6wg9nem7xic5ah6jaiaxCzBPFXtEvTFt8/0',
-//         school_code: 946943942,
-//         school_name: '北京大学',
-//         introduction: null,
-//         homeprovincename: '湖北',
-//         homecityname: '黄冈市',
-//         media_name: '程序缘',
-//         phone: null,
-//         wechatnumber: null,
-//         //bacsicmodify: 1,
-//         sex: 1
-//     };
-//     req.session.lastpage = logindata;
-//
-//     next();
-// });
+app.use(function (req, res, next) {
+    var logindata = {
+        media_id: '2',
+        homeprovinceid: 13,
+        homecityid: '112',
+        userid: 1,
+        openid: 'olAdmuKBW_YPTnjjx1wf_bvkjLao',
+        nickname: 'Houser1',
+        headimgurl: 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4JOiah0vwJq6PmwvzYg4ZfSl1nI37F5HvlpPSJhaQB1BnLmpApSem1OhNuMYLHDYLwx6wg9nem7xic5ah6jaiaxCzBPFXtEvTFt8/0',
+        school_code: 946943942,
+        school_name: '北京大学',
+        introduction: null,
+        homeprovincename: '湖北',
+        homecityname: '黄冈市',
+        media_name: '程序缘',
+        phone: null,
+        wechatnumber: null,
+        //bacsicmodify: 1,
+        sex: 1
+    };
+    req.session.lastpage = logindata;
+
+    next();
+});
 
 
 //登录拦截
-app.use(function (req, res, next) {
-    if (req.session.lastpage) {
-        next();
-    } else {
-        // 解析用户请求的路径
-        var arr = req.url.split('/');
-        // 去除 GET 请求路径上携带的参数
-        for (var i = 0, length = arr.length; i < length; i++) {
-            arr[i] = arr[i].split('?')[0];
-        }
-
-        if(arr.length > 2 && arr[1] == 'wechat' && (arr[2]=='login' || arr[2] == 'weixiao')){
-            next();
-        } else {  // 登录拦截
-            res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');  // 将用户重定向到登录页面
-        }
-    }
-});
+// app.use(function (req, res, next) {
+//     if (req.session.lastpage) {
+//         next();
+//     } else {
+//         // 解析用户请求的路径
+//         var arr = req.url.split('/');
+//         // 去除 GET 请求路径上携带的参数
+//         for (var i = 0, length = arr.length; i < length; i++) {
+//             arr[i] = arr[i].split('?')[0];
+//         }
+//
+//         if(arr.length > 2 && arr[1] == 'wechat' && (arr[2]=='login' || arr[2] == 'weixiao')){
+//             next();
+//         } else {  // 登录拦截
+//             res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86caab40dba425ba&redirect_uri=http%3a%2f%2fwechat.itwang.wang%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');  // 将用户重定向到登录页面
+//         }
+//     }
+// });
 
 app.use('/', square);
 app.use('/find', find);
